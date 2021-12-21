@@ -6,6 +6,67 @@
         <button id="modalButtonAddUserTest" class="modalButtonCreate">Add</button>
     </div> -->
 
+    <div id="menu" style="display: block;">
+        <!-- <div id="mobileMenuCurrentRoom">
+            mobileMenuCurrentRoom
+        </div> -->
+
+        <div id="infoTitle" v-on:click="toggleMenuInfo()"><b>Info</b></div>
+          <div id="info">
+        </div>
+
+        <!-- <b>All Namespaces</b>
+        <div id="namespacesList">
+        </div>
+
+        <br /> -->
+    
+        <!-- <b id="allClientsTitle">All Clients</b>
+        <div id="clientsList">
+        </div>
+    
+        <br /> -->
+    
+        <div id="allUsersTitle" v-on:click="toggleMenuUsers()">All Users</div>
+        <div id="usersList">
+        </div>
+    
+        <div id="allRoomsTitle">All Rooms</div>  <!-- v-on:click="toggleMenuRooms()" -->
+        <div id="allRoomsList">
+        </div>
+        
+        <div id="createRoomTitle" v-on:click="toggleMenuCreateRoom()">Create Room</div>
+        <div id="createRoom">
+            <div id="errorMessageCreateRoom" class="errorMessage"></div>
+            <input id="inputCreateRoom" maxlength="40" />
+            <button id="buttonCreateRoomTest" class="buttonCreate" v-on:click="createRoom()">Create</button>
+        </div>
+                
+        <div id="addUsernameTitle" v-on:click="toggleMenuAddUsername()">Add Username</div>
+        <div id="addUsername">
+            <div id="errorMessageAddUsername" class="errorMessage"></div>
+            <input id="inputAddUser"  maxlength="40"/>
+            <button id="buttonAddUserTest" class="buttonCreate">Add</button>
+        </div>
+
+        <!-- <b>Leave Room</b>
+        <br />
+        <input id="inputLeaveRoom"/>
+        <button id="buttonLeaveRoomTest">Leave</button> -->
+        
+        <!-- <b>Your Rooms</b>
+        <div id="yourRoomsList">
+        </div> -->
+    
+        <!-- <b>Join Test Room</b>
+        <br />
+        <button id="buttonJoinRoomTest">Join</button> -->
+    </div>
+
+    <div style="display: inline-flex; width: 40vw; height: 40vh; margin: 10px; padding: 10px; background-color: lightgray; ">
+      <p>akdkasd</p>
+    </div>
+    
     <div id="flex">
       <!-- <div id="toggleMenu" onclick="toggleMenu()">
           <b id="toggleMenuText">❮</b> 
@@ -19,63 +80,6 @@
           mobileMenuAllRooms
       </div>
       
-      <div id="menu" style="display: block;">
-          <!-- <div id="mobileMenuCurrentRoom">
-              mobileMenuCurrentRoom
-          </div> -->
-
-          <div id="infoTitle" v-on:click="toggleMenuInfo()"><b>Info</b></div>
-          <div id="info">
-          </div>
-  
-          <!-- <b>All Namespaces</b>
-          <div id="namespacesList">
-          </div>
-  
-          <br /> -->
-      
-          <!-- <b id="allClientsTitle">All Clients</b>
-          <div id="clientsList">
-          </div>
-      
-          <br /> -->
-      
-          <div id="allUsersTitle" v-on:click="toggleMenuUsers()">All Users</div>
-          <div id="usersList">
-          </div>
-      
-          <div id="allRoomsTitle"  v-on:click="toggleMenuRooms()">All Rooms</div>
-          <div id="allRoomsList">
-          </div>
-          
-          <div id="createRoomTitle" v-on:click="toggleMenuCreateRoom()">Create Room</div>
-          <div id="createRoom">
-              <div id="errorMessageCreateRoom" class="errorMessage"></div>
-              <input id="inputCreateRoom" maxlength="40" />
-              <button id="buttonCreateRoomTest" class="buttonCreate" v-on:click="createRoom()">Create</button>
-          </div>
-                  
-          <div id="addUsernameTitle" v-on:click="toggleMenuAddUsername()">Add Username</div>
-          <div id="addUsername">
-              <div id="errorMessageAddUsername" class="errorMessage"></div>
-              <input id="inputAddUser"  maxlength="40"/>
-              <button id="buttonAddUserTest" class="buttonCreate">Add</button>
-          </div>
-
-          <!-- <b>Leave Room</b>
-          <br />
-          <input id="inputLeaveRoom"/>
-          <button id="buttonLeaveRoomTest">Leave</button> -->
-          
-          <!-- <b>Your Rooms</b>
-          <div id="yourRoomsList">
-          </div> -->
-      
-          <!-- <b>Join Test Room</b>
-          <br />
-          <button id="buttonJoinRoomTest">Join</button> -->
-      </div>
-      
       <div id="mobileCurrentRoomInfo" v-on:click="toggleMobileMenu()">
           <span id="mobileMenuHide">▲</span>
           <span id="mobileMenuShow" >▼</span>
@@ -86,7 +90,6 @@
           <!-- <b>Current Room</b> -->
           <ul id="messages">
           </ul>
-
       </div>
 
       <div id="chatBox">
@@ -476,11 +479,13 @@ var url = document.location.pathname //window.location.href
         {
           item.style.padding = "20px"
           item.style.backgroundColor = "white"
+          item.style.overflowWrap = "break-word"
         }
         else
         {
           item.style.padding = "20px"
           item.style.backgroundColor = "#efefef"
+          item.style.overflowWrap = "break-word"
         }
 
         //set anon name if no custom username
@@ -673,6 +678,10 @@ var url = document.location.pathname //window.location.href
                 button2.style.backgroundColor = "red"
                 div.id = "room-menu-" + defaultRooms[c]
                 div.style.backgroundColor = "red"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "10px"
+                div.style.textAlign = "center"
                 div.onclick = function(){leaveRoom(defaultRooms[c])}
                 
                 //mobile menu
@@ -685,6 +694,10 @@ var url = document.location.pathname //window.location.href
                 buttonMobile2.style.backgroundColor = "red"
                 divMobile.id = "room-menu-mobile-" + defaultRooms[c]
                 divMobile.style.backgroundColor = "red"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "10px"
+                div.style.textAlign = "center"
                 divMobile.onclick = function(){leaveRoom(defaultRooms[c])}
             }
             else if(defaultRooms[c] != inputCurrentRoom.innerText)
@@ -699,6 +712,10 @@ var url = document.location.pathname //window.location.href
                 button2.style.backgroundColor = "lightgreen"
                 div.id = "room-menu-" + defaultRooms[c]
                 div.style.backgroundColor = "lightgreen"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "10px"
+                div.style.textAlign = "center"
                 div.onclick = function(){joinRoom(defaultRooms[c])}
 
                 //mobile menu
@@ -711,6 +728,10 @@ var url = document.location.pathname //window.location.href
                 buttonMobile2.style.backgroundColor = "lightgreen"
                 divMobile.id = "room-menu-mobile-" + defaultRooms[c]
                 divMobile.style.backgroundColor = "lightgreen"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "10px"
+                div.style.textAlign = "center"
                 divMobile.onclick = function(){joinRoom(defaultRooms[c])}
             }
 
@@ -792,6 +813,10 @@ var url = document.location.pathname //window.location.href
                     button2.onclick = function(){leaveRoom(roomName)}
                     div.id = "room-menu-" + roomName
                     div.style.backgroundColor = "red"
+                    div.style.width = "200px"
+                    div.style.display = "inline-block"
+                    div.style.padding = "10px"
+                    div.style.textAlign = "center"
                     div.onclick = function(){leaveRoom(roomName)}
 
                     //mobile menu
@@ -804,6 +829,10 @@ var url = document.location.pathname //window.location.href
                     buttonMobile2.onclick = function(){leaveRoom(roomName)}
                     divMobile.id = "room-menu-mobile-" + roomName
                     divMobile.style.backgroundColor = "red"
+                    div.style.width = "200px"
+                    div.style.display = "inline-block"
+                    div.style.padding = "10px"
+                    div.style.textAlign = "center"
                     divMobile.onclick = function(){leaveRoom(roomName)}
                 }
                 else if(roomName != inputCurrentRoom.innerText)
@@ -818,6 +847,10 @@ var url = document.location.pathname //window.location.href
                     button2.onclick = function(){joinRoom(roomName)}
                     div.id = "room-menu-" + roomName
                     div.style.backgroundColor = "lightgreen"
+                    div.style.width = "200px"
+                    div.style.display = "inline-block"
+                    div.style.padding = "10px"
+                    div.style.textAlign = "center"
                     div.onclick = function(){joinRoom(roomName)}
                     
                     //mobile menu
@@ -830,6 +863,10 @@ var url = document.location.pathname //window.location.href
                     buttonMobile2.onclick = function(){joinRoom(roomName)}
                     divMobile.id = "room-menu-mobile-" + roomName
                     divMobile.style.backgroundColor = "lightgreen"
+                    div.style.width = "200px"
+                    div.style.display = "inline-block"
+                    div.style.padding = "10px"
+                    div.style.textAlign = "center"
                     divMobile.onclick = function(){joinRoom(roomName)}
                 }
                 
@@ -1007,24 +1044,24 @@ export default {
 <style scoped>
   /* elements */
   /* body { margin: 0; padding-bottom: 0; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: black; } */
-  #home { font-family: Arial, Helvetica, sans-serif; background-color: black; }
+  #home { font-family: Arial, Helvetica, sans-serif; overflow: auto; background-color: black; }
   button { border-radius: 0%; outline: none; color: black; }
 
   /* ids */
-  #chat { height: 94%; width: calc(80% - 3px); right: 0; overflow-y: scroll; border-left: 1px solid black; }
+  #chat { height: 84%; width: 100%; right: 0; overflow-y: scroll; border-left: 1px solid black; }
   /* #form { height: 6%; border: 1px solid black; background: lightgray; margin-right: 1px; padding: 10px; padding-bottom: 10px; position: fixed; bottom: 0; right: 0; display: flex; box-sizing: border-box; backdrop-filter: blur(10px); } */
-  #inputChatMessage { display: inline-block; height: 40px; width: 40%; margin: 2px; margin-left: 10%; padding: 0px; padding-left: 10px; padding-right: 10px; font-size: 16px; border: 4px solid black; border-right: 0px; border-bottom: 1px solid white; }
+  #inputChatMessage { display: inline-block; width: 86%; margin: 0px; margin-top: 10px; padding: 10px; font-size: 16px; border: 0px; }
   #inputChatMessage:focus { outline: none; }
   /* #form > button { background: #333; border: 1px solid #333; outline: none; color: #fff; } */
-  #menu { height: 94%; width: 20%; margin: 0px; overflow-y: scroll; border-right: 1px solid black; }
+  #menu { height: 94%; width: auto;  margin: 0px; border-right: 1px solid black; }
   #menu::-webkit-scrollbar { width: 0px; }
   /* #menu::-webkit-scrollbar-track { background: #f1f1f1; } */
   /* #menu::-webkit-scrollbar-thumb { background: #888; } */
   /* #menu::-webkit-scrollbar-thumb:hover { background: #555 } */
   /* #menu { scrollbar-width: thin; scrollbar-color: black white; } */
-  /* #chat { scrollbar-width: thin; scrollbar-color: black lightgray; } */
-  #chatBox { width: 100%; margin: 0px; padding: 0px; padding-top: 4px; text-align: center; background-color: black; border: 1px solid black; }
-  #currentRoomInfo, #mobileCurrentRoomInfo { display: block; width: 100%; padding: 16px; text-align: center; user-select: none; color: white; background-color: black; }
+  #chat { scrollbar-width: thin; scrollbar-color: gray lightgray; }
+  #chatBox { width: 100%; margin: 0px; padding: 0px; text-align: center; background-color: red; border: 1px solid black; }
+  #currentRoomInfo, #mobileCurrentRoomInfo { display: block; width: 100%; padding: 16px; text-align: center; user-select: none; color: white; background-color: red; }
   #mobileCurrentRoomInfo { display: none; }
   #messages { list-style-type: none; margin: 0; padding: 0; }
   /* #messages > li { padding: 20px; } */
@@ -1033,11 +1070,15 @@ export default {
   #buttonLeaveRoomTest { margin-left: -4px; }
   #inputCreateRoom { width: 100% }
   #toggleMenu { margin: 0px; padding: 16px; padding-left: 20px; padding-right: 20px; user-select: none; text-align: left; width: 100%; color: white; background-color: red; }
-  #flex { display: flex; height: 94vh; width: 100vw; flex-wrap: wrap; align-content: flex-start; background-color: white; }
+  #flex { display: inline-flex; position: absolute; height: 94vh; width: 30vw; flex-wrap: wrap; align-content: flex-start; right: 0; background-color: white; }
   /* #flex > div { display: block; width: 100%; border: 1px solid black } */
-  #buttonSend { display: inline-block; margin: 0px; margin-left: -7px; padding: 10px; height: 42px; }
+  #buttonSend { display: inline-block; margin: 0px; margin-bottom: 10px; width: 90%; height: 40px; border: 0px; }
   #info, #usersList, #createRoom, #addUsername, #allRoomsList { display: none; }
-  #infoTitle, #allUsersTitle, #allRoomsTitle, #createRoomTitle, #addUsernameTitle { display: block; margin: 0px; padding: 7px; font-weight: bold; user-select: none; border: 1px solid black; background-color: white; }
+  #allRoomsList { display: block; }
+
+  #infoTitle, #allUsersTitle, #allRoomsTitle, #createRoomTitle, #addUsernameTitle { display: none; margin: 0px; padding: 7px; font-weight: bold; user-select: none; border: 1px solid black; background-color: white; }
+  #allRoomsTitle { display: none; }
+
   #modal {  
     margin: 0;
     position: absolute;
@@ -1047,11 +1088,11 @@ export default {
     transform: translate(-50%, -50%); background-color: red;
     border: 1px solid black; 
     }
-    #mobileMenuCurrentRoom, #mobileMenuAllRooms { display: none; }
-    #mobileMenuHide, #mobileMenuShow { display: none; }
-    #allUsersTitle { display: none; }
-    #inputCreateRoom, #inputAddUser, #buttonCreateRoomTest, #buttonAddUserTest { width: calc(100% - 8px); font-weight: normal; font-size: 17px; }
-    #createRoom, #addUsername, #allRoomsList, #info { padding: 10px; background-color: gray; }
+  #mobileMenuCurrentRoom, #mobileMenuAllRooms { display: none; }
+  #mobileMenuHide, #mobileMenuShow { display: none; }
+  #allUsersTitle { display: none; }
+  #inputCreateRoom, #inputAddUser, #buttonCreateRoomTest, #buttonAddUserTest { width: calc(100% - 8px); font-weight: normal; font-size: 17px; }
+  #createRoom, #addUsername, #allRoomsList, #info { padding: 0px; background-color: gray; }
 
   /* classes */
   .buttonJoin, .buttonLeave { padding: 3px; overflow-wrap: break-word; font-weight: normal; font-size: 17px; }
