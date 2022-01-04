@@ -207,8 +207,10 @@ var fullScreenActive = false
   //event listen to player
   window.onmessage = function(e){
     //debugging
-    // console.log(e)
-      
+    // console.log(e.data)
+
+    if(typeof e.data != "object")
+    {
       let data = JSON.parse(e.data);
       let info = data.info;
       // let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
@@ -220,7 +222,10 @@ var fullScreenActive = false
       {
         let duration
         let currentState = data.info.playerState
+        
         playingVideoTotalDuration = data.info.duration
+
+        // console.log("currentState: " + currentState)
 
         if(currentState == 1)
         {
@@ -244,8 +249,6 @@ var fullScreenActive = false
         {
           currentState = "video buffering"
         }
-        
-        console.log("currentState: " + currentState)
       }
       else if(e.data.toString().includes("currentTime"))
       {
@@ -291,6 +294,7 @@ var fullScreenActive = false
           socket.emit('video command', msgObjVideoCommand);
         }
       }
+    }
   }
 
   //event listen to keyboard
@@ -1003,16 +1007,16 @@ var fullScreenActive = false
       // console.log(socket)
       // console.log(allClients)
       // console.log(all_namespaces)
-      console.log("socket id: " + socket.id)
-      console.log("socket nsp: " + socket.nsp)
-      console.log("allRooms")
-      console.log(allRooms)
-      console.log("clientInfo")
-      console.log(clientInfo)
-      console.log("videosCurrentlyPlaying")
-      console.log(videosCurrentlyPlaying)
-      console.log("allClients")
-      console.log(allClients)
+      // console.log("socket id: " + socket.id)
+      // console.log("socket nsp: " + socket.nsp)
+      // console.log("allRooms")
+      // console.log(allRooms)
+      // console.log("clientInfo")
+      // console.log(clientInfo)
+      // console.log("videosCurrentlyPlaying")
+      // console.log(videosCurrentlyPlaying)
+      // console.log("allClients")
+      // console.log(allClients)
       
       //add functions
       buttonAddUserTest.onclick = function(){addUser(socket.id)}
@@ -1158,7 +1162,7 @@ var fullScreenActive = false
           {
               if(allRooms[r].room == defaultRooms[c])
               {
-                  console.log(allRooms[r].room)
+                  // console.log(allRooms[r].room)
                   count = allRooms[r].clients.length.toString()
               }
           }
@@ -1255,7 +1259,8 @@ var fullScreenActive = false
           mobileMenuAllRooms.append(divMobile)
 
       }        
-      console.log(allRooms)
+      // console.log("allRooms")
+      // console.log(allRooms)
       
       //sort user rooms
       for(let r in allRooms)
