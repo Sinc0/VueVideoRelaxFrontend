@@ -123,6 +123,7 @@
         <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
       </div>
 
+      <!-- non interactive -->
       <div id="current-time-video" class="videoPlayerControlButton">current time</div>
 
       <!-- might use later -->
@@ -182,6 +183,7 @@ var buttonTest = document.getElementById('buttonTest');
 var url = document.location.pathname //window.location.href
 var playingVideosLastWholeSecond = 0
 var playingVideoTotalDuration
+var playingVideoId
 var videoPlaying = false
 var videoMuted = false
 var fullScreenActive = false
@@ -206,7 +208,7 @@ var fullScreenActive = false
   window.onmessage = function(e){
     //debugging
     // console.log(e)
-    
+      
       let data = JSON.parse(e.data);
       let info = data.info;
       // let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
@@ -225,9 +227,13 @@ var fullScreenActive = false
           currentState = "video playing"
           // if(socket.id == clientId)
           //   {
-          //     console.log(socket)
+            //     console.log(socket)
           //     // videoPlayerEvents("play")             
           //   }
+          playingVideoId = info.videoData.video_id
+
+          // console.log(info.videoData.video_id)
+          // console.log(playingVideoId)
         }
         else if(currentState == 2)
         {
@@ -255,25 +261,33 @@ var fullScreenActive = false
         //     console.log("The player state is "+ data.playerState);
         // }
 
-        if((currentTime + 5) == playingVideosLastWholeSecond)
-        {
-          // videoPlayerEvents("back5", playingVideosLastWholeSecond - 5)
-          }
-        if((currentTime - 5) == playingVideosLastWholeSecond)
-        {
-          // videoPlayerEvents("forward5", playingVideosLastWholeSecond + 5)
-        }
+        // if((currentTime + 5) == playingVideosLastWholeSecond)
+        // {
+        //   // videoPlayerEvents("back5", playingVideosLastWholeSecond - 5)
+        // }
+        // if((currentTime - 5) == playingVideosLastWholeSecond)
+        // {
+        //   // videoPlayerEvents("forward5", playingVideosLastWholeSecond + 5)
+        // }
 
-
+        //update video current time
         if(currentTime != playingVideosLastWholeSecond)
         {
-          let d = document.getElementById("current-time-video")
+          //variables
+          let currentTimeDisplay = document.getElementById("current-time-video")
           let currentTimeText = currentTime + "/" + totalDuration + " seconds "
-          console.log("currentTime: " + currentTimeText)
+          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "video current time" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+          
+          //debugging
+          // console.log("currentTime: " + currentTimeText)
 
-          d.innerText = currentTimeText
+          //update visuals
+          currentTimeDisplay.innerText = currentTimeText
+          
+          //update globals
           playingVideosLastWholeSecond = currentTime
-          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "video current time" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "}")
+          
+          //send to server app
           socket.emit('video command', msgObjVideoCommand);
         }
       }
@@ -664,44 +678,49 @@ var fullScreenActive = false
     videoPlayButtonOverlay.style.display = "block"
   }
 
-  function videoPlayerEvents(event, param)
+  function videoPlayerEvents(event, param1, param2)
   {
     let vp = document.getElementById("videoPlayer")
 
+    //check video player exists
     if(vp != null)
     {
       if(event == "play")
       {
-        //variables
-        let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "▶ played video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "play video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "}")
-        // let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
-        
-        //chat message
-        socket.emit('chat message', msgObjChat);
-
-        //video command
-        socket.emit('video command', msgObjVideoCommand);
 
         //set local variable
         videoPlaying = true
+
+        //variables
+        let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "▶ played video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "play video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+        // let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
+        
+        //video command
+        socket.emit('video command', msgObjVideoCommand);
+
+        //chat message
+        socket.emit('chat message', msgObjChat);
+
 
         //remove play button overlay
         // videoPlayButtonOverlay.style.display = "none"
       }
       else if(event == "pause")
       {
+        //set local variable
+        videoPlaying = false
+
         let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "◾ paused video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "pause video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "}")
+        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "pause video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+
+        //video command
+        socket.emit('video command', msgObjVideoCommand);
 
         //chat message
         socket.emit('chat message', msgObjChat);
         
-        //video command
-        socket.emit('video command', msgObjVideoCommand);
 
-        //set local variable
-        videoPlaying = false
       }
       // else if(event == "stop")
       // {
@@ -795,42 +814,84 @@ var fullScreenActive = false
       // {
       //   document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[0, true]}', '*');
       // }
-      else if(event == "forward5")
-      {
-        //variables
-        let syncTime = param
-        let syncTimeInMinutes = parseInt(syncTime / 60)
-        let syncTimeInSeconds = syncTime % 60
-        let syncMessage
+      // else if(event == "forward5")
+      // {
+      //   //variables
+      //   let syncTime = param1
+      //   let syncTimeInMinutes = parseInt(syncTime / 60)
+      //   let syncTimeInSeconds = syncTime % 60
+      //   let syncMessage
 
-        // let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + syncMessage + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "forward5" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime + "\"" + "}")
+      //   // let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + syncMessage + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+      //   let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "forward5" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime + "\"" + "}")
   
-        //chat message
-        // socket.emit('chat message', msgObjChat);
+      //   //chat message
+      //   // socket.emit('chat message', msgObjChat);
         
-        //video command
-        socket.emit('video command', msgObjVideoCommand);
-      }
-      else if(event == "back5")
-      {
-        //variables
-        let syncTime = param
-        let syncTimeInMinutes = parseInt(syncTime / 60)
-        let syncTimeInSeconds = syncTime % 60
-        let syncMessage
+      //   //video command
+      //   socket.emit('video command', msgObjVideoCommand);
+      // }
+      // else if(event == "back5")
+      // {
+      //   //variables
+      //   let syncTime = param1
+      //   let syncTimeInMinutes = parseInt(syncTime / 60)
+      //   let syncTimeInSeconds = syncTime % 60
+      //   let syncMessage
 
-        if(playingVideosLastWholeSecond != 0)
-        {
-          // let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + syncMessage + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "back5" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime + "\"" + "}")
+      //   if(playingVideosLastWholeSecond != 0)
+      //   {
+      //     // let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + syncMessage + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+      //     let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "back5" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime + "\"" + "}")
     
-          //chat message
-          // socket.emit('chat message', msgObjChat);
+      //     //chat message
+      //     // socket.emit('chat message', msgObjChat);
           
-          //video command
-          socket.emit('video command', msgObjVideoCommand);
-        }
+      //     //video command
+      //     socket.emit('video command', msgObjVideoCommand);
+      //   }
+      // }
+      else if(event == "join")
+      {  
+          if(param2 == "false") //check if video is playing
+          {
+            //sync to lastWholeSecond
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + param1 + ', true]}', '*');
+            
+            //add event listener for getCurrentTime
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')
+
+            //pause video
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
+          }
+          else if(param2 == "true") //check if video is not playing
+          {
+            //sync to lastWholeSecond
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + param1 + ', true]}', '*');
+
+            //play video
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+            let btnPlay = document.getElementById("play-video")
+            let btnPause = document.getElementById("pause-video")
+            btnPlay.style.display = "none"
+            btnPause.style.display = "block"
+          
+            //add event listener for getCurrentTime
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')
+
+            //set local variable
+            videoPlaying = true
+          }
+
+          //mute player
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'mute' + '","args":""}', '*');
+          let btnMute = document.getElementById("mute-video")
+          let btnUnmute = document.getElementById("unmute-video")
+          btnMute.style.display = "none"
+          btnUnmute.style.display = "block"
+
+          //set local variables
+          videoMuted = true
       }
     }
   }
@@ -938,14 +999,20 @@ var fullScreenActive = false
       chat.scrollTo(0, chat.scrollHeight);
   });
 
-  socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo) {
+  socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying) {
       // console.log(socket)
-      console.log("socket id: " + socket.id)
-      console.log("socket nsp: " + socket.nsp)
-      // console.log(allRooms)
       // console.log(allClients)
       // console.log(all_namespaces)
+      console.log("socket id: " + socket.id)
+      console.log("socket nsp: " + socket.nsp)
+      console.log("allRooms")
+      console.log(allRooms)
+      console.log("clientInfo")
       console.log(clientInfo)
+      console.log("videosCurrentlyPlaying")
+      console.log(videosCurrentlyPlaying)
+      console.log("allClients")
+      console.log(allClients)
       
       //add functions
       buttonAddUserTest.onclick = function(){addUser(socket.id)}
@@ -1193,134 +1260,135 @@ var fullScreenActive = false
       //sort user rooms
       for(let r in allRooms)
       {
-          let roomIsDefault = false
-          let roomName = allRooms[r].room
-          let roomClients = allRooms[r].clients
+        let roomIsDefault = false
+        let roomName = allRooms[r].room
+        let roomClients = allRooms[r].clients
 
-          let div = document.createElement('div')
-          let button0 = document.createElement('text')
-          let button1 = document.createElement('text')
-          let button2 = document.createElement('button')
+        let div = document.createElement('div')
+        let button0 = document.createElement('text')
+        let button1 = document.createElement('text')
+        let button2 = document.createElement('button')
 
-          let divMobile = document.createElement('div')
-          let buttonMobile0 = document.createElement('text')
-          let buttonMobile1 = document.createElement('text')
-          let buttonMobile2 = document.createElement('button')
+        let divMobile = document.createElement('div')
+        let buttonMobile0 = document.createElement('text')
+        let buttonMobile1 = document.createElement('text')
+        let buttonMobile2 = document.createElement('button')
 
-          // let br = document.createElement('br')
-          let count = roomClients.length
+        // let br = document.createElement('br')
+        let count = roomClients.length
 
-          button2.style.border = "0px solid black"
-          buttonMobile2.style.border = "0px solid black"
+        button2.style.border = "0px solid black"
+        buttonMobile2.style.border = "0px solid black"
 
-          //check if room is default room
-          for(let dr in defaultRooms)
-          {
-              // console.log(defaultRooms[dr])
-              if(allRooms[r].room == defaultRooms[dr])
-              {
-                  roomIsDefault = true
-              }
-          }
+        //check if room is default room
+        for(let dr in defaultRooms)
+        {
+            // console.log(defaultRooms[dr])
+            if(allRooms[r].room == defaultRooms[dr])
+            {
+                roomIsDefault = true
+            }
+        }
 
-          if(roomIsDefault == false)
-          {
-              // console.log(roomName)
-              // console.log(roomClients)
-              
-              //desktop menu
-              // button0.innerText = " - (" + count + ") "
-              // button1.innerText = " - " + roomName + " "
-              // button1.className = "room"
+        if(roomIsDefault == false)
+        {
+            // console.log(roomName)
+            // console.log(roomClients)
+            
+            //desktop menu
+            // button0.innerText = " - (" + count + ") "
+            // button1.innerText = " - " + roomName + " "
+            // button1.className = "room"
 
-              //mobile menu
-              // buttonMobile0.innerText = " - (" + count + ") "
-              // buttonMobile1.innerText = " - " + roomName + " "
-              // buttonMobile1.className = "room"
+            //mobile menu
+            // buttonMobile0.innerText = " - (" + count + ") "
+            // buttonMobile1.innerText = " - " + roomName + " "
+            // buttonMobile1.className = "room"
 
-              if(roomName == inputCurrentRoom.innerText)
-              {
-                  //desktop menu
-                  // button0.innerText = " - (" + count + ") "
-                  // button1.innerText = " - " + roomName + " "
-                  // button1.className = "room"
-                  button2.className = "buttonLeave"
-                  button2.innerText = "leave" + " - (" + count + ") " + " - " + roomName + " "
-                  button2.style.backgroundColor = "red"
-                  button2.onclick = function(){leaveRoom(roomName)}
-                  div.id = "room-menu-" + roomName
-                  div.style.backgroundColor = "red"
-                  div.style.width = "200px"
-                  div.style.display = "inline-block"
-                  div.style.padding = "14.5px"
-                  div.style.textAlign = "center"
-                  div.onclick = function(){leaveRoom(roomName)}
+            if(roomName == inputCurrentRoom.innerText)
+            {
+                //desktop menu
+                // button0.innerText = " - (" + count + ") "
+                // button1.innerText = " - " + roomName + " "
+                // button1.className = "room"
+                button2.className = "buttonLeave"
+                button2.innerText = "leave" + " - (" + count + ") " + " - " + roomName + " "
+                button2.style.backgroundColor = "red"
+                button2.onclick = function(){leaveRoom(roomName)}
+                div.id = "room-menu-" + roomName
+                div.style.backgroundColor = "red"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "14.5px"
+                div.style.textAlign = "center"
+                div.onclick = function(){leaveRoom(roomName)}
 
-                  //mobile menu
-                  // buttonMobile0.innerText = " - (" + count + ") "
-                  // buttonMobile1.innerText = " - " + roomName + " "
-                  // buttonMobile1.className = "room"
-                  buttonMobile2.className = "buttonLeave"
-                  buttonMobile2.innerText = "leave" + " - " + roomName + " - " + "(" + count + ")"
-                  buttonMobile2.style.backgroundColor = "red"
-                  buttonMobile2.onclick = function(){leaveRoom(roomName)}
-                  divMobile.id = "room-menu-mobile-" + roomName
-                  divMobile.style.backgroundColor = "red"
-                  div.style.width = "200px"
-                  div.style.display = "inline-block"
-                  div.style.padding = "14.5px"
-                  div.style.textAlign = "center"
-                  divMobile.onclick = function(){leaveRoom(roomName)}
-              }
-              else if(roomName != inputCurrentRoom.innerText)
-              {
-                  //desktop menu
-                  // button0.innerText = " - (" + count + ") "
-                  // button1.innerText = " - " + roomName + " "
-                  // button1.className = "room"
-                  button2.className = "buttonJoin"
-                  button2.innerText = "join" + " - (" + count + ") " + " - " + roomName + " "
-                  button2.style.backgroundColor = "lightgreen"
-                  button2.onclick = function(){joinRoom(roomName)}
-                  div.id = "room-menu-" + roomName
-                  div.style.backgroundColor = "lightgreen"
-                  div.style.width = "200px"
-                  div.style.display = "inline-block"
-                  div.style.padding = "14.5px"
-                  div.style.textAlign = "center"
-                  div.onclick = function(){joinRoom(roomName)}
-                  
-                  //mobile menu
-                  // buttonMobile0.innerText = " - (" + count + ") "
-                  // buttonMobile1.innerText = " - " + roomName + " "
-                  // buttonMobile1.className = "room"
-                  buttonMobile2.className = "buttonJoin"
-                  buttonMobile2.innerText = "join" + " - " + roomName + " - " + "(" + count + ")"
-                  buttonMobile2.style.backgroundColor = "lightgreen"
-                  buttonMobile2.onclick = function(){joinRoom(roomName)}
-                  divMobile.id = "room-menu-mobile-" + roomName
-                  divMobile.style.backgroundColor = "lightgreen"
-                  div.style.width = "200px"
-                  div.style.display = "inline-block"
-                  div.style.padding = "14.5px"
-                  div.style.textAlign = "center"
-                  divMobile.onclick = function(){joinRoom(roomName)}
-              }
-              
-              //desktop menu
-              div.style.border = "1px solid black"
-              div.append(button2)
-              // div.append(button0)
-              // div.append(button1)
-              allRoomsList.append(div)
-              
-              //mobileMenu
-              // divMobile.style.border = "0px solid black"
-              divMobile.append(buttonMobile2)
-              // divMobile.append(buttonMobile0)
-              // divMobile.append(buttonMobile1)
-              mobileMenuAllRooms.append(divMobile)
-          }
+                //mobile menu
+                // buttonMobile0.innerText = " - (" + count + ") "
+                // buttonMobile1.innerText = " - " + roomName + " "
+                // buttonMobile1.className = "room"
+                buttonMobile2.className = "buttonLeave"
+                buttonMobile2.innerText = "leave" + " - " + roomName + " - " + "(" + count + ")"
+                buttonMobile2.style.backgroundColor = "red"
+                buttonMobile2.onclick = function(){leaveRoom(roomName)}
+                divMobile.id = "room-menu-mobile-" + roomName
+                divMobile.style.backgroundColor = "red"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "14.5px"
+                div.style.textAlign = "center"
+                divMobile.onclick = function(){leaveRoom(roomName)}
+            }
+            else if(roomName != inputCurrentRoom.innerText)
+            {
+                //desktop menu
+                // button0.innerText = " - (" + count + ") "
+                // button1.innerText = " - " + roomName + " "
+                // button1.className = "room"
+                button2.className = "buttonJoin"
+                button2.innerText = "join" + " - (" + count + ") " + " - " + roomName + " "
+                button2.style.backgroundColor = "lightgreen"
+                button2.onclick = function(){joinRoom(roomName)}
+                div.id = "room-menu-" + roomName
+                div.style.backgroundColor = "lightgreen"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "14.5px"
+                div.style.textAlign = "center"
+                div.onclick = function(){joinRoom(roomName)}
+                
+                //mobile menu
+                // buttonMobile0.innerText = " - (" + count + ") "
+                // buttonMobile1.innerText = " - " + roomName + " "
+                // buttonMobile1.className = "room"
+                buttonMobile2.className = "buttonJoin"
+                buttonMobile2.innerText = "join" + " - " + roomName + " - " + "(" + count + ")"
+                buttonMobile2.style.backgroundColor = "lightgreen"
+                buttonMobile2.onclick = function(){joinRoom(roomName)}
+                divMobile.id = "room-menu-mobile-" + roomName
+                divMobile.style.backgroundColor = "lightgreen"
+                div.style.width = "200px"
+                div.style.display = "inline-block"
+                div.style.padding = "14.5px"
+                div.style.textAlign = "center"
+                divMobile.onclick = function(){joinRoom(roomName)}
+            }
+            
+            //desktop menu
+            div.style.border = "1px solid black"
+            div.append(button2)
+            // div.append(button0)
+            // div.append(button1)
+            allRoomsList.append(div)
+            
+            //mobileMenu
+            // divMobile.style.border = "0px solid black"
+            divMobile.append(buttonMobile2)
+            // divMobile.append(buttonMobile0)
+            // divMobile.append(buttonMobile1)
+            mobileMenuAllRooms.append(divMobile)
+        }
+
       }
 
       // info.append("total clients: ")
@@ -1343,6 +1411,24 @@ var fullScreenActive = false
           } catch (error) {
               // console.log(error)
           }
+      }
+
+      //sync video on channel join
+      // console.log("inputCurrentRoom: " + inputCurrentRoom.innerText)
+      for(let x in videosCurrentlyPlaying)
+      {
+        let videoRoom = videosCurrentlyPlaying[x].room
+        let videoId = videosCurrentlyPlaying[x].videoId
+        let lastWholeSecond = videosCurrentlyPlaying[x].lastWholeSecond
+        let videoPlaying = videosCurrentlyPlaying[x].videoPlaying
+        // console.log("videoRoom: " + videoRoom)
+        // console.log("videoPlaying: " + videoPlaying)
+        
+        if(inputCurrentRoom.innerText == videoRoom)
+        {
+          // console.log("room match info: " + videoRoom + " / " + videoId + " / " + lastWholeSecond + "/" + videoPlaying)
+          videoPlayerEvents("join", lastWholeSecond, videoPlaying)
+        }
       }
   });
 
