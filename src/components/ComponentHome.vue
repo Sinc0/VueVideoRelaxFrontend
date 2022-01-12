@@ -64,6 +64,13 @@
         <button id="buttonJoinRoomTest">Join</button> -->
     </div>
 
+    <!-- loading overlay -->
+    <div id="videoLoadingOverlay">
+      <!-- <div id="loadingScreenGif" style="display: block; height: 49vh; width: 49vw; position: fixed; left: 14vw ; top: 8vh; z-index: 2; background-image: url('/ls2.gif'); "></div> -->
+      <div id="loadingScreenGif">
+        <h1 id="loadingScreenText">Loading video...</h1></div>
+    </div>
+    
     <!-- player -->
     <div id="player">
       <!-- <iframe 
@@ -90,42 +97,58 @@
 
       <!-- overlay -->
       <div id="videoPlayButtonOverlay" v-on:click="videoPlayButtonOverlay()">
-        <!-- <svg height="20%" width="20%" version="1.1" viewBox="0 0 68 48">
-          <path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"></path>
-          <path d="M 45,24 27,14 27,34" fill="#fff"></path>
-        </svg> -->
+        <div id="videoPlayPauseOverlay">
+          <div id="videoTitle"></div>
+          <svg id="videoPlayButtonSvg" height="20%" width="20%" version="1.1" viewBox="0 0 68 48">
+            <path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"></path>
+            <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+          </svg>
+        </div>
       </div>
 
       <!-- iframe -->
       <div id="iframeContainer">
-        
       </div> 
     </div>
     
     <!-- player controls -->
     <div id="videoPlayerControlButtons">
       <!-- server synced controls 1 -->
-      <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
-      <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
+      <div>
+        <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
+        <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
+        <div id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
+        <div id="playlistControls"><!-- playlist controls -->
+          <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
+          <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
+          <div>
+            <input id="jump-video-input" type="number" placeholder="video nr" max="1000"/>
+            <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
+          </div>
+        </div>
+      </div>
       
-      <!-- user only controls -->
+      <!-- user only controls 1 -->
       <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
       <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
       <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
 
-      <!-- server synced controls 2 -->
-      <div id="sync-video-elems">
-        <input id="sync-video-input" type="number" placeholder="video sec" max="1000"/>
-        <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
-      </div>
-      <div id="load-video-elems">
-        <input id="load-video-input" placeholder="video id" maxlength="100" />
-        <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-      </div>
-
       <!-- non interactive -->
-      <div id="current-time-video" class="videoPlayerControlButton">current time</div>
+      <div id="current-time-video" class="videoPlayerControlButton"></div>
 
+      <!-- server synced controls 2 -->
+      <div>
+        <div id="sync-video-elems">
+          <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
+          <input id="sync-video-input" type="number" placeholder="sync sec" max="1000000"/>
+        </div>
+        <div id="load-video-elems">
+          <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
+          <input id="load-video-input" placeholder="video/pl id" maxlength="100" />
+        </div>
+        <!-- <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('resync')">ReSync</div> -->
+      </div>        
+        
       <!-- might use later -->
       <!-- <button id="restart-video" class="videoPlayerControlButton" v-on:click="iframeLoader()">Restart</button> -->
       <!-- <button id="stop-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('stop')">Stop</button> -->
@@ -133,7 +156,7 @@
       <!-- <button id="buttonTestPauseTimer" class="videoPlayerControlButton" v-on:click="testPauseTimer()">Paus Timer</button> -->
       <!-- <button id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('reset')">Reset</button> -->
     </div>
-    
+
     <!-- chat -->
     <div id="flex">
       <!-- <div id="toggleMenu" onclick="toggleMenu()">
@@ -181,12 +204,30 @@ var form = document.getElementById('form');
 var input = document.getElementById('input');
 var buttonTest = document.getElementById('buttonTest');
 var url = document.location.pathname //window.location.href
-var playingVideosLastWholeSecond = 0
-var playingVideoTotalDuration
-var playingVideoId
+var playingVideosLastWholeSecond = null
+var playingVideoTotalDuration = null
+var playingVideoId = null
 var videoPlaying = false
 var videoMuted = false
 var fullScreenActive = false
+var playlistCurrentVideoIndex = 0
+var videoPlaylist = false
+// var randomVideos = ["2QGjt4TYxIQ"]
+// var randomPlaylists = ["PLP99IekYjHIgZS_1q2N3wc91ZR79rB1p0"]
+
+var playingVideoRoom = null
+var playingVideoStatus = null
+var playingVideoTitle = null
+var videoPlaylistId = null
+var roomDefaultPlaylist = null
+var playlistArray = null
+var playlistLength = null
+var loadingScreenTime = 7000
+var initializeVideoTime = 2000
+var resyncTime1 = 3000
+var resyncTime2 = 1000
+var addToVideoOnJoinTime = 6
+var totalLoadTime = initializeVideoTime + resyncTime1 + resyncTime2
 
 // function pvideo1()
 // {
@@ -213,17 +254,36 @@ var fullScreenActive = false
     {
       let data = JSON.parse(e.data);
       let info = data.info;
+
       // let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
       
       //remove play button overlay
       // videoPlayButtonOverlay.style.display = "none"
 
+
       if(e.data.toString().includes("playerState"))
       {
-        let duration
-        let currentState = data.info.playerState
-        
+        //variables
+        let currentState = data.info.playerState        
+        // let playlistId = info.playlistId
+        // let playlistIndex = info.playlistIndex
+    
+        //video info
+        playingVideoId = info.videoData.video_id
         playingVideoTotalDuration = data.info.duration
+        playingVideoTitle = data.info.videoData.title
+        // console.log("playingVideoId: " + playingVideoId)
+        // console.log("playingVideoTitle: " + playingVideoTitle)
+        
+        //playlist info
+        if(info.playlist != null)
+        {
+          // console.log("playlistInfo")
+          playlistArray = info.playlist
+          playlistLength = info.playlist.length
+          playlistCurrentVideoIndex = info.playlistIndex
+          // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
+        }
 
         // console.log("currentState: " + currentState)
 
@@ -235,15 +295,34 @@ var fullScreenActive = false
             //     console.log(socket)
           //     // videoPlayerEvents("play")             
           //   }
-          playingVideoId = info.videoData.video_id
 
           // console.log(info.videoData.video_id)
           // console.log(playingVideoId)
+          
+          // setTimeout(() => { 
+          //   let d = document.getElementById("videoPlayPauseOverlay")
+          //   d.style.display = "none"
+          //   let s = document.getElementById("videoPlayButtonSvg")
+          //   s.style.display = "none"}, 100)
+          //   let t = document.getElementById("videoTitle")
+          //   t.style.display = "none"
+          //   t.innerText = playingVideoTitle
+
+            //undisplay pause overlay
+            undisplayPauseOverlay()
         }
         else if(currentState == 2)
         {
           currentState = "video paused"
           // videoPlayerEvents("pause")
+
+          //display pause overlay
+          displayPauseOverlay()
+
+          //display video title
+          // let t = document.getElementById("videoTitle")
+          // t.style.display = "block"
+          // t.innerText = playingVideoTitle
         }
         else if(currentState == 3)
         {
@@ -278,8 +357,8 @@ var fullScreenActive = false
         {
           //variables
           let currentTimeDisplay = document.getElementById("current-time-video")
-          let currentTimeText = currentTime + "/" + totalDuration + " seconds "
-          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "video current time" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+          let currentTimeText = currentTime + "/" + totalDuration + " secs "
+          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "video current time" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
           
           //debugging
           // console.log("currentTime: " + currentTimeText)
@@ -289,6 +368,8 @@ var fullScreenActive = false
           
           //update globals
           playingVideosLastWholeSecond = currentTime
+          // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond + "/" + totalDuration)
+          // console.log("playingVideoId: " + playingVideoId)
           
           //send to server app
           socket.emit('video command', msgObjVideoCommand);
@@ -317,14 +398,14 @@ var fullScreenActive = false
         if(videoPlaying == false){videoPlayerEvents("play")}
         else if(videoPlaying == true){videoPlayerEvents("pause")}
       }
-      else if(event.code === "KeyS")
-      {
-        videoPlayerEvents("sync")
-      }
-      else if(event.code === "KeyL")
-      {
-        videoPlayerEvents("load")
-      }
+      // else if(event.code === "KeyS")
+      // {
+      //   videoPlayerEvents("sync")
+      // }
+      // else if(event.code === "KeyL")
+      // {
+      //   videoPlayerEvents("load")
+      // }
       else if(event.code === "KeyM")
       {
         if(videoMuted == true){videoPlayerEvents("unMute")}
@@ -336,14 +417,26 @@ var fullScreenActive = false
         if(fullScreenActive == false){requestFullScreen()}
         else if(fullScreenActive == true){requestCloseFullScreen()}
       }
-      else if(event.code == "ArrowRight")
+      // else if(event.code == "ArrowRight")
+      // {
+      //   videoPlayerEvents("forward5", playingVideosLastWholeSecond + 5)
+      // }
+      // else if(event.code == "ArrowLeft")
+      // {
+      //   videoPlayerEvents("back5", playingVideosLastWholeSecond - 5)
+      // }
+      else if(event.shiftKey == true && event.code == "IntlBackslash")
       {
-        // videoPlayerEvents("forward5", playingVideosLastWholeSecond + 5)
+        videoPlayerEvents("previous")
       }
-      else if(event.code == "ArrowLeft")
+      else if(event.code == "IntlBackslash")
       {
-        // videoPlayerEvents("back5", playingVideosLastWholeSecond - 5)
+        videoPlayerEvents("next")
       }
+      // else if(event.code == "KeyJ")
+      // {
+      //   videoPlayerEvents("jump")
+      // }
     }
   })
 
@@ -418,6 +511,10 @@ var fullScreenActive = false
   {
       // console.log(roomName)
       // console.log(socket.id)
+
+      //display loading overlay
+      displayLoadingOverlay()
+
       let newRoom = roomName
       let oldRoom = inputCurrentRoom.innerText
       let createRoomInfo = []
@@ -441,7 +538,15 @@ var fullScreenActive = false
       //clear messages
       messages.innerHTML = ""
       
+      //send to server app
       socket.emit('join room', createRoomInfo);
+
+      //reset player
+      let vp = document.getElementById("videoPlayer")
+      vp.remove()
+
+      //load video
+      setTimeout(() => {initializeVideo()}, initializeVideoTime)
   }
 
   function addUser(socketId)
@@ -471,13 +576,13 @@ var fullScreenActive = false
       errorMessageAddUsername.style.display = "none"
   }
 
-  function leaveRoom(roomName)
-  {
-      //clear messages
-      messages.innerHTML = ""
+  // function leaveRoom(roomName)
+  // {
+  //     //clear messages
+  //     messages.innerHTML = ""
 
-      socket.emit('leave room', roomName);
-  }
+  //     socket.emit('leave room', roomName);
+  // }
 
   function forbiddenCharacterCheck(string)
   {
@@ -631,64 +736,138 @@ var fullScreenActive = false
       }
   }
 
-  function loadVideoStart()
+  function loadVideoStart(videoId, playlistId)
   {
+    //elements
     let vp = document.getElementById("videoPlayer")
-    let d = document.getElementById("iframeContainer")
+    let iframeContainer = document.getElementById("iframeContainer")
     let iframeEle = document.createElement("iframe")
 
-    // <iframe id="videoPlayer"
-    // width="100%" 
-    // height="100%" 
-    // src="https://www.youtube-nocookie.com/embed/W_MMB86X9Yg?enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=0&amp;start=60" 
-    // title="YouTube video player" 
-    // frameborder="0" 
-    // allow="" 
-    // allowfullscreen>
-    // </iframe>
-    // accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture
-    // ytp-pause-overlay ytp-scroll-min
-    // ytp-chrome-top ytp-show-cards-title
-    // ytp-button ytp-expand
-    // ytp-watermark yt-uix-sessionlink
-    iframeEle.src = "https://www.youtube-nocookie.com/embed/1jcLEkjeCy4?fullscreen=0&enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&amp;start=0"
+    //iframe variables
     iframeEle.id = "videoPlayer"
     iframeEle.height = "100%"
     iframeEle.width = "100%"
     iframeEle.title = "YouTube video player"
     
-    if(vp == null)
+    //load playlist
+    if(videoPlaylist == "true")
     {
-      d.append(iframeEle)
+      // console.log("loadVideoStart playlist: " + playlistId + " video index " + playlistCurrentVideoIndex)
+      
+      //undisplay loading screen
+      setTimeout(() => {undisplayLoadingOverlay()}, loadingScreenTime)
+      
+      loadPlaylist(playlistId)
     }
+    //load video
+    else if(videoPlaylist == "false")
+    {
+      // console.log("loadVideoStart video: " + videoId)
+
+      //undisplay loading screen
+      setTimeout(() => {undisplayLoadingOverlay()}, loadingScreenTime)
+      
+      //set local variable
+      videoPlaylist = false
+
+      iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + "?enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&mute=1"
+      
+      iframeContainer.innerHTML = ""
+      iframeContainer.append(iframeEle)
+    }
+    //load default video
+    else if(videoId == "null" || videoId == null || videoId == "undefined" || videoId == undefined)
+    {
+      console.log("loadVideoStart default video")
+      
+      loadingScreenText.innerText = "Something went wrong..."
+      
+      //set local variable
+      // videoPlaylist = false
+      // playingVideosLastWholeSecond = 0
+      
+      // iframeEle.src = "https://www.youtube-nocookie.com/embed/FNvrvwcSiZY?enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&mute=1"
+
+      // iframeContainer.innerHTML = ""
+      // iframeContainer.append(iframeEle)
+    }
+
+    //append iframe
+    // if(vp == null)
+    // {
+    //   iframeContainer.append(iframeEle)
+    //   // document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+    //   // document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + 123 + ', true]}', '*');
+    //   // document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')
+    //   // console.log(iframeEle)
+    // }
   }
 
-  function loadVideoCustom(videoId)
+  function loadVideoCustom(loadThisId)
   {
+    //variables
     let container = document.getElementById("iframeContainer")
     let iframeEle = document.createElement("iframe")
     let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
-
-    iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + "?enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=0&amp;start=0"
+    
+    //iframe variables
     iframeEle.id = "videoPlayer"
     iframeEle.height = "100%"
     iframeEle.width = "100%"
     iframeEle.title = "YouTube video player"
-    
-    //load video
-    container.innerHTML = ""
-    container.append(iframeEle)
 
-    videoPlayButtonOverlay.style.display = "block"
+    //load video    
+    if(loadThisId.playingVideoId != "null")
+    {
+      let videoId = loadThisId.playingVideoId
+      console.log("loadVideoCustom video: " + videoId)
+
+      //set local variable
+      videoPlaylistId = null
+      playlistCurrentVideoIndex = 0
+      videoPlaylist = false
+      
+      //check if player is muted
+      if(videoMuted == false)
+      {
+        iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + "?enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&mute=1"
+      }
+      else if(videoMuted == true)
+      {
+        iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + "?enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&mute=1"
+      }
+      
+      //set local variable
+      videoPlaylist = false
+      
+      //append iframe
+      container.innerHTML = ""
+      container.append(iframeEle)
+      
+      //display overlay
+      videoPlayButtonOverlay.style.display = "block"
+
+      //undisplay playlist controls
+      let playlistControls = document.getElementById("playlistControls")  
+      playlistControls.style.display = "none"
+    }
+    //load playlist
+    else if(loadThisId.videoPlaylistId != "null")
+    {
+      let playlistId = loadThisId.videoPlaylistId
+      console.log("loadVideoCustom playlist: " + playlistId)
+      
+      loadPlaylist(playlistId)
+    }
   }
 
-  function videoPlayerEvents(event, param1, param2)
+  function videoPlayerEvents(event, param1, param2, param3)
   {
-    let vp = document.getElementById("videoPlayer")
+    // let vp = document.getElementById("videoPlayer")
 
     //check video player exists
-    if(vp != null)
-    {
+    // if(vp != null)
+    // {
       if(event == "play")
       {
 
@@ -697,7 +876,9 @@ var fullScreenActive = false
 
         //variables
         let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "▶ played video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "play video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+        // let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "play video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "play video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
+
         // let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
         
         //video command
@@ -716,7 +897,8 @@ var fullScreenActive = false
         videoPlaying = false
 
         let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "◾ paused video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "pause video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+        // let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "pause video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "}")
+        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "pause video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
 
         //video command
         socket.emit('video command', msgObjVideoCommand);
@@ -752,11 +934,11 @@ var fullScreenActive = false
         }
         // console.log(syncMessage)
 
-        if(syncTime != "")
+        if(syncTime != "" && syncTime < parseInt(playingVideoTotalDuration))
         {
           let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + syncMessage + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "sync video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime + "\"" + "}")
-    
+          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "sync video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime + "\"" + "}")
+
           //chat message
           socket.emit('chat message', msgObjChat);
           
@@ -789,23 +971,42 @@ var fullScreenActive = false
         //set local variable
         videoMuted = false
       }
-      // else if(event == "restart")
-      // {
-      //   document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[0, true]}', '*');
-      //   document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
-      //   let btnPlay = document.getElementById("play-video")
-      //   let btnPause = document.getElementById("pause-video")
-      //   btnPlay.style.display = "none"
-      //   btnPause.style.display = "block"
-      // }
+      else if(event == "restart")
+      {
+        //set local variable
+        videoPlaying = true
+
+        //variables
+        let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "▶ restarted video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "restart video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
+        
+        //video command
+        socket.emit('video command', msgObjVideoCommand);
+
+        //chat message
+        socket.emit('chat message', msgObjChat);
+      }
       else if(event == "load")
       {
-        let d = document.getElementById("load-video-input")
-        let videoId = d.value
-        let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded video " + videoId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-        let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"videoId\"" + ":" + "\"" + videoId + "\"" + "}")
+        let loadVideoInput = document.getElementById("load-video-input")
+        let loadThisId = loadVideoInput.value
+        let msgObjChat = "" //JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded video " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+        let msgObjVideoCommand = ""
+        // let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + videoId + "\"" + "}")
 
-        if(videoId != "")
+        //check if playlist
+        if(loadThisId.substring(0, 2).toUpperCase() == "PL")
+        {
+          msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded playlist " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+          msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + 0 + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + loadThisId + "\"" + "}")
+        }
+        else if(loadThisId.substring(0, 2).toUpperCase() != "PL")
+        {
+          msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded video " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+          msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + loadThisId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + null + "\"" + "}")
+        }
+
+        if(loadThisId != "")
         {
           //chat message
           socket.emit('chat message', msgObjChat);
@@ -855,49 +1056,197 @@ var fullScreenActive = false
       //     socket.emit('video command', msgObjVideoCommand);
       //   }
       // }
-      else if(event == "join")
-      {  
-          if(param2 == "false") //check if video is playing
-          {
-            //sync to lastWholeSecond
-            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + param1 + ', true]}', '*');
+      // else if(event == "join")
+      // {
+      //   console.log("join")
+        
+      //   if(param2 == "false") //check if video is playing
+      //     {
+      //       //sync to lastWholeSecond
+      //       document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + param1 + ', true]}', '*');
             
-            //add event listener for getCurrentTime
-            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')
+      //       //add event listener for getCurrentTime
+      //       document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')
 
-            //pause video
-            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
-          }
-          else if(param2 == "true") //check if video is not playing
+      //       //pause video
+      //       document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
+
+      //       //set local variable
+      //       videoPlaying = false
+      //     }
+      //     else if(param2 == "true") //check if video is not playing
+      //     {
+      //       //sync to lastWholeSecond
+      //       document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + param1 + ', true]}', '*');
+
+      //       //play video
+      //       document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+      //       displayPauseButton()
+
+      //       //add event listener for getCurrentTime
+      //       document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')
+
+      //       //set local variable
+      //       videoPlaying = true
+      //     }
+
+      //     // //mute player
+      //     // document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'mute' + '","args":""}', '*');
+      //     // let btnMute = document.getElementById("mute-video")
+      //     // let btnUnmute = document.getElementById("unmute-video")
+      //     // btnMute.style.display = "none"
+      //     // btnUnmute.style.display = "block"
+
+      //     // //set local variables
+      //     // videoMuted = true
+      // }
+      else if(event == "next")
+      {
+          console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
+          console.log("playlistLength: " + playlistLength)
+          //set local variable
+          if(playlistCurrentVideoIndex < playlistLength)
           {
-            //sync to lastWholeSecond
-            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + param1 + ', true]}', '*');
+            playlistCurrentVideoIndex++
 
-            //play video
-            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
-            let btnPlay = document.getElementById("play-video")
-            let btnPause = document.getElementById("pause-video")
-            btnPlay.style.display = "none"
-            btnPause.style.display = "block"
-          
-            //add event listener for getCurrentTime
-            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')
+            //variables
+            let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "next video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+            let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "next video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
+            
+            //video command
+            socket.emit('video command', msgObjVideoCommand);
 
-            //set local variable
-            videoPlaying = true
+            //chat message
+            socket.emit('chat message', msgObjChat);
           }
-
-          //mute player
-          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'mute' + '","args":""}', '*');
-          let btnMute = document.getElementById("mute-video")
-          let btnUnmute = document.getElementById("unmute-video")
-          btnMute.style.display = "none"
-          btnUnmute.style.display = "block"
-
-          //set local variables
-          videoMuted = true
       }
-    }
+      else if(event == "previous")
+      {
+          if(playlistCurrentVideoIndex > 0)
+          {
+            //set local variable
+            playlistCurrentVideoIndex--
+
+            //variables
+            let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "previous video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+            let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "previous video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
+            
+            //video command
+            socket.emit('video command', msgObjVideoCommand);
+
+            //chat message
+            socket.emit('chat message', msgObjChat);
+          }
+      }
+      else if(event == "resync")
+      {
+        console.log("resync")
+        console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
+        console.log("videoPlaylist: " + videoPlaylist)
+        console.log("playingVideoStatus: " + playingVideoStatus)
+        playingVideosLastWholeSecond = parseInt(playingVideosLastWholeSecond)
+        // playingVideosLastWholeSecond
+        // playingVideoId
+        // playingVideoRoom
+        // playingVideoStatus
+        
+        if(videoPlaylist == true)
+        {
+          if(playingVideoStatus == "false")
+          {
+            videoPlaying = false//set local variable
+
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*');
+            
+            setTimeout(() => {
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');//pause video
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
+            }, resyncTime2)
+                      
+            displayPlayButton()
+
+            //display pause overlay
+            displayPauseOverlay()
+          }
+          else if(playingVideoStatus == "true")
+          {
+            videoPlaying = true//set local variable
+
+            //add seconds to account for load time
+            playingVideosLastWholeSecond = parseInt(playingVideosLastWholeSecond) + addToVideoOnJoinTime
+                      
+            displayPauseButton()
+
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*');
+            
+            setTimeout(() => {
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
+            }, resyncTime2)
+          }
+        }
+        else if(videoPlaylist == false)
+        {
+          if(playingVideoStatus == "false")
+          {
+            videoPlaying = false//set local variable
+          
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*'); //play video
+
+            setTimeout(() => {
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');//pause video
+            }, resyncTime2)
+            
+            displayPlayButton()
+
+            //display pause overlay
+            displayPauseOverlay()
+          }
+          else if(playingVideoStatus == "true")
+          {
+            videoPlaying = true//set local variable
+
+            //add seconds to account for load time
+            playingVideosLastWholeSecond = parseInt(playingVideosLastWholeSecond) + addToVideoOnJoinTime
+            
+            document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*'); //play video
+
+            setTimeout(() => {
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*');//sync to lastWholeSecond
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*') //add event listener for getCurrentTime
+  
+              displayPauseButton()    
+
+            }, resyncTime2)
+
+          }
+        }
+      }
+      else if("jump")
+      {
+        //variables
+        let jumpVideoInput = document.getElementById("jump-video-input").value
+        let jumpIndex = jumpVideoInput - 1
+        let videoNr = jumpIndex + 1
+        let currentVideo = playlistCurrentVideoIndex + 1
+
+        if(videoNr != currentVideo && videoNr >= 1 && videoNr <= playlistLength)
+        {
+          let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "jumped to video " + videoNr + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+          // let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "jump video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"jumpIndex\"" + ":" + "\"" + jumpIndex + "\"" + "}")
+          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "jump video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + jumpIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + true + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "," + "\"jumpIndex\"" + ":" + "\"" + jumpIndex + "\"" + "}")
+
+          //chat message
+          socket.emit('chat message', msgObjChat);
+          
+          //video command
+          socket.emit('video command', msgObjVideoCommand);
+        }
+      }
+    // }
   }
 
   function videoPlayButtonOverlay()
@@ -959,13 +1308,130 @@ var fullScreenActive = false
     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
         ///fire your event
         videoPlayButtonOverlay.style = "display: block; position: absolute; left: 9.5vw; top: 71px; height: 51vh; width: 50vw; border: none; background-color: #ff000030;"
-        
         //set local variable
         fullScreenActive = false
     }
 
   }
 
+  function loadPlaylist(playlistId)
+  {
+      //set local variables
+      videoPlaylist = true
+      videoPlaylistId = playlistId
+
+      //elements
+      let iframeContainer = document.getElementById("iframeContainer")
+      let iframeEle = document.createElement("iframe")
+      let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
+      
+      //iframe variables
+      iframeEle.id = "videoPlayer"
+      iframeEle.height = "100%"
+      iframeEle.width = "100%"
+      iframeEle.title = "YouTube video player"
+
+      //check if player is muted
+      if(videoMuted == false)
+      {
+        iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + "&enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&mute=1"
+      }
+      else if(videoMuted == true)
+      {
+        iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + "&enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&mute=1"
+      }
+
+      //append iframe
+      iframeContainer.innerHTML = ""
+      iframeContainer.append(iframeEle)
+      
+      //display overlay
+      // videoPlayButtonOverlay.style.display = "block"
+
+      //display playlist controls
+      let playlistControls = document.getElementById("playlistControls")  
+      playlistControls.style.display = "block"
+      
+      //mute player
+      // videoPlayerEvents("mute")
+  }
+
+  function displayPlayButton()
+  {
+    let btnPlay = document.getElementById("play-video")
+    let btnPause = document.getElementById("pause-video")
+    btnPlay.style.display = "block"
+    btnPause.style.display = "none"
+  }
+
+  function displayPauseButton()
+  {
+    let btnPlay = document.getElementById("play-video")
+    let btnPause = document.getElementById("pause-video")
+    btnPlay.style.display = "none"
+    btnPause.style.display = "block"
+  }
+
+  function initializeVideo()
+  {        
+      if(videoPlaylistId == "null" || videoPlaylistId == null)
+      {
+        console.log("initializeVideo video: " + playingVideoId)
+        
+        //load video
+        loadVideoStart(playingVideoId, videoPlaylistId)
+
+        //sync video
+        setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
+
+        //undisplay playlist controls
+        let playlistControls = document.getElementById("playlistControls")
+        playlistControls.style.display = "none"
+      }
+      else if(videoPlaylistId != "null" || videoPlaylistId != null)
+      {
+        console.log("initializeVideo playlist: " + videoPlaylistId)
+
+        //load video
+        loadVideoStart(playingVideoId, videoPlaylistId)
+
+        //sync video
+        setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
+        
+        //display playlist controls
+        let playlistControls = document.getElementById("playlistControls")
+        playlistControls.style.display = "block"
+      }
+  }
+
+  function displayPauseOverlay()
+  {
+          let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
+      videoPlayPauseOverlay.style.display = "block"
+      let videoPlayButtonSvg = document.getElementById("videoPlayButtonSvg")
+      videoPlayButtonSvg.style.display = "block"
+  }
+
+  function undisplayPauseOverlay()
+  {
+      let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
+      videoPlayPauseOverlay.style.display = "none"
+      let videoPlayButtonSvg = document.getElementById("videoPlayButtonSvg")
+      videoPlayButtonSvg.style.display = "none"
+  }
+
+  function displayLoadingOverlay()
+  {
+      let videoLoadingOverlay = document.getElementById("videoLoadingOverlay")
+      videoLoadingOverlay.style.display = "block"
+  }
+
+  function undisplayLoadingOverlay()
+  {
+      let videoLoadingOverlay = document.getElementById("videoLoadingOverlay")
+      videoLoadingOverlay.style.display = "none"
+  }
+  
   //socket stream
   socket.on('chat message', function(msg) {
       //debugging
@@ -1004,6 +1470,7 @@ var fullScreenActive = false
   });
 
   socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying) {
+      //debugging
       // console.log(socket)
       // console.log(allClients)
       // console.log(all_namespaces)
@@ -1011,10 +1478,10 @@ var fullScreenActive = false
       // console.log("socket nsp: " + socket.nsp)
       // console.log("allRooms")
       // console.log(allRooms)
-      // console.log("clientInfo")
-      // console.log(clientInfo)
       // console.log("videosCurrentlyPlaying")
       // console.log(videosCurrentlyPlaying)
+      // console.log("clientInfo")
+      // console.log(clientInfo)
       // console.log("allClients")
       // console.log(allClients)
       
@@ -1190,7 +1657,7 @@ var fullScreenActive = false
               div.style.display = "inline-block"
               div.style.padding = "14.5px"
               div.style.textAlign = "center"
-              div.onclick = function(){leaveRoom(defaultRooms[c])}
+              // div.onclick = function(){leaveRoom(defaultRooms[c])}
               
               //mobile menu
               // buttonMobile0.innerText = " - (" + count + ") "
@@ -1206,7 +1673,7 @@ var fullScreenActive = false
               div.style.display = "inline-block"
               div.style.padding = "14.5px"
               div.style.textAlign = "center"
-              divMobile.onclick = function(){leaveRoom(defaultRooms[c])}
+              // divMobile.onclick = function(){leaveRoom(defaultRooms[c])}
           }
           else if(defaultRooms[c] != inputCurrentRoom.innerText)
           {
@@ -1319,14 +1786,14 @@ var fullScreenActive = false
                 button2.className = "buttonLeave"
                 button2.innerText = "leave" + " - (" + count + ") " + " - " + roomName + " "
                 button2.style.backgroundColor = "red"
-                button2.onclick = function(){leaveRoom(roomName)}
+                // button2.onclick = function(){leaveRoom(roomName)}
                 div.id = "room-menu-" + roomName
                 div.style.backgroundColor = "red"
                 div.style.width = "200px"
                 div.style.display = "inline-block"
                 div.style.padding = "14.5px"
                 div.style.textAlign = "center"
-                div.onclick = function(){leaveRoom(roomName)}
+                // div.onclick = function(){leaveRoom(roomName)}
 
                 //mobile menu
                 // buttonMobile0.innerText = " - (" + count + ") "
@@ -1335,14 +1802,14 @@ var fullScreenActive = false
                 buttonMobile2.className = "buttonLeave"
                 buttonMobile2.innerText = "leave" + " - " + roomName + " - " + "(" + count + ")"
                 buttonMobile2.style.backgroundColor = "red"
-                buttonMobile2.onclick = function(){leaveRoom(roomName)}
+                // buttonMobile2.onclick = function(){leaveRoom(roomName)}
                 divMobile.id = "room-menu-mobile-" + roomName
                 divMobile.style.backgroundColor = "red"
                 div.style.width = "200px"
                 div.style.display = "inline-block"
                 div.style.padding = "14.5px"
                 div.style.textAlign = "center"
-                divMobile.onclick = function(){leaveRoom(roomName)}
+                // divMobile.onclick = function(){leaveRoom(roomName)}
             }
             else if(roomName != inputCurrentRoom.innerText)
             {
@@ -1418,22 +1885,59 @@ var fullScreenActive = false
           }
       }
 
-      //sync video on channel join
+      //set video/playlist variables
+      console.log("user room: " + inputCurrentRoom.innerText)
       // console.log("inputCurrentRoom: " + inputCurrentRoom.innerText)
-      for(let x in videosCurrentlyPlaying)
+      // console.log("videosCurrentlyPlaying")
+      // console.log(videosCurrentlyPlaying)
+      if(videosCurrentlyPlaying.length != 0)
       {
-        let videoRoom = videosCurrentlyPlaying[x].room
-        let videoId = videosCurrentlyPlaying[x].videoId
-        let lastWholeSecond = videosCurrentlyPlaying[x].lastWholeSecond
-        let videoPlaying = videosCurrentlyPlaying[x].videoPlaying
-        // console.log("videoRoom: " + videoRoom)
-        // console.log("videoPlaying: " + videoPlaying)
-        
-        if(inputCurrentRoom.innerText == videoRoom)
+        for(let x in videosCurrentlyPlaying)
         {
-          // console.log("room match info: " + videoRoom + " / " + videoId + " / " + lastWholeSecond + "/" + videoPlaying)
-          videoPlayerEvents("join", lastWholeSecond, videoPlaying)
+          if(inputCurrentRoom.innerText == videosCurrentlyPlaying[x].room)
+          {
+            //set video variables
+            playingVideosLastWholeSecond = videosCurrentlyPlaying[x].lastWholeSecond
+            playingVideoId = videosCurrentlyPlaying[x].videoId
+            playingVideoRoom = videosCurrentlyPlaying[x].room
+            playingVideoStatus = videosCurrentlyPlaying[x].videoPlaying
+
+            //set playlist variables
+            videoPlaylistId = videosCurrentlyPlaying[x].videoPlaylistId
+            videoPlaylist = videosCurrentlyPlaying[x].videoPlaylist
+            playlistCurrentVideoIndex = videosCurrentlyPlaying[x].playlistCurrentVideoIndex
+
+            //debugging
+            // console.log("videoPlaying: " + videoPlaying)
+            // console.log("videoPlaylistId: " + videoPlaylistId)
+            // console.log("videoPlaylist: " + videoPlaylist)
+            // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
+            // console.log("playingVideoId: " + playingVideoId)
+            // console.log("playingVideoRoom: " + playingVideoRoom)
+            // console.log("playingVideoStatus: " + playingVideoStatus)
+            // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
+          }
         }
+      }
+      else if(videosCurrentlyPlaying.length == 0)
+      {
+        console.log("no videos playing in room " + inputCurrentRoom.innerText)
+        
+        //set video variables
+        // playingVideosLastWholeSecond = 0
+        // playingVideoId = "FNvrvwcSiZY"
+        // playingVideoRoom = inputCurrentRoom.innerText
+        // playingVideoStatus = "false"
+
+        //set playlist variables
+        // videoPlaylistId = "null"
+
+        //debugging
+        // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
+        // console.log("playingVideoId: " + playingVideoId)
+        // console.log("playingVideoRoom: " + playingVideoRoom)
+        // console.log("playingVideoStatus: " + playingVideoStatus)
+        // console.log("videoPlaylistId: " + videoPlaylistId)
       }
   });
 
@@ -1552,55 +2056,90 @@ var fullScreenActive = false
         if(msg.content == "play video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
-          let btnPlay = document.getElementById("play-video")
-          let btnPause = document.getElementById("pause-video")
-          btnPlay.style.display = "none"
-          btnPause.style.display = "block"
-          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*');
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*'); //add event listener for getCurrentTime
+          displayPauseButton()
         }
         else if(msg.content == "pause video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
-          let btnPlay = document.getElementById("play-video")
-          let btnPause = document.getElementById("pause-video")
-          btnPlay.style.display = "block"
-          btnPause.style.display = "none"
+          displayPlayButton()
         }
         else if(msg.content == "sync video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.syncTime + ', true]}', '*');
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
-          let btnPlay = document.getElementById("play-video")
-          let btnPause = document.getElementById("pause-video")
-          btnPlay.style.display = "none"
-          btnPause.style.display = "block"
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*') //add event listener for getCurrentTime
+          displayPauseButton()
         }
         else if(msg.content == "load video")
         {
-          loadVideoCustom(msg.videoId)
+          console.log("load video")
+          console.log(msg)
+          loadVideoCustom(msg)
 
           //reset play button
-          let btnPlay = document.getElementById("play-video")
-          let btnPause = document.getElementById("pause-video")
-          btnPlay.style.display = "block"
-          btnPause.style.display = "none"
+          displayPlayButton()
 
-          let btnMute = document.getElementById("mute-video")
-          let btnUnmute = document.getElementById("unmute-video")
-          btnMute.style.display = "block"
-          btnUnmute.style.display = "none"
+          //mute video
+          // let btnMute = document.getElementById("mute-video")
+          // let btnUnmute = document.getElementById("unmute-video")
+          // btnMute.style.display = "none"
+          // btnUnmute.style.display = "block"
+
+          //reset current time
+          let currentTimeDisplay = document.getElementById("current-time-video")
+          currentTimeDisplay.innerText = ""
+          
+          //set local variable
+          videoPlaying = false
+          // videoMuted = true
         }
-        else if(msg.content == "forward5")
+        // else if(msg.content == "forward5")
+        // {
+        //   document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+        //   document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.syncTime + ', true]}', '*');
+        //   playingVideosLastWholeSecond + 5
+        // }
+        // else if(msg.content == "back5")
+        // {
+        //   document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+        //   // document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.syncTime + ', true]}', '*');
+        //   // playingVideosLastWholeSecond - 5
+        // }
+        else if(msg.content == "next video")
         {
-          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
-          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.syncTime + ', true]}', '*');
-          playingVideosLastWholeSecond + 5
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'nextVideo' + '","args":""}', '*');
+          displayPauseButton()
+          // currentTimeDisplay.innerText = ""
+
+          //set local variable
+          videoPlaying = true
         }
-        else if(msg.content == "back5")
+        else if(msg.content == "previous video")
         {
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'previousVideo' + '","args":""}', '*');
+          displayPauseButton()
+          // currentTimeDisplay.innerText = ""
+
+          //set local variable
+          videoPlaying = true
+        }
+        else if(msg.content == "jump video")
+        {
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + msg.jumpIndex + ']}', '*');
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
+          displayPlayButton()
+          
+          //set local variable
+          videoPlaying = false
+        }
+        else if(msg.content == "restart video")
+        {
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[0, true]}', '*');
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
-          // document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.syncTime + ', true]}', '*');
-          // playingVideosLastWholeSecond - 5
+
+          //set local variable
+          videoPlaying = true
         }
     });
 
@@ -1608,13 +2147,18 @@ export default {
   setup() {
     //lifecycle hooks
     onMounted(() => {
-        loadVideoStart()
+      //debugging
+      // console.log("onMounted")
+      // console.log("onMounted playingVideoId: " + playingVideoId)
+      // console.log("onMounted videoPlaylistId: " + videoPlaylistId)
+      
+      setTimeout(() => {initializeVideo()}, initializeVideoTime)
     })  
     return {
       //functions
       joinRoom,
       addUser,
-      leaveRoom,
+      // leaveRoom,
       forbiddenCharacterCheck,
       currentTimeStamp,
       toggleMenu,
@@ -1693,10 +2237,19 @@ export default {
 
   #pause-video, #unmute-video { display: none; }
   #iframeContainer { width: 100%; height: 100%; }
-  #sync-video-input, #load-video-input { width: 100px; padding: 10px; }
+  #sync-video-input, #load-video-input, #jump-video-input { width: 100px; padding: 10px; }
+  #sync-video, #load-video { display: inline-block; padding: 10.5px; }
   #player { display: block; width: 49vw; height: 49vh; margin: auto; margin: 30px 30px 4.9px 30px; margin-left: 10vw; padding: 0px; overflow: none; background-color: black; }
   #videoPlayButtonOverlay { display: block; position: absolute; left: 9.5vw; top: 71px; height: 51vh; width: 50vw; border: none; background-color: #ff000030; }
   #videoPlayerControlButtons { display: inline-flex; position: absolute; left: 10vw; }
+  #current-time-video { background-color: black; color: white; }
+  #playlistControls { display: none; }
+  #restart-video { display: block; }
+  #videoPlayButtonSvg { position: absolute; margin-top: 0px; margin-left: 0px; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+  #videoTitle { display: none; position: relative; margin: 0px; padding: 10px; text-align: center; color: white; background-color: red; }
+  #videoPlayPauseOverlay { display: none; height: 100%; width: 100%; background-color: transparent; }
+  #videoLoadingOverlay { display: block; height: 80vh; width: 57vw; left: 6vw; position: fixed; z-index: 1; background-color: black; }
+  #loadingScreenGif { display: block; position: fixed; left: 29vw; top: 29vh; z-index: 2; color: white; background-color: black; }
 
   /* classes */
   .buttonJoin, .buttonLeave { padding: 3px; overflow-wrap: break-word; font-weight: normal; font-size: 17px; }
@@ -1705,7 +2258,7 @@ export default {
   .buttonUser {}
   .buttonNamespace {}
   .errorMessage { display: none; padding: 20px; width: auto; background-color: red; border: 7px solid black; }
-  .videoPlayerControlButton { display: block; max-height: 17px; min-width: 100px; padding: 10px; text-align: center; font-size: 14px; background-color: lightgray; border: 1px solid black; }
+  .videoPlayerControlButton { display: block; max-height: 17px; min-width: 100px; padding: 10px; user-select: none; text-align: center; font-size: 14px; background-color: lightgray; border: 1px solid black; }
 
   /*** mobile ***/
   /* @media screen and (min-device-width : 176px) and  (max-device-width : 360px) {
