@@ -229,6 +229,9 @@ var resyncTime2 = 1000
 var addToVideoOnJoinTime = 6
 var totalLoadTime = initializeVideoTime + resyncTime1 + resyncTime2
 
+var syncMaster = null
+var yourSocketId = null
+
 // function pvideo1()
 // {
 //   // $('.youtube-video')[0].contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
@@ -372,7 +375,13 @@ var totalLoadTime = initializeVideoTime + resyncTime1 + resyncTime2
           // console.log("playingVideoId: " + playingVideoId)
           
           //send to server app
-          socket.emit('video command', msgObjVideoCommand);
+          if(yourSocketId == syncMaster)
+          {
+            // console.log("you are sync master")
+            // console.log(syncMaster)
+            // console.log(yourSocketId)
+            socket.emit('video command', msgObjVideoCommand);
+          }
         }
       }
     }
@@ -1475,6 +1484,7 @@ var totalLoadTime = initializeVideoTime + resyncTime1 + resyncTime2
       // console.log(allClients)
       // console.log(all_namespaces)
       // console.log("socket id: " + socket.id)
+      // console.log("your id: " + socket.id)
       // console.log("socket nsp: " + socket.nsp)
       // console.log("allRooms")
       // console.log(allRooms)
@@ -1484,6 +1494,9 @@ var totalLoadTime = initializeVideoTime + resyncTime1 + resyncTime2
       // console.log(clientInfo)
       // console.log("allClients")
       // console.log(allClients)
+
+      //set yourSocketId
+      yourSocketId = socket.id
       
       //add functions
       buttonAddUserTest.onclick = function(){addUser(socket.id)}
@@ -1906,6 +1919,17 @@ var totalLoadTime = initializeVideoTime + resyncTime1 + resyncTime2
             videoPlaylistId = videosCurrentlyPlaying[x].videoPlaylistId
             videoPlaylist = videosCurrentlyPlaying[x].videoPlaylist
             playlistCurrentVideoIndex = videosCurrentlyPlaying[x].playlistCurrentVideoIndex
+
+            //set sync master
+            for(let r in allRooms)
+            {
+              if(allRooms[r].room == videosCurrentlyPlaying[x].room)
+              {
+                // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
+                // console.log("yourSocketId: " + socket.id)
+                syncMaster = allRooms[r].clients[0]
+              }
+            }
 
             //debugging
             // console.log("videoPlaying: " + videoPlaying)
