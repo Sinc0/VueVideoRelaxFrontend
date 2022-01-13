@@ -375,11 +375,11 @@ var yourSocketId = null
           // console.log("playingVideoId: " + playingVideoId)
           
           //send to server app
+          // console.log(syncMaster)
+          // console.log(yourSocketId)
           if(yourSocketId == syncMaster)
           {
             // console.log("you are sync master")
-            // console.log(syncMaster)
-            // console.log(yourSocketId)
             socket.emit('video command', msgObjVideoCommand);
           }
         }
@@ -1899,26 +1899,92 @@ var yourSocketId = null
       }
 
       //set video/playlist variables
-      console.log("user room: " + inputCurrentRoom.innerText)
-      // console.log("inputCurrentRoom: " + inputCurrentRoom.innerText)
-      // console.log("videosCurrentlyPlaying")
-      // console.log(videosCurrentlyPlaying)
-      if(videosCurrentlyPlaying.length != 0)
+      if(videosCurrentlyPlaying.length != 0) //active room exist
       {
+        console.log("videosCurrentlyPlaying is not 0")
+        
+        //debugging
+        // console.log("videosCurrentlyPlaying")
+        // console.log(videosCurrentlyPlaying)
+        // console.log("allRooms")
+        // console.log(allRooms)
+        
+        //find current room
         for(let x in videosCurrentlyPlaying)
         {
           if(inputCurrentRoom.innerText == videosCurrentlyPlaying[x].room)
           {
+            console.log("current room is: " + inputCurrentRoom.innerText)
+
             //set video variables
             playingVideosLastWholeSecond = videosCurrentlyPlaying[x].lastWholeSecond
             playingVideoId = videosCurrentlyPlaying[x].videoId
             playingVideoRoom = videosCurrentlyPlaying[x].room
             playingVideoStatus = videosCurrentlyPlaying[x].videoPlaying
-
+  
             //set playlist variables
             videoPlaylistId = videosCurrentlyPlaying[x].videoPlaylistId
             videoPlaylist = videosCurrentlyPlaying[x].videoPlaylist
             playlistCurrentVideoIndex = videosCurrentlyPlaying[x].playlistCurrentVideoIndex
+  
+            //set sync master
+            for(let r in allRooms)
+            {
+              if(allRooms[r].room == videosCurrentlyPlaying[x].room)
+              {
+                // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
+                // console.log("yourSocketId: " + socket.id)
+                syncMaster = allRooms[r].clients[0]
+
+                break
+              }
+            }
+
+            break
+  
+            //debugging
+            // console.log("videoPlaying: " + videoPlaying)
+            // console.log("videoPlaylistId: " + videoPlaylistId)
+            // console.log("videoPlaylist: " + videoPlaylist)
+            // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
+            // console.log("playingVideoId: " + playingVideoId)
+            // console.log("playingVideoRoom: " + playingVideoRoom)
+            // console.log("playingVideoStatus: " + playingVideoStatus)
+            // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
+          }
+          else if(inputCurrentRoom.innerText != videosCurrentlyPlaying[x].room)
+          {
+            console.log("current room is not: " + videosCurrentlyPlaying[x].room)
+            
+            //set video variables
+            playingVideosLastWholeSecond = 0
+            playingVideoId = null
+            playingVideoRoom = inputCurrentRoom.innerText
+            playingVideoStatus = "true"
+                
+            //set playlist variables
+            // videoPlaylistId = "PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI"
+            videoPlaylist = "true"
+            playlistCurrentVideoIndex = 0
+
+            if(inputCurrentRoom.innerText == "general")
+            {
+              //set default playlist
+              // console.log("set default playlist general")
+              videoPlaylistId = "PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI"          
+            }
+            else if(inputCurrentRoom.innerText == "gaming")
+            {
+              //set default playlist
+              // console.log("set default playlist gaming")
+              videoPlaylistId = "PLJAzFcYKyx4QBMgSXKieHNRU8zttGrk_l" 
+            }
+            else if(inputCurrentRoom.innerText == "food")
+            {
+              //set default playlist
+              // console.log("set default playlist food")
+              videoPlaylistId = "PLeoy0zUu6bqlVkoXIZAFtuzO2N_kloRut" 
+            }
 
             //set sync master
             for(let r in allRooms)
@@ -1928,9 +1994,11 @@ var yourSocketId = null
                 // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
                 // console.log("yourSocketId: " + socket.id)
                 syncMaster = allRooms[r].clients[0]
-              }
-            }
 
+                break
+              }
+            }  
+            
             //debugging
             // console.log("videoPlaying: " + videoPlaying)
             // console.log("videoPlaylistId: " + videoPlaylistId)
@@ -1943,18 +2011,51 @@ var yourSocketId = null
           }
         }
       }
-      else if(videosCurrentlyPlaying.length == 0)
+      else if(videosCurrentlyPlaying.length == 0)  //no active room exist
       {
-        console.log("no videos playing in room " + inputCurrentRoom.innerText)
+        console.log("videosCurrentlyPlaying is 0")
         
         //set video variables
-        // playingVideosLastWholeSecond = 0
-        // playingVideoId = "FNvrvwcSiZY"
-        // playingVideoRoom = inputCurrentRoom.innerText
-        // playingVideoStatus = "false"
-
+        playingVideosLastWholeSecond = 0
+        playingVideoId = null
+        playingVideoRoom = inputCurrentRoom.innerText
+        playingVideoStatus = "true"
+            
         //set playlist variables
-        // videoPlaylistId = "null"
+        videoPlaylist = "true"
+        playlistCurrentVideoIndex = 0
+
+        if(inputCurrentRoom.innerText == "general")
+        {
+          //set default playlist
+          // console.log("set default playlist general")
+          videoPlaylistId = "PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI"          
+        }
+        else if(inputCurrentRoom.innerText == "gaming")
+        {
+          //set default playlist
+          // console.log("set default playlist gaming")
+          videoPlaylistId = "PLJAzFcYKyx4QBMgSXKieHNRU8zttGrk_l" 
+        }
+        else if(inputCurrentRoom.innerText == "food")
+        {
+          //set default playlist
+          // console.log("set default playlist food")
+          videoPlaylistId = "PLeoy0zUu6bqlVkoXIZAFtuzO2N_kloRut" 
+        }
+
+        // set sync master
+        for(let r in allRooms)
+        {
+          if(allRooms[r].room == inputCurrentRoom.innerText)
+          {
+            // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
+            // console.log("yourSocketId: " + socket.id)
+            syncMaster = allRooms[r].clients[0]
+
+            break
+          }
+        }
 
         //debugging
         // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
