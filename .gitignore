@@ -4,6 +4,7 @@ node_modules
 ls1.gif
 ls2.gif
 ls3.gif
+images
 
 # local env files
 .env.local
