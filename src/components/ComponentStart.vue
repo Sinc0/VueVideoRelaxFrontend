@@ -11,40 +11,40 @@
         <router-link to="/food"><div class="roomLink" v-if="!JSON.stringify(vuexAllRooms).toString().includes('food')">food (0)</div></router-link> -->
         
         <!-- current room -->
-        <h1 id="currentRoomsTitle" v-if="vuexAllRooms.length > 0">Current Room</h1>
+        <!-- <h1 id="currentRoomsTitle" v-if="vuexAllRooms.length > 0">Current Room</h1>
         <div id="currentRoom" v-if="vuexAllRooms.length > 0">
-            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key" style="border: 6px solid red;">
+            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key" style="border: 6px solid red;"> -->
                 <!-- current room -->
-                <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) == room.room">
+                <!-- <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) == room.room">
                     <div class="roomLinkIcon"></div>
                     <div class="roomLink" style="background-color: red;">({{room.clients.length}}) {{room.room}}</div>
-                </router-link>
+                </router-link> -->
 
                 <!-- <router-link v-bind:to="'/' + room.room"><div class="roomLink">({{room.clients.length}}) {{room.room}}</div><div class="roomLinkIcon"></div></router-link> -->
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
         
         <!-- active rooms -->
-        <h1 id="activeRoomsTitle" v-if="vuexAllRooms.length > 0">Active Rooms</h1>
+        <!-- <h1 id="activeRoomsTitle" v-if="vuexAllRooms.length > 0">Active Rooms</h1>
         <div id="activeRooms" v-if="vuexAllRooms.length > 0">
-            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
+            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key"> -->
                 <!-- current room -->
-                <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) == room.room">
+                <!-- <router-link v-bind:to="'/' + room.room">
                     <div class="roomLinkIcon"></div>
-                    <div class="roomLink">({{room.clients.length}}) {{room.room}}</div>
-                </router-link>
+                    <div class="roomLink" style="background-color: red;">({{room.clients.length}}) {{room.room}}</div>
+                </router-link> -->
 
                 <!-- other rooms -->
-                <router-link v-bind:to="'/' + room.room" v-else-if="currentRoute.substr(1) != room.room">
+                <!-- <router-link v-bind:to="'/' + room.room" v-else-if="currentRoute.substr(1) != room.room">
                     <div class="roomLinkIcon"></div>
                     <div class="roomLink">({{room.clients.length}}) {{room.room}}</div>
-                </router-link>
+                </router-link> -->
                 <!-- <router-link v-bind:to="'/' + room.room"><div class="roomLink">({{room.clients.length}}) {{room.room}}</div><div class="roomLinkIcon"></div></router-link> -->
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
 
         <!-- default rooms -->
-        <h1 id="defaultRoomsTitle">Default Rooms</h1>
+        <h1 id="defaultRoomsTitle"></h1>
         <div id="defaultRooms">
             <div class="room" v-for="room in defaultRooms" v-bind:key="room.key">
                 <router-link v-bind:to="'/' + room">
@@ -125,7 +125,7 @@ export default {
     a { text-decoration: none; }
 
     /* ids */
-    #componentStart { display: block; position: absolute; height: calc(90vh + 22px); width: auto; top: 0px; padding-bottom: 10px; z-index: 2; text-align: center; overflow-x: hidden; overflow-y: scroll; scrollbar-width: none; scrollbar-color: black transparent; color: white; background-color: #1c1b1bcc; border-right: 1px solid black; }
+    #componentStart { display: block; position: absolute; height: calc(90vh + 23px); width: auto; top: 0px; padding-bottom: 10px; z-index: 2; text-align: center; overflow-x: hidden; overflow-y: scroll; scrollbar-width: none; scrollbar-color: black transparent; color: white; background-color: #1c1b1bcc; border-right: 1px solid black; }
     #activeRooms, #defaultRooms, #currentRoom { display: inline-flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; }
     /* #defaultRooms { width: auto; } */
     /* #activeRooms { width: 60vw; } */

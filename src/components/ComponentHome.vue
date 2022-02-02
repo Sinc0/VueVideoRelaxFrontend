@@ -104,7 +104,7 @@
 
         <!-- overlay -->
         <!-- @mouseup.right="videoPlayButtonOverlay()" -->
-        <div id="videoPlayButtonOverlay" @contextmenu.prevent @mousedown.right="showStartComponent()" @mouseenter="displayVideoInfoAndControls()" @mouseleave="undisplayVideoInfoAndControls()" v-on:click="videoPlayButtonOverlay()">
+        <div id="videoPlayButtonOverlay" @contextmenu.prevent @mousedown.right="toggleVideoInfoAndControls()" v-on:click="videoPlayButtonOverlay()">
           <div id="videoPlayPauseOverlay">
             <svg id="videoPlayButtonSvg" height="20%" width="20%" version="1.1" viewBox="0 0 68 48">
               <path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"></path>
@@ -120,21 +120,21 @@
 
 
         <!-- video info -->
-        <div id="videoInfo" @mouseenter="displayVideoInfoAndControls()">
+        <div id="videoInfo">
           <div id="roomInfo">
               <div id="videoCurrentRoom"></div>
-              <div id="videoCurrentRoomTotalUsers"></div>
+              <!-- <div id="videoCurrentRoomTotalUsers"></div> -->
           </div>
           <div id="videoTitle"></div>
           <div id="videoChannel"></div>
           <div id="videoCurrentPlaylistIndex"></div>
-          <div id="current-time-video">0/0s</div>
+          <div id="current-time-video"></div>
           <div id="videoQuality"></div>
           <div id="videoVolume"></div>
         </div>
                   
         <!-- player controls -->
-        <div id="videoPlayerControlButtons" @mouseenter="displayVideoInfoAndControls()">
+        <div id="videoPlayerControlButtons">
           <!-- non interactive -->
           <!-- <div id="current-time-video" class="videoPlayerControlButton">0/0s</div> -->
 
@@ -389,6 +389,7 @@ export default {
     var totalRoomsCount = 0
     var totalUsersCount = 0
     var totalUsersCurrentRoomCount = 0
+    var defaultPlaylists = null
 
     // function pvideo1()
     // {
@@ -493,6 +494,7 @@ export default {
           let videoQuality = document.getElementById("videoQuality")
           let videoChannel = document.getElementById("videoChannel")
           let videoCurrentRoom = document.getElementById("videoCurrentRoom")
+          let totalUsersCurrentRoomCount = document.getElementById("totalUsersCurrentRoomCount")
 
           videoTitle.innerText = "video: " + playingVideoTitle
           videoChannel.innerText = "channel: " + videoChannelValue
@@ -611,13 +613,52 @@ export default {
             // console.log("playingVideoId: " + playingVideoId)
             
             //send to server app
-            // console.log(syncMaster)
-            // console.log(yourSocketId)
+            // console.log("syncMaster: " + syncMaster)
+            // console.log("yourSocketId: " + yourSocketId)
             if(yourSocketId == syncMaster)
             {
-              // console.log("you are sync master")
+              console.log("you are sync master")
+              // console.log("currentTime: " + currentTime)
+              // console.log("totalDuration: " + totalDuration)
+              // console.log("videoPlaylist: " + videoPlaylist)
+
+              msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "video current time" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "," + "\"syncMaster\"" + ":" + "\"" + syncMaster + "\"" + "}")
               socket.emit('video command', msgObjVideoCommand);
+
+              if(currentTime == (totalDuration - 3))
+              {
+                console.log("video reached end")
+                // console.log("currentTime: " + currentTime)
+                // console.log("totalDuration: " + totalDuration)
+                // console.log("videoPlaylist: " + videoPlaylist)
+
+                let roomIsDefault = false
+                
+                //check room is default
+                for(let r in defaultRooms)
+                {
+                  if(defaultRooms[r] == currentRoom)
+                  {
+                    roomIsDefault = true
+                  }
+                }
+
+                //check playlist reached end
+                if(roomIsDefault == true && (playlistCurrentVideoIndex + 1) == playlistLength)
+                {
+                  console.log("playlist reached end")
+                  console.log("loading new playlist")
+                  
+                  //load new playlist
+                  setTimeout(() => {
+                    videoPlayerEvents("random")
+                    // setTimeout(() => {videoPlayerEvents("play")}, 2000)
+                  }, 4000)
+                }
+              }
             }
+
+            // videoCurrentPlaylistIndex.innerText = "playlist video: " + (playlistCurrentVideoIndex + 1) + " of " + playlistLength
           }
         }
       }
@@ -707,6 +748,10 @@ export default {
             videoPlayerEvents("volume", newVolume)
           }
         }
+        else if(event.code == "KeyR")
+        {
+          showStartComponent()
+        }
       }
     })
 
@@ -782,8 +827,8 @@ export default {
         // console.log(roomName)
         // console.log(socket.id)
 
-        //display loading overlay
         displayLoadingOverlay()
+        undisplayVideoInfoAndControls()
 
         let componentStart = document.getElementById("componentStart")
         componentStart.style.display = "none"
@@ -815,9 +860,12 @@ export default {
         //send to server app
         socket.emit('join room', createRoomInfo);
 
-        //reset player
-        // let vp = document.getElementById("videoPlayer")
-        // vp.remove()
+        //reset player cancel current time sync
+        let vp = document.getElementById("videoPlayer")
+        if(vp != null)
+        {
+          vp.remove()
+        }
 
         //load video
         setTimeout(() => {initializeVideo()}, initializeVideoTime)
@@ -1067,22 +1115,6 @@ export default {
         let vp = document.getElementById("videoPlayer")
         vp.style.border = "0px"
       }
-      //load default video
-      else if(videoId == "null" || videoId == null || videoId == "undefined" || videoId == undefined)
-      {
-        console.log("loadVideoStart default video")
-        
-        // loadingScreenText.innerText = "Something went wrong..."
-        
-        //set local variable
-        // videoPlaylist = false
-        // playingVideosLastWholeSecond = 0
-        
-        // iframeEle.src = "https://www.youtube.com/embed/FNvrvwcSiZY?enablejsapi=1&autoplay=0&controls=0&modestbranding=1&rel=0&mute=1"
-
-        // iframeContainer.innerHTML = ""
-        // iframeContainer.append(iframeEle)
-      }
 
       //append iframe
       // if(vp == null)
@@ -1108,6 +1140,13 @@ export default {
       iframeEle.width = "100%"
       iframeEle.title = "YouTube video player"
 
+      undisplayVideoInfoAndControls()
+      resetVideoInfo()
+      displayLoadingOverlay()
+      displayPauseOverlay()
+      //display overlay
+      videoPlayButtonOverlay.style.display = "block"
+
       //load video    
       if(loadThisId.playingVideoId != "null")
       {
@@ -1129,50 +1168,19 @@ export default {
           iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + youtubeEmbedVideoParameters
         }
         
-        //set local variable
-        videoPlaylist = false
-        
         //append iframe
         container.innerHTML = ""
         container.append(iframeEle)
-        
-        //display overlay
-        videoPlayButtonOverlay.style.display = "block"
-
-        //undisplay playlist controls
-        let playlistControls = document.getElementById("playlistControls")  
-        playlistControls.style.display = "none"
-
-        //display loading screeen
-        displayLoadingOverlay()
-
-        //display video info
-        let videoInfo = document.getElementById("videoInfo")
-        videoInfo.style.display = "none"
-        
-        //set video title
-        // let videoTitle = document.getElementById("videoTitle")
-        // videoTitle.innerText = playingVideoTitle
 
         //undisplay loading screen
-        setTimeout(() => {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
+        setTimeout(() => {
+          undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
       }
       //load playlist
       else if(loadThisId.videoPlaylistId != "null")
       {
         let playlistId = loadThisId.videoPlaylistId
         console.log("loadVideoCustom playlist: " + playlistId)
-        
-        //display loading screen
-        displayLoadingOverlay()
-
-        //set video title
-        let videoInfo = document.getElementById("videoInfo")
-        videoInfo.style.display = "none"
-        
-        //display video title
-        // let videoTitle = document.getElementById("videoTitle")
-        // videoTitle.innerText = playingVideoTitle
 
         //undisplay loading screen
         setTimeout(() => {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
@@ -1220,22 +1228,22 @@ export default {
       {
         //variables
         let syncTime = document.getElementById("sync-video-input").value
-        let syncTimeInMinutes = parseInt(syncTime / 60)
-        let syncTimeInSeconds = syncTime % 60
-        let syncMessage
-
-        if(syncTimeInMinutes == 0 && syncTimeInSeconds < 10)
-        {
-          syncMessage = "synced video to " + syncTimeInMinutes.toString() + ".0" + syncTimeInSeconds.toString() + " minutes"
-        }
-        else if(syncTimeInMinutes > 0 && syncTimeInSeconds < 10)
-        {
-          syncMessage = "synced video to " + syncTimeInMinutes.toString() + ".0" + syncTimeInSeconds.toString() + " minutes"
-        }
-        else
-        {
-          syncMessage = "synced video to " + syncTimeInMinutes.toString() + "." + syncTimeInSeconds.toString() + " minutes"
-        }
+        // let syncTimeInMinutes = parseInt(syncTime / 60)
+        // let syncTimeInSeconds = syncTime % 60
+        let syncMessage = "synced video to " + syncTime + " secs"
+        
+        // if(syncTimeInMinutes == 0 && syncTimeInSeconds < 10)
+        // {
+        //   syncMessage = "synced video to " + syncTimeInMinutes.toString() + ".0" + syncTimeInSeconds.toString() + " minutes"
+        // }
+        // else if(syncTimeInMinutes > 0 && syncTimeInSeconds < 10)
+        // {
+        //   syncMessage = "synced video to " + syncTimeInMinutes.toString() + ".0" + syncTimeInSeconds.toString() + " minutes"
+        // }
+        // else
+        // {
+        //   syncMessage = "synced video to " + syncTimeInMinutes.toString() + "." + syncTimeInSeconds.toString() + " minutes"
+        // }
         // console.log(syncMessage)
 
         if(syncTime != "" && syncTime < parseInt(playingVideoTotalDuration))
@@ -1299,16 +1307,21 @@ export default {
         let msgObjChat = "" //JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded video " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
         let msgObjVideoCommand = ""
 
+        if(loadThisId != "") { loadThisId = loadVideoInput.value }
+        else { loadThisId = param1 }
+        
+        console.log("loadThisId: " + loadThisId)
+
         //check if playlist
         if(loadThisId.substring(0, 2).toUpperCase() == "PL")
         {
           msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded playlist " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-          msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + 0 + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + loadThisId + "\"" + "}")
+          msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + 0 + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + true + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + loadThisId + "\"" + "}")
         }
         else if(loadThisId.substring(0, 2).toUpperCase() != "PL")
         {
           msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded video " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-          msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + loadThisId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + null + "\"" + "}")
+          msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "load video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + loadThisId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + false + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + null + "\"" + "}")
         }
 
         if(loadThisId != "")
@@ -1451,11 +1464,11 @@ export default {
       }
       else if(event == "resync")
       {
-        console.log("resync")
-        console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
-        console.log("videoPlaylist: " + videoPlaylist)
-        console.log("playingVideoStatus: " + playingVideoStatus)
-        console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
+        console.log("resync: " + playingVideosLastWholeSecond + "s")
+        // console.log("videoPlaylist: " + videoPlaylist)
+        // console.log("playingVideoStatus: " + playingVideoStatus)
+        // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
+        // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
         
         playingVideosLastWholeSecond = parseInt(playingVideosLastWholeSecond)
         // playingVideosLastWholeSecond
@@ -1466,7 +1479,11 @@ export default {
         let loadingScreenText = document.getElementById("loadingScreenText")
         loadingScreenText.innerText = "Syncing..."
         
-        if(videoPlaylist == true)
+        if(playingVideosLastWholeSecond == 0 && playingVideoStatus == false)
+        {
+          displayPauseOverlay()
+        }
+        else if(videoPlaylist == true)
         {
           if(playingVideoStatus == "false")
           {
@@ -1564,6 +1581,17 @@ export default {
       else if(event == "volume")
       {
         document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'setVolume' + '","args":[' + param1 + ']}', '*');
+      }
+      else if(event == "random")
+      {
+          let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "random playlist " + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "random playlist" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + 0 + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + true + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + null + "\"" + "}")
+
+          //chat message
+          socket.emit('chat message', msgObjChat);
+          
+          //video command
+          socket.emit('video command', msgObjVideoCommand);
       }
     }
 
@@ -1671,8 +1699,8 @@ export default {
         // videoPlayButtonOverlay.style.display = "block"
 
         //display playlist controls
-        let playlistControls = document.getElementById("playlistControls")  
-        playlistControls.style.display = "inline-flex"
+        // let playlistControls = document.getElementById("playlistControls")  
+        // playlistControls.style.display = "inline-flex"
         
         //mute player
         // videoPlayerEvents("mute")
@@ -1699,36 +1727,30 @@ export default {
         if(videoPlaylistId == "null" || videoPlaylistId == null)
         {
           console.log("initializeVideo video: " + playingVideoId)
-          
-          //load video
-          if(currentRoom != "no room selected")
-          {
-            loadVideoStart(playingVideoId, videoPlaylistId)
-    
-            //sync video
-            setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
-    
-            //undisplay playlist controls
-            let playlistControls = document.getElementById("playlistControls")
-            playlistControls.style.display = "none"
-          }
+
+          loadVideoStart(playingVideoId, videoPlaylistId)
+  
+          //sync video
+          setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
+  
+          //undisplay playlist controls
+          // let playlistControls = document.getElementById("playlistControls")
+          // playlistControls.style.display = "none"
+          undisplayVideoInfoAndControls()
         }
         else if(videoPlaylistId != "null" || videoPlaylistId != null)
         {
           console.log("initializeVideo playlist: " + videoPlaylistId)
 
-          //load video
-          if(currentRoom != "no room selected")
-          {
-            loadVideoStart(playingVideoId, videoPlaylistId)
-    
-            //sync video
-            setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
-            
-            //display playlist controls
-            let playlistControls = document.getElementById("playlistControls")
-            playlistControls.style.display = "inline-flex"
-          }
+          loadVideoStart(playingVideoId, videoPlaylistId)
+  
+          //sync video
+          setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
+          
+          //display playlist controls
+          // let playlistControls = document.getElementById("playlistControls")
+          // playlistControls.style.display = "inline-flex"
+          undisplayVideoInfoAndControls()
         }
     }
 
@@ -1783,6 +1805,8 @@ export default {
 
         // let videoInfo = document.getElementById("videoInfo")
         // videoInfo.style.display = "block"
+
+        displayVideoInfoAndControls()
     }
 
     function pushUrl(room)
@@ -1801,6 +1825,7 @@ export default {
     {
       let videoPlayerControlButtons = document.getElementById("videoPlayerControlButtons")
       videoPlayerControlButtons.style.display = "inline-flex"
+      
       let videoInfo = document.getElementById("videoInfo")
       videoInfo.style.display = "block"
     }
@@ -1822,6 +1847,42 @@ export default {
       componentAbout.style.display = "none"     
       if(componentStart.style.display == "block") { componentStart.style.display = "none" }
       else if(componentStart.style.display == "none") { componentStart.style.display = "block" }
+    }
+
+    function resetVideoInfo()
+    {
+      let videoCurrentRoom = document.getElementById("videoCurrentRoom")
+      let videoTitle = document.getElementById("videoTitle")
+      let videoCurrentPlaylistIndex = document.getElementById("videoCurrentPlaylistIndex")
+      let videoChannel = document.getElementById("videoChannel")
+      let videoCurrentTime = document.getElementById("current-time-video")
+      let videoVolume = document.getElementById("videoVolume")
+      let videoQuality = document.getElementById("videoQuality")
+
+      videoCurrentRoom.innerText = ""
+      videoTitle.innerText = ""
+      videoCurrentPlaylistIndex.innerText = ""
+      videoChannel.innerText = ""
+      videoCurrentTime.innerText = ""
+      videoVolume.innerText = ""
+      videoQuality.innerText = ""
+    }
+
+    function toggleVideoInfoAndControls()
+    {
+      let videoPlayerControlButtons = document.getElementById("videoPlayerControlButtons")
+      let videoInfo = document.getElementById("videoInfo")
+
+      if(videoInfo.style.display == "block")
+      {
+        videoInfo.style.display = "none"
+        videoPlayerControlButtons.style.display = "none"
+      }
+      else if(videoInfo.style.display == "none")
+      {
+        videoInfo.style.display = "block"
+        videoPlayerControlButtons.style.display = "inline-flex"
+      }
     }
     
     //socket stream
@@ -1861,7 +1922,7 @@ export default {
         chat.scrollTo(0, chat.scrollHeight);
     });
 
-    socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying) {
+    socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying, defaultPlaylistsFromServer) {
         //debugging
         // console.log(socket)
         // console.log(allClients)
@@ -1877,6 +1938,14 @@ export default {
         // console.log(clientInfo)
         // console.log("allClients")
         // console.log(allClients)
+
+        // if(inputCurrentRoom.innerText == "temp")
+        // {
+        //   return
+        // }
+        
+        //set default playlists
+        defaultPlaylists = JSON.parse(defaultPlaylistsFromServer)
 
         //set yourSocketId
         yourSocketId = socket.id
@@ -2303,9 +2372,9 @@ export default {
         }
 
           //set video/playlist variables
-          if(videosCurrentlyPlaying.length != 0) //active room exist
+          if(videosCurrentlyPlaying.length != 0 && currentRoom != "temp") //active room exist
           {
-            console.log("videosCurrentlyPlaying is not 0")
+            console.log("active room exist")
             
             //debugging
             // console.log("videosCurrentlyPlaying")
@@ -2316,11 +2385,7 @@ export default {
             //find current room
             for(let x in videosCurrentlyPlaying)
             {
-              if(inputCurrentRoom.innerText == "no room selected")
-              {
-                console.log("no room selected")
-              }
-              else if(inputCurrentRoom.innerText == videosCurrentlyPlaying[x].room)
+              if(inputCurrentRoom.innerText == videosCurrentlyPlaying[x].room)
               {
                 // console.log("current room is: " + inputCurrentRoom.innerText)
 
@@ -2334,19 +2399,6 @@ export default {
                 videoPlaylistId = videosCurrentlyPlaying[x].videoPlaylistId
                 videoPlaylist = videosCurrentlyPlaying[x].videoPlaylist
                 playlistCurrentVideoIndex = videosCurrentlyPlaying[x].playlistCurrentVideoIndex
-      
-                //set sync master
-                for(let r in allRooms)
-                {
-                  if(allRooms[r].room == videosCurrentlyPlaying[x].room)
-                  {
-                    // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
-                    // console.log("yourSocketId: " + socket.id)
-                    syncMaster = allRooms[r].clients[0]
-
-                    break
-                  }
-                }
 
                 break
       
@@ -2375,37 +2427,18 @@ export default {
                 videoPlaylist = "true"
                 playlistCurrentVideoIndex = 0
 
-                if(inputCurrentRoom.innerText == "general")
+                //set default playlist
+                let randomNumber = Math.floor(Math.random() * 3);
+                console.log("set default playlist")
+                for(let pl in defaultPlaylists)
                 {
-                  //set default playlist
-                  // console.log("set default playlist general")
-                  videoPlaylistId = "PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI"          
-                }
-                else if(inputCurrentRoom.innerText == "gaming")
-                {
-                  //set default playlist
-                  // console.log("set default playlist gaming")
-                  videoPlaylistId = "PLJAzFcYKyx4QBMgSXKieHNRU8zttGrk_l" 
-                }
-                else if(inputCurrentRoom.innerText == "food")
-                {
-                  //set default playlist
-                  // console.log("set default playlist food")
-                  videoPlaylistId = "PLeoy0zUu6bqlVkoXIZAFtuzO2N_kloRut" 
-                }
-
-                //set sync master
-                for(let r in allRooms)
-                {
-                  if(allRooms[r].room == videosCurrentlyPlaying[x].room)
+                  if(defaultPlaylists[pl].category == inputCurrentRoom.innerText)
                   {
-                    // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
-                    // console.log("yourSocketId: " + socket.id)
-                    syncMaster = allRooms[r].clients[0]
+                    videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
 
                     break
                   }
-                }  
+                }    
                 
                 //debugging
                 // console.log("videoPlaying: " + videoPlaying)
@@ -2419,9 +2452,9 @@ export default {
               }
             }
           }
-          else if(videosCurrentlyPlaying.length == 0)  //no active room exist
+          else if(videosCurrentlyPlaying.length == 0  && currentRoom != "temp")  //no active room exist
           {
-            console.log("videosCurrentlyPlaying is 0")
+            console.log("no active room exist")
             
             //set video variables
             playingVideosLastWholeSecond = 0
@@ -2433,48 +2466,40 @@ export default {
             videoPlaylist = "true"
             playlistCurrentVideoIndex = 0
 
-            if(inputCurrentRoom.innerText == "no room selected")
+            //set default playlist
+            let randomNumber = Math.floor(Math.random() * 3);
+            console.log("set default playlist")
+            for(let pl in defaultPlaylists)
             {
-              console.log("no room selected")
-            }
-            else if(inputCurrentRoom.innerText == "general")
-            {
-              //set default playlist
-              // console.log("set default playlist general")
-              videoPlaylistId = "PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI"          
-            }
-            else if(inputCurrentRoom.innerText == "gaming")
-            {
-              //set default playlist
-              // console.log("set default playlist gaming")
-              videoPlaylistId = "PLJAzFcYKyx4QBMgSXKieHNRU8zttGrk_l" 
-            }
-            else if(inputCurrentRoom.innerText == "food")
-            {
-              //set default playlist
-              // console.log("set default playlist food")
-              videoPlaylistId = "PLeoy0zUu6bqlVkoXIZAFtuzO2N_kloRut" 
-            }
-
-            // set sync master
-            for(let r in allRooms)
-            {
-              if(allRooms[r].room == inputCurrentRoom.innerText)
+              if(defaultPlaylists[pl].category == inputCurrentRoom.innerText)
               {
-                // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
-                // console.log("yourSocketId: " + socket.id)
-                syncMaster = allRooms[r].clients[0]
+                videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
 
                 break
               }
-            }
-
+            }          
+            
             //debugging
-            // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
+            console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
             // console.log("playingVideoId: " + playingVideoId)
             // console.log("playingVideoRoom: " + playingVideoRoom)
             // console.log("playingVideoStatus: " + playingVideoStatus)
             // console.log("videoPlaylistId: " + videoPlaylistId)
+          }
+
+          //set sync master
+          for(let r in allRooms)
+          {
+            if(allRooms[r].room == "temp"){}
+            else if(allRooms[r].room == inputCurrentRoom.innerText)
+            {
+              // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
+              // console.log("yourSocketId: " + socket.id)
+                syncMaster = allRooms[r].clients[0]
+                let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "set sync master" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "," + "\"syncMaster\"" + ":" + "\"" + syncMaster + "\"" + "}")
+                socket.emit('video command', msgObjVideoCommand);
+                break
+            }
           }
         }
         
@@ -2482,11 +2507,11 @@ export default {
         let temp = JSON.stringify(vuexAllRooms.value)
         temp = JSON.parse(temp)
         if(temp.length > 0) { totalRoomsCount = temp.length }
-        console.log("total rooms: " + totalRoomsCount)
+        // console.log("total rooms: " + totalRoomsCount)
 
         //set total users all rooms count
         if(allClients.length > 0) { totalUsersCount = allClients.length }
-        console.log("total users all rooms: " + totalUsersCount)
+        // console.log("total users all rooms: " + totalUsersCount)
 
         //set total users current room count
         for(let r in allRooms)
@@ -2496,12 +2521,9 @@ export default {
           if(inputCurrentRoom.innerText == allRooms[r].room)
           {
             totalUsersCurrentRoomCount = count
-
-            let videoCurrentRoomTotalUsers = document.getElementById("videoCurrentRoomTotalUsers")
-            videoCurrentRoomTotalUsers.innerText = "current room total users: " + totalUsersCurrentRoomCount
+            // console.log("total users current room: " + totalUsersCurrentRoomCount)
           }
         }
-        console.log("total users current room: " + totalUsersCurrentRoomCount)
 
         // console.log(inputCurrentRoom)
     });
@@ -2639,7 +2661,8 @@ export default {
         else if(msg.content == "load video")
         {
           console.log("load video")
-          console.log(msg)
+          // console.log(msg)
+
           loadVideoCustom(msg)
 
           //reset play button
@@ -2676,6 +2699,7 @@ export default {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'nextVideo' + '","args":""}', '*');
           displayPauseButton()
           resetCurrentTimeVideo()
+          undisplayPauseOverlay()
 
           //set local variable
           videoPlaying = true
@@ -2685,6 +2709,7 @@ export default {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'previousVideo' + '","args":""}', '*');
           displayPauseButton()
           resetCurrentTimeVideo()
+          undisplayPauseOverlay()
 
           //set local variable
           videoPlaying = true
@@ -2698,6 +2723,7 @@ export default {
           
           //set local variable
           videoPlaying = false
+          playingVideosLastWholeSecond = 0
         }
         else if(msg.content == "restart video")
         {
@@ -2706,9 +2732,18 @@ export default {
 
           //set local variable
           videoPlaying = true
+          playingVideosLastWholeSecond = 0
+        }
+        else if(msg.content == "random playlist")
+        {
+          loadVideoCustom(msg)
+
+          if(yourSocketId == syncMaster)
+          {
+            setTimeout(() => {videoPlayerEvents("play")}, 3000)
+          }
         }
     });
-
 
     return {
       //functions
@@ -2736,6 +2771,7 @@ export default {
       displayVideoInfoAndControls,
       undisplayVideoInfoAndControls,
       showStartComponent,
+      toggleVideoInfoAndControls,
     }
   }
 }
@@ -2815,12 +2851,13 @@ export default {
   #form { width: 94%; margin: auto; margin-top: 2px; }
   /* #sync-video-input { width: 99px; } */
   #jump-video-input { height: 17px; }
-  #videoInfo { display: none; position: absolute; top: 3vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 90%; text-align: left; font-size: 14px; font-weight: bold; color: white; background-color: transparent; }
+  #videoInfo { display: none; position: absolute; top: 3vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 90%; text-align: left; font-size: 14px; font-weight: bold; text-shadow: black 1px 1px; color: white; background-color: transparent; }
   #videoChannel, #videoTitle, #videoQuality, #videoCurrentPlaylistIndex, #current-time-video, #videoCurrentRoom, #videoVolume, #videoCurrentRoomTotalUsers { margin: 6px; text-align: right; }
   #videoArea { display: block; }
   #loadingScreenText { animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; }
   #loadingScreenImage { display: block; position: absolute; height: 40vh; width: 40vh; top: 0px; left: 0px; margin-top: calc(-16vh + 1px); margin-left: 140px; transform: rotate(-45deg) translate(-50%, -50%); z-index: -1; background-size: cover; border-radius: 7%; border: 3px solid white; background-color: black; }
   #currentRouteBar { display: none; color: white; background-color: red; position: absolute; bottom: 0px; width: 73vw; padding: 10px; z-index: 1 }
+  #videoCurrentRoom { display: none; }
 
   /* classes */
   .buttonJoin, .buttonLeave { padding: 3px; overflow-wrap: break-word; font-weight: normal; font-size: 17px; }
