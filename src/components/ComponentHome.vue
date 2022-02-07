@@ -1,10 +1,115 @@
 <template>
   <div>
-    <!-- <div id="modal">
-        <p>test</p>
+    <div id="modal" style="display: none;">
+      <div id="modalSidebar">
+        <div id="modalSidebarKeybinds" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
+        <div id="modalSidebarSettings" v-on:click="showModalCategory('Settings')">Settings</div>
+        <div id="modalSidebarCreateRoom" v-on:click="showModalCategory('Create Room')">Create Room</div>
+        <div id="modalSidebarAddUsername" v-on:click="showModalCategory('Add Username')">Change Username</div>
+        <div id="modalSidebarVideoQuality" v-on:click="showModalCategory('Video Quality')">Change Video Quality</div>
+      </div>
+      <div id="modalContent">
+        <div id="modalContentKeybinds">
+          <table id="modalContentKeybindsTable">
+            <!-- <th>header</th> -->
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Play/Pause</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">Space</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Mute/Unmute</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">M</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Next Video</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">></td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Previous Video</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">Shift</td>
+              <td class="modalContentKeybindsCharacter">+</td>
+              <td class="modalContentKeybindsCharacter">></td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Fullscreen</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">F</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Show Sidebar</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">R</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Volume Up</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">Arrow Up</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Volume Down</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">Arrow Down</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Show This Menu</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">ESC</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Play/Pause</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">Left Mouseclick</td>
+            </tr>
+            <tr class="modalContentKeybindsTableRow">
+              <td class="modalContentKeybindsDescription">Hide Video Info/Controls</td>
+              <td class="modalContentKeybindsEqual"> = </td>
+              <td class="modalContentKeybindsCharacter">Right Mouseclick</td>
+            </tr>
+          </table>
+        </div>
+        <div id="modalContentSettings">
+          <p>settings #1</p>
+          <p>settings #2</p>
+          <p>settings #3</p>
+        </div>
+        <div id="modalContentAddUsername">
+          <div id="addUsername">
+              <div id="errorMessageAddUsername" class="errorMessage"></div>
+              <input id="inputAddUser" maxlength="10"/>
+              <button id="buttonAddUserTest" class="buttonCreate" v-on:click="addUser()">Confirm</button>
+              <div id="addUsernameCurrentUsername"></div>
+          </div>
+        </div>
+          <div id="modalContentCreateRoom">
+            <div id="createRoom">
+                <div id="errorMessageCreateRoom" class="errorMessage"></div>
+                <input id="inputCreateRoom" maxlength="20" />
+                <button id="buttonCreateRoomTest" class="buttonCreate" v-on:click="createRoom()">Confirm</button>
+            </div>
+          </div>
+        <div id="modalContentVideoQuality">
+          <div id="changeVideoQuality">
+            <p id="changeVideoQualityLoadingText"><b>Loading...</b></p>
+            <div id="changeVideoQualitySteps">
+              <p class="changeVideoQualityStepsText"><b>How to change Video Quality</b></p>
+              <p class="changeVideoQualityStepsText">Step 1: play video</p>
+              <p class="changeVideoQualityStepsText">Step 2: click on gear wheel</p>
+              <p  class="changeVideoQualityStepsText">Step 3: click on Quality</p>
+              <p  class="changeVideoQualityStepsText">Step 4: select quality of choice</p>
+              <p  class="changeVideoQualityStepsText">Step 5: wait for video to load</p>
+              <p class="changeVideoQualityStepsText">Step 6: press reload button</p>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!-- <p>test</p>
         <input id="modalInputAddUser" />
-        <button id="modalButtonAddUserTest" class="modalButtonCreate">Add</button>
-    </div> -->
+        <button id="modalButtonAddUserTest" class="modalButtonCreate">Add</button> -->
+    </div>
 
     <!-- top bar -->
     <div id="menu" style="display: none;">
@@ -36,19 +141,19 @@
         <div id="allRoomsList">
         </div>
         
-        <div id="createRoomTitle" v-on:click="toggleMenuCreateRoom()">Create Room</div>
+        <!-- <div id="createRoomTitle" v-on:click="toggleMenuCreateRoom()">Create Room</div>
         <div id="createRoom">
             <div id="errorMessageCreateRoom" class="errorMessage"></div>
             <input id="inputCreateRoom" maxlength="40" />
             <button id="buttonCreateRoomTest" class="buttonCreate" v-on:click="createRoom()">Create</button>
-        </div>
+        </div> -->
                 
-        <div id="addUsernameTitle" v-on:click="toggleMenuAddUsername()">Add Username</div>
+        <!-- <div id="addUsernameTitle" v-on:click="toggleMenuAddUsername()">Add Username</div>
         <div id="addUsername">
             <div id="errorMessageAddUsername" class="errorMessage"></div>
             <input id="inputAddUser"  maxlength="40"/>
-            <!-- <button id="buttonAddUserTest" class="buttonCreate">Add</button> -->
-        </div>
+            <button id="buttonAddUserTest" class="buttonCreate">Add</button>
+        </div> -->
 
         <!-- <b>Leave Room</b>
         <br />
@@ -69,6 +174,21 @@
     
     <!-- video area -->
     <div id="videoArea">
+      <div id="initializeNewCustomRoom">
+        <div id="initializeNewCustomRoomSteps">
+        <p class="initializeNewCustomRoomText" id="initializeNewCustomRoomTitle">waiting for room to be initialized...</p>
+        <p class="initializeNewCustomRoomText">Step 1: paste video or playlist id of choice</p>
+        <p class="initializeNewCustomRoomText">Step 2: press on load button</p>
+        <p class="initializeNewCustomRoomText">Example playlist url: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
+        <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
+        </div>
+
+        <div id="initializeNewCustomRoom-load-video-elems">
+            <input id="initializeNewCustomRoom-load-video-input" placeholder="video or playlist id" maxlength="100" />
+            <div id="initializeNewCustomRoom-load-video" v-on:click="initializeNewCustomRoomVideo()">Load</div>
+        </div>
+      </div>
+
       <!-- loading overlay -->
       <div id="videoLoadingOverlay">
         <!-- <div id="loadingScreenGif" style="display: block; height: 49vh; width: 49vw; position: fixed; left: 14vw ; top: 8vh; z-index: 2; background-image: url('/ls2.gif'); "></div> -->
@@ -140,20 +260,20 @@
 
           <!-- player controls row -->
           <div class="videoPlayerControlRow">
+            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
+            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
+            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Video Quality')">Video Quality</div>
+            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Add Username')">Username</div>
+          </div>
+
+          <!-- player controls row -->
+          <div class="videoPlayerControlRow">
             <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
             <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
             <div id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
             <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
             <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
             <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
-          </div>
-
-          <!-- player controls row -->
-          <div class="videoPlayerControlRow">
-            <div id="" class="videoPlayerControlButton">Quality</div>
-            <div id="" class="videoPlayerControlButton">Settings</div>
-            <div id="" class="videoPlayerControlButton">Keybinds</div>
-            <div id="" class="videoPlayerControlButton">#</div>
           </div>
           
           <!-- player controls row -->
@@ -257,7 +377,7 @@ export default {
       // console.log("onMounted playingVideoId: " + playingVideoId)
       // console.log("onMounted videoPlaylistId: " + videoPlaylistId)
       // console.log(currentRoute)
-      
+
       setTimeout(() => {
         //variables
         let roomExists = false
@@ -391,6 +511,12 @@ export default {
     var totalUsersCurrentRoomCount = 0
     var defaultPlaylists = null
 
+    var forbiddenCharactersString = "\nspace ! @ % < > | , . ; : [ ]"
+    var yourUsername = null
+    var waitingForRoomToBeInitialized = null
+
+    var initializeNewCustomRoomVideoEnableKeybindsTime = 4000
+
     // function pvideo1()
     // {
     //   // $('.youtube-video')[0].contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
@@ -408,7 +534,6 @@ export default {
     // }
 
     //event listen to player
-
     window.onmessage = function(e){
       //debugging
       // console.log(e.data)
@@ -665,96 +790,8 @@ export default {
     }
 
     //event listen to keyboard
-    window.addEventListener('keyup', (event) => {
-      // console.log(event)
+    window.addEventListener('keyup', enableKeybinds)
       
-      if(event.code === "Escape")
-      {
-        let componentStart = document.getElementById("componentStart")
-        componentStart.style.display = "none"
-        
-        let inputChatMessage = document.getElementById("inputChatMessage")
-        inputChatMessage.focus()
-        inputChatMessage.blur()
-      }
-      else if(document.activeElement.id != "inputChatMessage")
-      {
-        if(event.code === "Space")
-        {
-          if(videoPlaying == false){videoPlayerEvents("play")}
-          else if(videoPlaying == true){videoPlayerEvents("pause")}
-        }
-        else if(event.code === "KeyP")
-        {
-          if(videoPlaying == false){videoPlayerEvents("play")}
-          else if(videoPlaying == true){videoPlayerEvents("pause")}
-        }
-        // else if(event.code === "KeyS")
-        // {
-        //   videoPlayerEvents("sync")
-        // }
-        // else if(event.code === "KeyL")
-        // {
-        //   videoPlayerEvents("load")
-        // }
-        else if(event.code === "KeyM")
-        {
-          if(videoMuted == true){videoPlayerEvents("unMute")}
-          else if(videoMuted == false){videoPlayerEvents("mute")}
-        }
-        else if(event.code == "KeyF")
-        {
-          console.log("fullScreenActive = " + fullScreenActive)
-          if(fullScreenActive == false){requestFullScreen()}
-          else if(fullScreenActive == true){requestCloseFullScreen()}
-        }
-        // else if(event.code == "ArrowRight")
-        // {
-        //   videoPlayerEvents("forward5", playingVideosLastWholeSecond + 5)
-        // }
-        // else if(event.code == "ArrowLeft")
-        // {
-        //   videoPlayerEvents("back5", playingVideosLastWholeSecond - 5)
-        // }
-        else if(event.shiftKey == true && event.code == "IntlBackslash")
-        {
-          videoPlayerEvents("previous")
-        }
-        else if(event.code == "IntlBackslash")
-        {
-          videoPlayerEvents("next")
-        }
-        // else if(event.code == "KeyJ")
-        // {
-        //   videoPlayerEvents("jump")
-        // }
-        else if(event.code == "ArrowDown")
-        {
-          if(playingVideoVolume != 0)
-          {
-            console.log("volume down")
-            let newVolume = null
-            newVolume = parseInt(playingVideoVolume) - 10
-            videoPlayerEvents("volume", newVolume)
-          }
-        }
-        else if(event.code == "ArrowUp")
-        {
-          if(playingVideoVolume != 100)
-          {
-            console.log("volume up")
-            let newVolume = null
-            newVolume = parseInt(playingVideoVolume) + 10
-            videoPlayerEvents("volume", newVolume)
-          }
-        }
-        else if(event.code == "KeyR")
-        {
-          showStartComponent()
-        }
-      }
-    })
-
     //event listen to fullscreen
     document.addEventListener('fullscreenchange', onExitFullScreen);
     document.addEventListener('webkitfullscreenchange', onExitFullScreen);
@@ -786,24 +823,27 @@ export default {
       let characterCheck = forbiddenCharacterCheck(inputCreateRoom.value)
       if(characterCheck == true)
       {
-          // alert("room name cann    ot be empty/contain space or following characters !@<<|,%")
+          // alert("room name cannot be empty/contain space or following characters !@<<|,%")
           let errorMessageCreateRoom = document.getElementById("errorMessageCreateRoom")
           errorMessageCreateRoom.style.display = "block"
-          errorMessageCreateRoom.innerText = "room name cannot be empty/contain space or following characters !@<<|,%"
+          errorMessageCreateRoom.innerText = "room name cannot be empty or contain " + forbiddenCharactersString
           return
       }
       
       //check if room already exists
-      let d = document.getElementsByClassName("room")
-      console.log(d)
-      for(let rm in d)
+      let roomLink = document.getElementsByClassName("roomLink")
+      // console.log(roomLink)
+      // console.log(vuexAllRooms)
+      for(let rm in roomLink)
       {
-          let roomThatExists = d[rm].innerText
+          let roomThatExists = roomLink[rm].innerText
           // console.log(roomThatExists)
           
           if(newRoom == roomThatExists)
           {
-              alert("room " + newRoom + " already exists")
+              // alert("room " + newRoom + " already exists")
+              errorMessageCreateRoom.style.display = "block"
+              errorMessageCreateRoom.innerText = "room " + "'" + newRoom + "'" + " already exists"
               inputCreateRoom.value = ""
               return
           }
@@ -818,8 +858,24 @@ export default {
       //clear create room input box
       inputCreateRoom.value = ""
 
-      //clear error message
-      errorMessageCreateRoom.style.display = "none"
+      //reset player cancel current time sync
+      let vp = document.getElementById("videoPlayer")
+      if(vp != null)
+      {
+        vp.remove()
+      }
+
+      //set local variable
+      playingVideoId = "null"
+      videoPlaylistId = "newCustomRoom"
+
+      //join room
+      pushUrl(newRoom)
+      
+      let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
+      videoPlayPauseOverlay.style.display = "none"
+      let modal = document.getElementById("modal")
+      modal.style.display = "none"
     }
     
     function joinRoom(roomName)
@@ -879,13 +935,16 @@ export default {
 
     function addUser(socketId)
     {
+        socketId = yourSocketId
+
         let characterCheck = forbiddenCharacterCheck(inputAddUser.value)
+
         if(characterCheck == true)
         {
             // alert("username cannot be empty/contain space or following characters !@<<|,%")
-            let errorMessageAddUsername = document.getElementById("errorMessageAddUsername")
-            errorMessageAddUsername.style.display = "block"
-            errorMessageAddUsername.innerText = "username cannot be empty/contain space or following characters !@<<|,%"
+            // let errorMessageAddUsername = document.getElementById("errorMessageAddUsername")
+            // errorMessageAddUsername.style.display = "block"
+            // errorMessageAddUsername.innerText = "username cannot be empty or contain " + forbiddenCharactersString
             return
         }
 
@@ -894,14 +953,16 @@ export default {
         //     alert("username cannot be empty or contain !@<<|,%")
         //     return
         // }
+
         let username = inputAddUser.value
         let user = JSON.parse("{" + "\"socketId\"" + ":" + "\"" + socketId + "\"" + "," + "\"username\"" + ":" + "\"" + username + "\"" + "}")
-        console.log(user)
+        // console.log(user)
+        
         socket.emit('add user', user);
+        
         inputAddUser.value = ""
         
-        //clear error message
-        errorMessageAddUsername.style.display = "none"
+        yourUsername = user.username
     }
 
     function leaveRoom(roomName)
@@ -931,6 +992,11 @@ export default {
         if(string.includes("|")) return true
         if(string.includes(",")) return true
         if(string.includes("%")) return true
+        if(string.includes(".")) return true
+        if(string.includes(";")) return true
+        if(string.includes(":")) return true
+        if(string.includes("[")) return true
+        if(string.includes("]")) return true
     }
 
     function currentTimeStamp()
@@ -1172,6 +1238,10 @@ export default {
         container.innerHTML = ""
         container.append(iframeEle)
 
+        //remove border
+        let vp = document.getElementById("videoPlayer")
+        vp.style.border = "0px"
+
         //undisplay loading screen
         setTimeout(() => {
           undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
@@ -1303,11 +1373,20 @@ export default {
       else if(event == "load")
       {
         let loadVideoInput = document.getElementById("load-video-input")
+        let initializeNewCustomRoomVideoInput = document.getElementById("initializeNewCustomRoom-load-video-input")
+        let initializeNewCustomRoom = document.getElementById("initializeNewCustomRoom")
+
         let loadThisId = loadVideoInput.value
         let msgObjChat = "" //JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded video " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
         let msgObjVideoCommand = ""
 
-        if(loadThisId != "") { loadThisId = loadVideoInput.value }
+        if(initializeNewCustomRoomVideoInput != "")
+        { 
+          loadThisId = initializeNewCustomRoomVideoInput.value
+          initializeNewCustomRoom.style.display = "none"
+          initializeNewCustomRoomVideoInput.value = ""
+        }
+        else if(loadThisId != "") { loadThisId = loadVideoInput.value }
         else { loadThisId = param1 }
         
         console.log("loadThisId: " + loadThisId)
@@ -1597,7 +1676,12 @@ export default {
 
     function videoPlayButtonOverlay()
     {
-        if(videoPlaying == false){videoPlayerEvents("play")}
+        let modal = document.getElementById("modal")
+
+        //hide or show modal
+        if(modal.style.display == "block") { modal.style.display = "none" }
+        //play or pause video
+        else if(videoPlaying == false){videoPlayerEvents("play")}
         else if(videoPlaying == true){videoPlayerEvents("pause")}
     }
 
@@ -1657,6 +1741,31 @@ export default {
           
           //set local variable
           fullScreenActive = false
+          
+          //readd escape keybind
+          setTimeout(() => {
+            window.addEventListener('keyup', (event) => {
+              // console.log(event)
+              
+              if(event.code === "Escape")
+              {
+                let componentStart = document.getElementById("componentStart")
+                let inputChatMessage = document.getElementById("inputChatMessage")
+                let modal = document.getElementById("modal")
+                
+                //deselect input
+                inputChatMessage.focus()
+                inputChatMessage.blur()
+
+                //hide or show sidebar
+                if(componentStart.style.display == "block") { componentStart.style.display = "none" }
+                //hide or show modal
+                else if(modal.style.display == "none") { modal.style.display = "block" }
+                else if(modal.style.display == "block") { modal.style.display = "none"}
+              }
+            })
+
+          }, 100)
       }
     }
 
@@ -1685,6 +1794,14 @@ export default {
         else if(videoMuted == true)
         {
           iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + youtubeEmbedPlaylistParameters
+        }
+
+        //check if new custom room
+        if(playlistId == "newCustomRoom")
+        {
+          iframeEle.src = ""
+          waitingForRoomToBeInitialized = true
+          disableKeybinds()
         }
 
         //append iframe
@@ -1734,9 +1851,8 @@ export default {
           setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
   
           //undisplay playlist controls
-          // let playlistControls = document.getElementById("playlistControls")
-          // playlistControls.style.display = "none"
-          undisplayVideoInfoAndControls()
+          let playlistControls = document.getElementById("playlistControls")
+          playlistControls.style.display = "none"
         }
         else if(videoPlaylistId != "null" || videoPlaylistId != null)
         {
@@ -1748,9 +1864,8 @@ export default {
           setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
           
           //display playlist controls
-          // let playlistControls = document.getElementById("playlistControls")
-          // playlistControls.style.display = "inline-flex"
-          undisplayVideoInfoAndControls()
+          let playlistControls = document.getElementById("playlistControls")
+          playlistControls.style.display = "inline-flex"
         }
     }
 
@@ -1807,6 +1922,16 @@ export default {
         // videoInfo.style.display = "block"
 
         displayVideoInfoAndControls()
+
+        //check if new custom room
+        if(videoPlaylistId == "newCustomRoom")
+        {
+          let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
+          videoPlayPauseOverlay.style.display = "none"
+          resetVideoInfo()
+          undisplayVideoInfoAndControls()
+          displayInitializeNewCustomRoom()
+        }
     }
 
     function pushUrl(room)
@@ -1884,6 +2009,259 @@ export default {
         videoPlayerControlButtons.style.display = "inline-flex"
       }
     }
+
+    function showModalCategory(category)
+    {
+      let modal = document.getElementById("modal")
+      modal.style.display = "block"
+
+      let modalContentKeybinds = document.getElementById("modalContentKeybinds")
+      let modalContentSettings = document.getElementById("modalContentSettings")
+      let modalContentVideoQuality = document.getElementById("modalContentVideoQuality")
+      let modalContentAddUsername = document.getElementById("modalContentAddUsername")
+      let modalContentCreateRoom = document.getElementById("modalContentCreateRoom")
+
+      let modalSidebarKeybinds = document.getElementById("modalSidebarKeybinds")
+      let modalSidebarSettings = document.getElementById("modalSidebarSettings")
+      let modalSidebarVideoQuality = document.getElementById("modalSidebarVideoQuality")
+      let modalSidebarAddUsername = document.getElementById("modalSidebarAddUsername")
+      let modalSidebarCreateRoom = document.getElementById("modalSidebarCreateRoom")
+
+      //set selected sidebar category background color
+      modalSidebarCreateRoom.style.backgroundColor = "white"
+      modalSidebarAddUsername.style.backgroundColor = "white"
+      modalSidebarSettings.style.backgroundColor = "white"
+      modalSidebarKeybinds.style.backgroundColor = "white"
+      modalSidebarVideoQuality.style.backgroundColor = "white"
+
+      //set selected sidebar category text color
+      modalSidebarCreateRoom.style.color = "#1c1b1b"
+      modalSidebarAddUsername.style.color = "#1c1b1b"
+      modalSidebarSettings.style.color = "#1c1b1b"
+      modalSidebarKeybinds.style.color = "#1c1b1b"
+      modalSidebarVideoQuality.style.color = "#1c1b1b"
+
+      //display selected category content 
+      modalContentCreateRoom.style.display = "none"
+      modalContentAddUsername.style.display = "none"
+      modalContentSettings.style.display = "none"
+      modalContentKeybinds.style.display = "none"
+      modalContentVideoQuality.style.display = "none"
+
+      if(category == "Keybinds")
+      {
+        modalSidebarKeybinds.style.backgroundColor = "#1c1b1b"
+        modalSidebarKeybinds.style.color = "white"
+        modalContentKeybinds.style.display = "block"
+      }
+      else if(category == "Settings")
+      {
+        modalSidebarSettings.style.backgroundColor = "#1c1b1b"
+        modalSidebarSettings.style.color = "white"
+        modalContentSettings.style.display = "block"
+      }
+      else if(category == "Video Quality")
+      {
+        modalSidebarVideoQuality.style.backgroundColor = "#1c1b1b"
+        modalSidebarVideoQuality.style.color = "white"
+        modalContentVideoQuality.style.display = "block"
+        
+        if(modalContentVideoQuality != null)
+        {
+          modalContentVideoQuality.style.height = "90%"
+          modalContentVideoQuality.style.width = "100%"
+        }
+
+        function appendVideoiframe()
+        {
+          let iframe = document.createElement("iframe")
+          iframe.id = "videoPlayerChangeQuality"
+          iframe.height = "60%"
+          iframe.width = "90%"
+          iframe.title = "YouTube video player to change quality"
+          iframe.src ="https://www.youtube-nocookie.com/embed/" + playingVideoId + youtubeEmbedVideoParameters
+          iframe.style.display = "none"
+          iframe.backgroundColor = "red"
+  
+          let button = document.createElement("button")
+          button.onclick = function(){window.location.reload()}
+          button.innerText = "Reload"
+          button.style.height = "40px"
+          button.style.width = "40%"
+          button.style.marginTop = "30px"
+          button.style.borderRadius = "0%"
+        
+          let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
+  
+          if(videoPlayerChangeQuality != null)
+          {
+            console.log("videoPlayerChangeQuality: " + videoPlayerChangeQuality)
+            console.log("videoPlayerChangeQuality src: " + videoPlayerChangeQuality.src + " / " + "playingVideoId: " + playingVideoId)
+          }
+  
+          if(videoPlayerChangeQuality == null)
+          {
+            let changeVideoQuality = document.getElementById("changeVideoQuality")
+            changeVideoQuality.append(iframe)
+  
+            setTimeout(() => {
+              let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
+              videoPlayerChangeQuality.style.border = "0px"
+              videoPlayerChangeQuality.style.display = ""
+  
+              changeVideoQuality.append(button)
+              
+              let changeVideoQualityLoadingText = document.getElementById("changeVideoQualityLoadingText")
+              changeVideoQualityLoadingText.innerText = ""
+  
+              let changeVideoQualitySteps = document.getElementById("changeVideoQualitySteps")
+              changeVideoQualitySteps.style.display = "block"
+  
+            }, 1000)
+          }
+        }
+
+        appendVideoiframe()
+      }
+      else if(category == "Add Username")
+      {
+        modalSidebarAddUsername.style.backgroundColor = "#1c1b1b"
+        modalSidebarAddUsername.style.color = "white"
+        modalContentAddUsername.style.display = "block"
+
+        let errorMessageAddUsername = document.getElementById("errorMessageAddUsername")
+        errorMessageAddUsername.innerText = "username cannot be empty or contain " + forbiddenCharactersString
+      }
+      else if(category == "Create Room")
+      {
+        modalSidebarCreateRoom.style.backgroundColor = "#1c1b1b"
+        modalSidebarCreateRoom.style.color = "white"
+        modalContentCreateRoom.style.display = "block"
+        
+        let errorMessageCreateRoom = document.getElementById("errorMessageCreateRoom")
+        errorMessageCreateRoom.innerText = "room name cannot be empty or contain " + forbiddenCharactersString
+      }
+    }
+
+    function displayInitializeNewCustomRoom()
+    {
+      let initializeNewCustomRoom = document.getElementById("initializeNewCustomRoom")
+      initializeNewCustomRoom.style.display = "block"
+      
+      let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
+      videoPlayButtonOverlay.style.display = "none"
+    }
+
+    function enableKeybinds(event)
+    {
+        // console.log(event)
+        if(event.code === "Escape")
+        {
+          let componentStart = document.getElementById("componentStart")
+          let inputChatMessage = document.getElementById("inputChatMessage")
+          let modal = document.getElementById("modal")
+          
+          //deselect input
+          inputChatMessage.focus()
+          inputChatMessage.blur()
+
+          //hide or show sidebar
+          if(componentStart.style.display == "block") { componentStart.style.display = "none" }
+          //hide or show modal
+          else if(modal.style.display == "none") { modal.style.display = "block" }
+          else if(modal.style.display == "block") { modal.style.display = "none"}
+        }
+        else if(document.activeElement.id != "inputChatMessage" && document.activeElement.id != "inputCreateRoom" && document.activeElement.id != "inputAddUser" && document.activeElement.id != "initializeNewCustomRoom-load-video-input")
+        {
+          if(event.code === "Space")
+          {
+            if(videoPlaying == false){videoPlayerEvents("play")}
+            else if(videoPlaying == true){videoPlayerEvents("pause")}
+          }
+          else if(event.code === "KeyM")
+          {
+            if(videoMuted == true){videoPlayerEvents("unMute")}
+            else if(videoMuted == false){videoPlayerEvents("mute")}
+          }
+          else if(event.code == "KeyF")
+          {
+            console.log("fullScreenActive = " + fullScreenActive)
+            if(fullScreenActive == false){requestFullScreen()}
+            else if(fullScreenActive == true){requestCloseFullScreen()}
+          }
+          else if(event.shiftKey == true && event.code == "IntlBackslash")
+          {
+            videoPlayerEvents("previous")
+          }
+          else if(event.code == "IntlBackslash")
+          {
+            videoPlayerEvents("next")
+          }
+          else if(event.code == "ArrowDown")
+          {
+            if(playingVideoVolume != 0)
+            {
+              console.log("volume down")
+              let newVolume = null
+              newVolume = parseInt(playingVideoVolume) - 10
+              videoPlayerEvents("volume", newVolume)
+            }
+          }
+          else if(event.code == "ArrowUp")
+          {
+            if(playingVideoVolume != 100)
+            {
+              console.log("volume up")
+              let newVolume = null
+              newVolume = parseInt(playingVideoVolume) + 10
+              videoPlayerEvents("volume", newVolume)
+            }
+          }
+          else if(event.code == "KeyR")
+          {
+            showStartComponent()
+          }
+          // else if(event.code === "KeyP")
+          // {
+          //   if(videoPlaying == false){videoPlayerEvents("play")}
+          //   else if(videoPlaying == true){videoPlayerEvents("pause")}
+          // }
+          // else if(event.code === "KeyS")
+          // {
+          //   videoPlayerEvents("sync")
+          // }
+          // else if(event.code === "KeyL")
+          // {
+          //   videoPlayerEvents("load")
+          // }
+          // else if(event.code == "ArrowRight")
+          // {
+          //   videoPlayerEvents("forward5", playingVideosLastWholeSecond + 5)
+          // }
+          // else if(event.code == "ArrowLeft")
+          // {
+          //   videoPlayerEvents("back5", playingVideosLastWholeSecond - 5)
+          // }
+          // else if(event.code == "KeyJ")
+          // {
+          //   videoPlayerEvents("jump")
+          // }
+        }
+
+    }
+    function disableKeybinds()
+    {
+      console.log("disableKeybinds")
+      // keybindsEventListener.removeEventListener()
+      window.removeEventListener('keyup', enableKeybinds)
+    }
+
+    function initializeNewCustomRoomVideo()
+    {
+      videoPlayerEvents('load')
+      setTimeout(() => {window.addEventListener('keyup', enableKeybinds)}, initializeNewCustomRoomVideoEnableKeybindsTime)
+      
+    }
     
     //socket stream
     socket.on('chat message', function(msg) {
@@ -1949,6 +2327,16 @@ export default {
 
         //set yourSocketId
         yourSocketId = socket.id
+
+        let addUsernameCurrentUsername = document.getElementById("addUsernameCurrentUsername")
+        if(yourUsername != null)
+        {
+          addUsernameCurrentUsername.innerText = "current username: " + yourUsername
+        }
+        else if(yourUsername == null)
+         {
+           addUsernameCurrentUsername.innerText = "current username: " + yourSocketId.substr(0, 4)
+         }
         
         //add functions
         // buttonAddUserTest.onclick = function(){addUser(socket.id)}
@@ -2387,7 +2775,7 @@ export default {
             {
               if(inputCurrentRoom.innerText == videosCurrentlyPlaying[x].room)
               {
-                // console.log("current room is: " + inputCurrentRoom.innerText)
+                console.log("current room is: " + inputCurrentRoom.innerText)
 
                 //set video variables
                 playingVideosLastWholeSecond = videosCurrentlyPlaying[x].lastWholeSecond
@@ -2399,6 +2787,24 @@ export default {
                 videoPlaylistId = videosCurrentlyPlaying[x].videoPlaylistId
                 videoPlaylist = videosCurrentlyPlaying[x].videoPlaylist
                 playlistCurrentVideoIndex = videosCurrentlyPlaying[x].playlistCurrentVideoIndex
+
+                //set default playlist
+                if(videoPlaylistId == "undefined" || videoPlaylistId == null)
+                { 
+                  let randomNumber = Math.floor(Math.random() * 3);
+                  
+                  for(let pl in defaultPlaylists)
+                  {
+                    if(defaultPlaylists[pl].category == inputCurrentRoom.innerText)
+                    {
+                      console.log("set default playlist")
+
+                      videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
+
+                      break
+                    }
+                  }
+                }
 
                 break
       
@@ -2423,17 +2829,17 @@ export default {
                 playingVideoStatus = "true"
                     
                 //set playlist variables
-                // videoPlaylistId = "PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI"
                 videoPlaylist = "true"
                 playlistCurrentVideoIndex = 0
 
                 //set default playlist
                 let randomNumber = Math.floor(Math.random() * 3);
-                console.log("set default playlist")
                 for(let pl in defaultPlaylists)
                 {
                   if(defaultPlaylists[pl].category == inputCurrentRoom.innerText)
                   {
+                    console.log("set default playlist")
+
                     videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
 
                     break
@@ -2468,11 +2874,12 @@ export default {
 
             //set default playlist
             let randomNumber = Math.floor(Math.random() * 3);
-            console.log("set default playlist")
             for(let pl in defaultPlaylists)
             {
               if(defaultPlaylists[pl].category == inputCurrentRoom.innerText)
               {
+                console.log("set default playlist")
+
                 videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
 
                 break
@@ -2772,6 +3179,9 @@ export default {
       undisplayVideoInfoAndControls,
       showStartComponent,
       toggleVideoInfoAndControls,
+      showModalCategory,
+      displayInitializeNewCustomRoom,
+      initializeNewCustomRoomVideo,
     }
   }
 }
@@ -2805,39 +3215,30 @@ export default {
   /* #messagesEven { background: white; }
   #messagesOdd { background: #efefef; } */
   #buttonLeaveRoomTest { margin-left: -4px; }
-  #inputCreateRoom { width: 100% }
+  /* #inputCreateRoom { width: 100% } */
   #toggleMenu { margin: 0px; padding: 16px; padding-left: 20px; padding-right: 20px; user-select: none; text-align: left; width: 100%; color: white; background-color: red; }
   /* #flex { display: inline-flex; position: absolute; height: 94vh; width: 30vw; flex-wrap: wrap; align-content: flex-start; top: 0; right: 0; background-color: white; } */
   #flex { display: inline-flex; position: absolute; height: 100vh; width: calc(19vw - 1px); flex-wrap: wrap; align-content: flex-start; bottom: 0; right: 0; z-index: 2; overflow-y: hidden; border-left: 0px solid black; background-color: white; }
   /* #flex > div { display: block; width: 100%; border: 1px solid black } */
   #buttonSend { display: inline-block; margin: 0px; margin-bottom: 10px; padding: 10px; width: 100%; border: 0px; color: #1c1b1b; font-weight: bold; font-family: Arial; font-size: 14px; border-top: 1px solid #1c1b1b; background-color: rgb(239, 239, 239); }
-  #info, #usersList, #createRoom, #addUsername, #allRoomsList { display: none; }
+  #info, #usersList, #createRoom, #addUsername, #allRoomsList { display: block; }
   #allRoomsList { display: inline-flex; width: 70vw; overflow-x: scroll; scrollbar-width: thin; scrollbar-color: gray white; color: white }
 
   #infoTitle, #allUsersTitle, #allRoomsTitle, #createRoomTitle, #addUsernameTitle { display: none; margin: 0px; padding: 7px; font-weight: bold; user-select: none; border: 1px solid black; background-color: white; }
   #allRoomsTitle { display: none; }
 
-  #modal {  
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%); background-color: red;
-    border: 1px solid black; 
-    }
   #mobileMenuCurrentRoom, #mobileMenuAllRooms { display: none; }
   #mobileMenuHide, #mobileMenuShow { display: none; }
   #allUsersTitle { display: none; }
-  #inputCreateRoom, #inputAddUser, #buttonCreateRoomTest { width: calc(100% - 8px); font-weight: normal; font-size: 17px; }
-  #createRoom, #addUsername, #allRoomsList, #info { padding: 0px; background-color: gray; }
+  /* #inputCreateRoom, #inputAddUser, #buttonCreateRoomTest { width: calc(100% - 8px); font-weight: normal; } */
+  #createRoom, #addUsername, #allRoomsList, #info { padding: 0px; background-color: transparent; }
 
   #pause-video, #unmute-video { display: none; }
   #iframeContainer { width: 100%; height: 100%; }
   #sync-video-input, #load-video-input, #jump-video-input { width: 100px; padding: 10px; height: 17px; background-color: rgba(255, 255, 255); border: 2px solid black; }
   #sync-video, #load-video { display: inline-block; padding: 10px; }
   #player { display: block; position: absolute; height: calc(100vh + 60px); width: 81vw; margin: auto; margin: 0px; margin-top: -61px; margin-left: 0px; padding: 0px; overflow: none; background-color: black; border: 0px solid white; }
-  #videoPlayButtonOverlay { display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 13px); width: calc(83vw - 1px); border: 0; background-color: transparent; } /* #ff000030 */
+  #videoPlayButtonOverlay { display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; border: 0; background-color: transparent; } /* #ff000030 */
   #videoPlayerControlButtons { display: none; position: absolute; width: auto; margin: 0; padding: 0px; bottom: 100px; left: 41.5%; z-index: 3; opacity: 70%; transform: translate(-50%); -ms-transform: translate(-50%); flex-direction: column; border: 0px solid white; background-color: transparent; }
   /* #current-time-video { margin: 0px; padding: 0px; font-weight: bold; margin-top: 10px; margin-bottom: 10px; color: white; border: 0px; background-color: transparent; } */
   #playlistControls { display: none; }
@@ -2859,15 +3260,46 @@ export default {
   #currentRouteBar { display: none; color: white; background-color: red; position: absolute; bottom: 0px; width: 73vw; padding: 10px; z-index: 1 }
   #videoCurrentRoom { display: none; }
 
+  #modal { position: absolute; display: block; height: 70vh; width: 60vw;  margin: 0; margin-left: -8vw; padding: 0px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; opacity: 90%; background-color: white; }
+  #modalSidebar { display: inline-block; height: 100%; width: 30%; vertical-align: top; font-weight: bold; text-align: center; user-select: none; color: #1c1b1b; }
+  #modalSidebar > div { padding: 10px; border-bottom: 3px solid #1c1b1b; }
+  /* #modalSidebar > div:hover { color: white; background-color: black; } */
+  #modalContent { display: inline-block; height: 100%; width: 70%; overflow: auto; text-align: center; color: white; background-color: #1c1b1b; }
+  #modalContent > div { height: auto; width: calc(100% - 2px); margin: auto; padding: 0px; padding-top: 10px; padding-bottom: 10px; }
+  #modalContentKeybindsTable { display: block; width: max-content; margin: auto; margin-top: 10px; padding: 20px; padding-top: 0px; padding-bottom: 0px; border-spacing: 10px 17px; user-select: none; }
+  #modalContentSettings, #modalContentVideoQuality, #modalContentAddUsername, #modalContentCreateRoom { display: none; }
+  #changeVideoQuality { user-select: none; height: 100%; width: 100%; }
+  #changeVideoQualitySteps { display: none; text-align: left; margin-bottom: 30px; margin-left: 34%; }
+  #modalSidebarKeybinds { color: white; background-color: #1c1b1b; }
+  #modalSidebarSettings, #modalSidebarVideoQuality, #modalSidebarAddUsername, #modalSidebarCreateRoom { background-color: white; }
+
+  #initializeNewCustomRoom { display: none; position: absolute; color: white; border: 1px solid white; z-index: 1; padding: 20px; transform: translate(-50%, -50%); left: 41.5%; top: 46% }
+  #initializeNewCustomRoom-load-video-elems { height: auto; width: 100%; background-color: black; }
+  #initializeNewCustomRoom-load-video-input { height: auto; width: calc(90% - 4px); margin-top: 10px; padding: 10px; color: black; background-color: white; }
+  #initializeNewCustomRoom-load-video { height: auto; width: 90%; padding: 10px; text-align: center; color: black; background-color: lightgray; }
+  #initializeNewCustomRoomSteps { margin: 0px; margin-bottom: 10px; }
+  #initializeNewCustomRoomTitle { margin: 0px; margin-bottom: 10px; text-align: center; }
+  #addUsername, #createRoom { width: 70%; margin: auto; }
+  #addUsernameCurrentUsername { margin: 20px; }
+  #buttonAddUserTest, #inputAddUser, #buttonCreateRoomTest, #inputCreateRoom { height: 40px; font-size: 16px; }
+  #inputCreateRoom, #inputAddUser { width: calc(100% - 24px);  padding-left: 10px; padding-right: 10px; }
+  
   /* classes */
   .buttonJoin, .buttonLeave { padding: 3px; overflow-wrap: break-word; font-weight: normal; font-size: 17px; }
   .buttonClient, .buttonUser, .buttonNamespace { width: 100%; }
   .buttonCreate, #buttonCreateRoomTest { width: calc(100%); border-color: lightgray; }
   .buttonUser {}
   .buttonNamespace {}
-  .errorMessage { display: none; padding: 20px; width: auto; background-color: red; border: 7px solid black; }
+  .errorMessage { display: block; margin: 20px; width: auto; background-color: transparent; }
   .videoPlayerControlButton { display: block; max-height: 17px; min-width: 100px; padding: 10px; user-select: none; text-align: center; font-size: 14px; background-color: rgba(255, 255, 255); border: 2px solid black; }
-  .videoPlayerControlRow { display: inline-flex; margin: auto; }
+  .videoPlayerControlRow { display: inline-flex; margin: auto; }  
+  /* .modalContentKeybindsTableRow { margin: 0px; margin-left: 10px; margin-right: 10px; padding: 10px; text-align: center; border: 1px solid black; background-color: red; } */
+  .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; background-color: red; color: black; }
+  .modalContentKeybindsEqual { width: 13%; background-color: #1c1b1b }
+  .modalContentKeybindsCharacter { width: auto; padding: 10px; border: 1px solid white; background-color: #1c1b1b; }
+  .modalContentKeybindsTableRow { border: 1px solid red; }
+  .changeVideoQualityStepsText { margin: 0px; padding: 0px; }
+  .initializeNewCustomRoomText { margin: 0px; padding: 0px; }
 
   /* animations */
   @keyframes fadeLoadingScreenText { from {opacity: 100%; } to {opacity: 0%; } }
@@ -2914,7 +3346,7 @@ export default {
 
     #buttonCreateRoomTest { display: inline-block; font-size: 40px; }
 
-    #createRoom, #addUsername { display: none; background-color: gray; }
+    #createRoom, #addUsername { display: none; background-color: transparent; }
 
     #inputCreateRoom, #buttonCreateRoomTest, #inputAddUser { height: 60px; }
 

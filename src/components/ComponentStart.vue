@@ -23,34 +23,20 @@
                 <!-- <router-link v-bind:to="'/' + room.room"><div class="roomLink">({{room.clients.length}}) {{room.room}}</div><div class="roomLinkIcon"></div></router-link> -->
             <!-- </div>
         </div> -->
-        
-        <!-- active rooms -->
-        <!-- <h1 id="activeRoomsTitle" v-if="vuexAllRooms.length > 0">Active Rooms</h1>
-        <div id="activeRooms" v-if="vuexAllRooms.length > 0">
-            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key"> -->
-                <!-- current room -->
-                <!-- <router-link v-bind:to="'/' + room.room">
-                    <div class="roomLinkIcon"></div>
-                    <div class="roomLink" style="background-color: red;">({{room.clients.length}}) {{room.room}}</div>
-                </router-link> -->
-
-                <!-- other rooms -->
-                <!-- <router-link v-bind:to="'/' + room.room" v-else-if="currentRoute.substr(1) != room.room">
-                    <div class="roomLinkIcon"></div>
-                    <div class="roomLink">({{room.clients.length}}) {{room.room}}</div>
-                </router-link> -->
-                <!-- <router-link v-bind:to="'/' + room.room"><div class="roomLink">({{room.clients.length}}) {{room.room}}</div><div class="roomLinkIcon"></div></router-link> -->
-            <!-- </div>
-        </div> -->
 
         <!-- default rooms -->
-        <h1 id="defaultRoomsTitle"></h1>
+        <h1 id="defaultRoomsTitle">Default rooms</h1>
         <div id="defaultRooms">
             <div class="room" v-for="room in defaultRooms" v-bind:key="room.key">
-                <router-link v-bind:to="'/' + room">
-                    <div class="roomLinkIcon"></div>
-                    <div class="roomLink">{{room}}</div>
-                </router-link>
+                <router-link v-bind:to="'/' + room"><div class="roomLink">{{room}}</div></router-link>
+            </div>
+        </div>
+        
+        <!-- active rooms -->
+        <h1 id="activeRoomsTitle" v-if="vuexAllRooms.length > 0">Active Rooms</h1>
+        <div id="activeRooms" v-if="vuexAllRooms.length > 0">
+            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
+                <router-link v-bind:to="'/' + room.room" v-if="room.room != 'temp'"><div class="roomLink" v-if="room.room != 'temp'">{{room.room}}</div></router-link>
             </div>
         </div>
 
@@ -122,10 +108,10 @@ export default {
 
 <style scoped>
     /* elements */
-    a { text-decoration: none; }
+    a { color: white; text-decoration: none; }
 
     /* ids */
-    #componentStart { display: block; position: absolute; height: calc(90vh + 23px); width: auto; top: 0px; padding-bottom: 10px; z-index: 2; text-align: center; overflow-x: hidden; overflow-y: scroll; scrollbar-width: none; scrollbar-color: black transparent; color: white; background-color: #1c1b1bcc; border-right: 1px solid black; }
+    #componentStart { display: block; position: absolute; height: calc(90vh + 23px); width: auto; top: 0px; padding-bottom: 100px; z-index: 1; text-align: center; overflow-x: hidden; overflow-y: scroll; scrollbar-width: none; scrollbar-color: black transparent; color: white; background-color: #1c1b1bcc; border-right: 1px solid black; }
     #activeRooms, #defaultRooms, #currentRoom { display: inline-flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; }
     /* #defaultRooms { width: auto; } */
     /* #activeRooms { width: 60vw; } */
@@ -134,8 +120,26 @@ export default {
     /* #activeRoomsTitle, #defaultRoomsTitle { margin-top: 4vh; } */
 
     /* classes */
-    .roomLink { margin: 0px; padding: 7px; font-size: 14px; font-weight: bold; text-decoration: none; color: white; background-color: black; }
-    .roomLink:active { background-color: blue; }
-    .roomLinkIcon { height: 142px; width: 170px; margin: auto; background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F643%2F326%2Foriginal%2Fvector-group-people-icon.jpg&f=1&nofb=1'); background-size: cover; background-position-y: center; background-color: white; }
-    .room { height: 170px; width: 170px; margin: 10px; margin-right: 20px; margin-left: 20px; background-color: red; }
+    .roomLink 
+    { 
+        margin: 0px; 
+        padding: 7px; 
+        font-size: 14px; 
+        font-weight: bold; 
+        user-select: none; 
+        text-decoration: none; 
+        color: white; 
+        background-color: black; 
+        height: auto; 
+        width: 170px; 
+        margin: 10px;
+        margin-right: 20px; 
+        margin-left: 20px;
+        border: 1px solid white;
+        background-color: #1c1b1b; 
+    }
+
+    .roomLink:active, .roomLink:hover { color: #1c1b1b; background-color: white; }
+    /* .roomLinkIcon { height: 142px; width: 170px; margin: auto; background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F643%2F326%2Foriginal%2Fvector-group-people-icon.jpg&f=1&nofb=1'); background-size: cover; background-position-y: center; background-color: white; } */
+    /* .room { height: auto; width: 170px; margin: 10px; margin-right: 20px; margin-left: 20px; background-color: red; } */
 </style>
