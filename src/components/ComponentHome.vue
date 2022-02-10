@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div id="componentHome">
     <div id="modal" style="display: none;">
+
       <div id="modalSidebar">
+        <div id="modalCloseBar" v-on:click="closeModal()">Close</div>
         <div id="modalSidebarKeybinds" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
         <div id="modalSidebarSettings" v-on:click="showModalCategory('Settings')">Settings</div>
         <div id="modalSidebarCreateRoom" v-on:click="showModalCategory('Create Room')">Create Room</div>
@@ -176,11 +178,11 @@
     <div id="videoArea">
       <div id="initializeNewCustomRoom">
         <div id="initializeNewCustomRoomSteps">
-        <p class="initializeNewCustomRoomText" id="initializeNewCustomRoomTitle">waiting for room to be initialized...</p>
-        <p class="initializeNewCustomRoomText">Step 1: paste video or playlist id of choice</p>
-        <p class="initializeNewCustomRoomText">Step 2: press on load button</p>
-        <p class="initializeNewCustomRoomText">Example playlist url: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
-        <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
+          <p class="initializeNewCustomRoomText" id="initializeNewCustomRoomTitle">waiting for room to be initialized...</p>
+          <p class="initializeNewCustomRoomText">Step 1: paste video or playlist id of choice</p>
+          <p class="initializeNewCustomRoomText">Step 2: press on load button</p>
+          <p class="initializeNewCustomRoomText">Example playlist url: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
+          <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
         </div>
 
         <div id="initializeNewCustomRoom-load-video-elems">
@@ -226,10 +228,13 @@
         <!-- @mouseup.right="videoPlayButtonOverlay()" -->
         <div id="videoPlayButtonOverlay" @contextmenu.prevent @mousedown.right="toggleVideoInfoAndControls()" v-on:click="videoPlayButtonOverlay()">
           <div id="videoPlayPauseOverlay">
-            <svg id="videoPlayButtonSvg" height="20%" width="20%" version="1.1" viewBox="0 0 68 48">
-              <path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"></path>
-              <path d="M 45,24 27,14 27,34" fill="#fff"></path>
-            </svg>
+            <p id="videoPlayPauseOverlayText"></p>
+            <!-- <svg id="videoPlayButtonSvg" height="20%" width="20%" version="1.1" viewBox="0 0 68 48"> -->
+              <!-- <path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"></path> -->
+              <!-- <path d="M 45,24 27,14 27,34" fill="#fff"></path> -->
+            <!-- </svg> -->
+          </div>
+          <div id="videoPlayPauseOverlayMobile">
           </div>
         </div>
 
@@ -271,28 +276,28 @@
             <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
             <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
             <div id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
-            <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
-            <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
-            <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
+            <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
+            <div><input id="jump-video-input" type="number" placeholder="Jump Nr" max="1000"/></div>
           </div>
           
           <!-- player controls row -->
           <div id="playlistControls" class="videoPlayerControlRow"><!-- playlist controls -->
-            <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
-            <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
-            <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
-            <div><input id="jump-video-input" type="number" placeholder="video nr" max="1000"/></div>
+            <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
+                      <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
+                      <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
+            <div id="sync-video-elems">
+              <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
+              <input id="sync-video-input" type="number" placeholder="Sync Secs" max="1000000"/>
+            </div>
           </div>
 
           <!-- player controls row -->
           <div class="videoPlayerControlRow">
-            <div id="sync-video-elems">
-              <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
-              <input id="sync-video-input" type="number" placeholder="sync sec" max="1000000"/>
-            </div>
+            <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
+            <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
             <div id="load-video-elems">
               <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-              <input id="load-video-input" placeholder="video/pl id" maxlength="100" />
+              <input id="load-video-input" placeholder="Load Id" maxlength="100" />
             </div>
             <!-- <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('resync')">ReSync</div> -->
           </div>        
@@ -314,6 +319,30 @@
                   <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
                 </div> -->
       </div>
+
+      <div id="videoPlayerControlButtonsMobile">
+          <div class="videoPlayerControlRow">
+            <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
+            <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Video Info</div>
+            <div id="play-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
+            <div id="pause-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
+            <div id="restart-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
+            <div id="mute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
+            <div id="unmute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
+            <div id="volume-up-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeUp()">Volume +</div>
+            <div id="volume-down-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeDown()">Volume -</div>
+            <div id="previous-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
+            <div id="next-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
+            <div id="jump-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
+            <div><input id="jump-video-input-mobile" type="number" placeholder="video nr" max="1000"/></div>
+            <div id="sync-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
+            <div><input id="sync-video-input-mobile" type="number" placeholder="sync sec" max="1000000"/></div>
+            <div id="load-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
+            <div><input id="load-video-input-mobile" placeholder="video/pl id" maxlength="100" /></div>
+            <!-- <div id="videoQualityControls" class="videoPlayerControlRow"></div> -->
+          </div>
+      </div>
+      
     </div>
     <!-- chat -->
     <div id="flex">
@@ -620,10 +649,12 @@ export default {
           let videoChannel = document.getElementById("videoChannel")
           let videoCurrentRoom = document.getElementById("videoCurrentRoom")
           let totalUsersCurrentRoomCount = document.getElementById("totalUsersCurrentRoomCount")
+          let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
 
           videoTitle.innerText = "video: " + playingVideoTitle
           videoChannel.innerText = "channel: " + videoChannelValue
           videoCurrentRoom.innerText = "current room: " + inputCurrentRoom.innerText
+          videoPlayPauseOverlayText.innerText = playingVideoTitle
 
           if(videoQualityValue == "tiny")(videoQualityValue = "144p")
           else if(videoQualityValue == "small")(videoQualityValue = "240p")
@@ -1298,6 +1329,11 @@ export default {
       {
         //variables
         let syncTime = document.getElementById("sync-video-input").value
+        if(syncTime == "")
+        {
+          let syncTimeMobile = document.getElementById("sync-video-input-mobile").value
+          syncTime = syncTimeMobile
+        }
         // let syncTimeInMinutes = parseInt(syncTime / 60)
         // let syncTimeInSeconds = syncTime % 60
         let syncMessage = "synced video to " + syncTime + " secs"
@@ -1339,6 +1375,11 @@ export default {
         let btnUnmute = document.getElementById("unmute-video")
         btnMute.style.display = "none"
         btnUnmute.style.display = "block"
+        
+        let btnMuteMobile = document.getElementById("mute-video-mobile")
+        let btnUnmuteMobile = document.getElementById("unmute-video-mobile")
+        btnMuteMobile.style.display = "none"
+        btnUnmuteMobile.style.display = "block"
 
         //set local variable
         videoMuted = true
@@ -1351,6 +1392,11 @@ export default {
         let btnUnmute = document.getElementById("unmute-video")
         btnMute.style.display = "block"
         btnUnmute.style.display = "none"
+        
+        let btnMuteMobile = document.getElementById("mute-video-mobile")
+        let btnUnmuteMobile = document.getElementById("unmute-video-mobile")
+        btnMuteMobile.style.display = "block"
+        btnUnmuteMobile.style.display = "none"
 
         //set local variable
         videoMuted = false
@@ -1372,21 +1418,24 @@ export default {
       }
       else if(event == "load")
       {
-        let loadVideoInput = document.getElementById("load-video-input")
-        let initializeNewCustomRoomVideoInput = document.getElementById("initializeNewCustomRoom-load-video-input")
+        let loadVideoInput = document.getElementById("load-video-input").value
+          let loadVideoInputMobile = document.getElementById("load-video-input-mobile").value
+
+        let initializeNewCustomRoomVideoInput = document.getElementById("initializeNewCustomRoom-load-video-input").value
         let initializeNewCustomRoom = document.getElementById("initializeNewCustomRoom")
 
-        let loadThisId = loadVideoInput.value
+        let loadThisId = loadVideoInput
         let msgObjChat = "" //JSON.parse("{" + "\"content\"" + ":" + "\"" + "loaded video " + loadThisId + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
         let msgObjVideoCommand = ""
-
+        
         if(initializeNewCustomRoomVideoInput != "")
         { 
-          loadThisId = initializeNewCustomRoomVideoInput.value
+          loadThisId = initializeNewCustomRoomVideoInput
           initializeNewCustomRoom.style.display = "none"
-          initializeNewCustomRoomVideoInput.value = ""
+          initializeNewCustomRoomVideoInput = ""
         }
-        else if(loadThisId != "") { loadThisId = loadVideoInput.value }
+        else if(loadVideoInputMobile != "") { loadThisId = loadVideoInputMobile }
+        else if(loadThisId != "") { loadThisId = loadVideoInput }
         else { loadThisId = param1 }
         
         console.log("loadThisId: " + loadThisId)
@@ -1641,9 +1690,15 @@ export default {
       {
         //variables
         let jumpVideoInput = document.getElementById("jump-video-input").value
+        if(jumpVideoInput == "")
+        {
+          let jumpVideoInputMobile = document.getElementById("jump-video-input-mobile").value
+          jumpVideoInput = jumpVideoInputMobile
+        }
         let jumpIndex = jumpVideoInput - 1
         let videoNr = jumpIndex + 1
         let currentVideo = (playlistCurrentVideoIndex + 1)
+
 
         if(videoNr != currentVideo && videoNr >= 1 && videoNr <= playlistLength)
         {
@@ -1681,8 +1736,8 @@ export default {
         //hide or show modal
         if(modal.style.display == "block") { modal.style.display = "none" }
         //play or pause video
-        else if(videoPlaying == false){videoPlayerEvents("play")}
-        else if(videoPlaying == true){videoPlayerEvents("pause")}
+        else if(videoPlaying == false) { videoPlayerEvents("play") }
+        else if(videoPlaying == true){ videoPlayerEvents("pause") }
     }
 
     function requestFullScreen()
@@ -1829,6 +1884,11 @@ export default {
       let btnPause = document.getElementById("pause-video")
       btnPlay.style.display = "block"
       btnPause.style.display = "none"
+      
+      let btnPlayMobile = document.getElementById("play-video-mobile")
+      let btnPauseMobile = document.getElementById("pause-video-mobile")
+      btnPlayMobile.style.display = "block"
+      btnPauseMobile.style.display = "none"
     }
 
     function displayPauseButton()
@@ -1837,6 +1897,11 @@ export default {
       let btnPause = document.getElementById("pause-video")
       btnPlay.style.display = "none"
       btnPause.style.display = "block"
+            
+      let btnPlayMobile = document.getElementById("play-video-mobile")
+      let btnPauseMobile = document.getElementById("pause-video-mobile")
+      btnPlayMobile.style.display = "none"
+      btnPauseMobile.style.display = "block"
     }
 
     function initializeVideo()
@@ -1874,17 +1939,31 @@ export default {
         let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
         videoPlayPauseOverlay.style.display = "block"
 
-        let videoPlayButtonSvg = document.getElementById("videoPlayButtonSvg")
-        videoPlayButtonSvg.style.display = "block"
+        // let videoPlayButtonSvg = document.getElementById("videoPlayButtonSvg")
+        // videoPlayButtonSvg.style.display = "block"
+
+        let videoPlayPauseOverlayMobile = document.getElementById("videoPlayPauseOverlayMobile")
+        videoPlayPauseOverlayMobile.style.display = "block"
+
+        let player = document.getElementById("player")
+        player.style.transform = "scale(1.6)"
     }
 
     function undisplayPauseOverlay()
     {
-        let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
-        videoPlayPauseOverlay.style.display = "none"
+      let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
+      videoPlayPauseOverlay.style.display = "none"
+
+      // let videoPlayButtonSvg = document.getElementById("videoPlayButtonSvg")
+      // videoPlayButtonSvg.style.display = "none"
+
+      setTimeout(() => {
+        let player = document.getElementById("player")
+        player.style.transform = "scale(1)"
         
-        let videoPlayButtonSvg = document.getElementById("videoPlayButtonSvg")
-        videoPlayButtonSvg.style.display = "none"
+        let videoPlayPauseOverlayMobile = document.getElementById("videoPlayPauseOverlayMobile")
+        videoPlayPauseOverlayMobile.style.display = "none"
+      }, 100)
     }
 
     function displayLoadingOverlay()
@@ -1900,17 +1979,23 @@ export default {
 
         let componentStart = document.getElementById("componentStart")
         componentStart.scrollTop = 0
+
+        let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
+        videoPlayPauseOverlayText.innerText = "Press to Play"
     }
 
     function undisplayLoadingOverlay()
     {
         let videoLoadingOverlay = document.getElementById("videoLoadingOverlay")
         videoLoadingOverlay.style.display = "none"
-        videoLoadingOverlay.style.zIndex = "1"
-        videoLoadingOverlay.style.backgroundColor = "transparent"
+        // videoLoadingOverlay.style.zIndex = "1"
+        // videoLoadingOverlay.style.backgroundColor = "transparent"
 
-        let loadingScreenText = document.getElementById("loadingScreenText")
-        loadingScreenText.style.marginRight = "14vw"
+        // let loadingScreenText = document.getElementById("loadingScreenText")
+        // loadingScreenText.style.marginRight = "14vw"
+
+        let loadingScreenImage = document.getElementById("loadingScreenImage")
+        loadingScreenImage.style.display = "none"
 
         let loadingScreenGif = document.getElementById("loadingScreenGif")
         loadingScreenGif.style.backgroundColor = "transparent"
@@ -1918,8 +2003,8 @@ export default {
         let vp = document.getElementById("videoPlayer")
         vp.style.border = "0px"
 
-        // let videoInfo = document.getElementById("videoInfo")
-        // videoInfo.style.display = "block"
+        let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
+        videoPlayPauseOverlayText.style.display = "block"
 
         displayVideoInfoAndControls()
 
@@ -1953,6 +2038,9 @@ export default {
       
       let videoInfo = document.getElementById("videoInfo")
       videoInfo.style.display = "block"
+
+      let videoPlayerControlButtonsMobile = document.getElementById("videoPlayerControlButtonsMobile")
+      videoPlayerControlButtonsMobile.style.display = "block"
     }
 
     function undisplayVideoInfoAndControls()
@@ -1962,6 +2050,9 @@ export default {
       
       let videoInfo = document.getElementById("videoInfo")
       videoInfo.style.display = "none"
+
+      let videoPlayerControlButtonsMobile = document.getElementById("videoPlayerControlButtonsMobile")
+      videoPlayerControlButtonsMobile.style.display = "none"
     }
 
     function showStartComponent()
@@ -1997,6 +2088,7 @@ export default {
     {
       let videoPlayerControlButtons = document.getElementById("videoPlayerControlButtons")
       let videoInfo = document.getElementById("videoInfo")
+      let videoPlayerControlButtonsMobile = document.getElementById("videoPlayerControlButtonsMobile")
 
       if(videoInfo.style.display == "block")
       {
@@ -2007,6 +2099,7 @@ export default {
       {
         videoInfo.style.display = "block"
         videoPlayerControlButtons.style.display = "inline-flex"
+        videoPlayerControlButtonsMobile.style.display = "block"
       }
     }
 
@@ -2089,6 +2182,7 @@ export default {
           button.style.height = "40px"
           button.style.width = "40%"
           button.style.marginTop = "30px"
+          button.style.marginBottom = "30px"
           button.style.borderRadius = "0%"
         
           let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
@@ -2199,23 +2293,11 @@ export default {
           }
           else if(event.code == "ArrowDown")
           {
-            if(playingVideoVolume != 0)
-            {
-              console.log("volume down")
-              let newVolume = null
-              newVolume = parseInt(playingVideoVolume) - 10
-              videoPlayerEvents("volume", newVolume)
-            }
+            volumeDown()
           }
           else if(event.code == "ArrowUp")
           {
-            if(playingVideoVolume != 100)
-            {
-              console.log("volume up")
-              let newVolume = null
-              newVolume = parseInt(playingVideoVolume) + 10
-              videoPlayerEvents("volume", newVolume)
-            }
+            volumeUp()
           }
           else if(event.code == "KeyR")
           {
@@ -2262,7 +2344,35 @@ export default {
       setTimeout(() => {window.addEventListener('keyup', enableKeybinds)}, initializeNewCustomRoomVideoEnableKeybindsTime)
       
     }
+
+    function volumeUp()
+    {
+      if(playingVideoVolume != 100)
+      {
+        console.log("volume up")
+        let newVolume = null
+        newVolume = parseInt(playingVideoVolume) + 10
+        videoPlayerEvents("volume", newVolume)
+      }
+    }
+
+    function volumeDown()
+    {
+      if(playingVideoVolume != 0)
+      {
+        console.log("volume down")
+        let newVolume = null
+        newVolume = parseInt(playingVideoVolume) - 10
+        videoPlayerEvents("volume", newVolume)
+      }
+    }
     
+    function closeModal()
+    {
+      let d = document.getElementById("modal")
+      d.style.display = "none"
+    }
+
     //socket stream
     socket.on('chat message', function(msg) {
         //debugging
@@ -3104,9 +3214,9 @@ export default {
         else if(msg.content == "next video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'nextVideo' + '","args":""}', '*');
-          displayPauseButton()
+          // displayPauseButton()
           resetCurrentTimeVideo()
-          undisplayPauseOverlay()
+          // undisplayPauseOverlay()
 
           //set local variable
           videoPlaying = true
@@ -3114,9 +3224,9 @@ export default {
         else if(msg.content == "previous video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'previousVideo' + '","args":""}', '*');
-          displayPauseButton()
+          // displayPauseButton()
           resetCurrentTimeVideo()
-          undisplayPauseOverlay()
+          // undisplayPauseOverlay()
 
           //set local variable
           videoPlaying = true
@@ -3171,7 +3281,6 @@ export default {
       videoPlayerEvents,
       loadVideoStart,
       loadVideoCustom,
-      videoPlayerEvents,
       videoPlayButtonOverlay,
       requestFullScreen,
       currentRoute,
@@ -3182,6 +3291,9 @@ export default {
       showModalCategory,
       displayInitializeNewCustomRoom,
       initializeNewCustomRoomVideo,
+      volumeUp,
+      volumeDown,
+      closeModal,
     }
   }
 }
@@ -3191,11 +3303,12 @@ export default {
 <style scoped>
   /* elements */
   /* body { margin: 0; padding-bottom: 0; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: black; } */
-  #componentHome { display: block; font-family: Arial, Helvetica, sans-serif; overflow: hidden; background-color: black; }
   button { border-radius: 0%; outline: none; color: black; }
+  input[type="number"], input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: textfield; -moz-appearance: textfield; appearance: textfield; }
 
   /* ids */
-  #chat { height: calc(86% - 4px); width: 100%; right: 0; overflow-y: scroll; border-left: 1px solid black; }
+  #componentHome { display: block; font-family: Arial, Helvetica, sans-serif; overflow: hidden; background-color: black; }
+  #chat { height: calc(87% - 16px); width: 100%; right: 0; overflow-y: scroll; position: absolute; bottom: calc(100px - 6px); border-left: 1px solid black; }
   /* #form { height: 6%; border: 1px solid black; background: lightgray; margin-right: 1px; padding: 10px; padding-bottom: 10px; position: fixed; bottom: 0; right: 0; display: flex; box-sizing: border-box; backdrop-filter: blur(10px); } */
   #inputChatMessage { display: inline-block; width: calc(100% - 20px); margin: 0px; margin-top: 8px; padding: 10px; font-size: 14px; border: 0px; }
   /* #inputChatMessage:focus { outline: none; } */
@@ -3207,8 +3320,8 @@ export default {
   /* #menu::-webkit-scrollbar-thumb:hover { background: #555 } */
   /* #menu { scrollbar-width: thin; scrollbar-color: black white; } */
   #chat { scrollbar-width: thin; scrollbar-color: gray lightgray; }
-  #chatBox { width: 100%; margin: 0px; padding: 0px; text-align: center; background-color: #1c1b1b; }
-  #currentRoomInfo, #mobileCurrentRoomInfo { display: block; width: 100%; padding: 13px; text-align: center; user-select: none; color: white; background-color: #1c1b1b; }
+  #chatBox { width: 100%; margin: 0px; padding: 0px; bottom: 0px; position: absolute; text-align: center; background-color: #1c1b1b; }
+  #currentRoomInfo, #mobileCurrentRoomInfo { display: block; width: 100%; padding: 1.4vh; text-align: center; user-select: none; z-index: 1; color: white; background-color: #1c1b1b; }
   #mobileCurrentRoomInfo { display: none; }
   #messages { list-style-type: none; margin: 0; padding: 0; font-size: 14px; }
   /* #messages > li { padding: 20px; } */
@@ -3218,7 +3331,7 @@ export default {
   /* #inputCreateRoom { width: 100% } */
   #toggleMenu { margin: 0px; padding: 16px; padding-left: 20px; padding-right: 20px; user-select: none; text-align: left; width: 100%; color: white; background-color: red; }
   /* #flex { display: inline-flex; position: absolute; height: 94vh; width: 30vw; flex-wrap: wrap; align-content: flex-start; top: 0; right: 0; background-color: white; } */
-  #flex { display: inline-flex; position: absolute; height: 100vh; width: calc(19vw - 1px); flex-wrap: wrap; align-content: flex-start; bottom: 0; right: 0; z-index: 2; overflow-y: hidden; border-left: 0px solid black; background-color: white; }
+  #flex { display: inline-flex; position: absolute; height: 100vh; width: calc(19vw - 1px); flex-wrap: wrap; align-content: flex-start; bottom: 0; right: 0; z-index: 2; overflow-y: hidden; filter: brightness(0.98); border-left: 1px solid black; background-color: white; }
   /* #flex > div { display: block; width: 100%; border: 1px solid black } */
   #buttonSend { display: inline-block; margin: 0px; margin-bottom: 10px; padding: 10px; width: 100%; border: 0px; color: #1c1b1b; font-weight: bold; font-family: Arial; font-size: 14px; border-top: 1px solid #1c1b1b; background-color: rgb(239, 239, 239); }
   #info, #usersList, #createRoom, #addUsername, #allRoomsList { display: block; }
@@ -3235,33 +3348,33 @@ export default {
 
   #pause-video, #unmute-video { display: none; }
   #iframeContainer { width: 100%; height: 100%; }
-  #sync-video-input, #load-video-input, #jump-video-input { width: 100px; padding: 10px; height: 17px; background-color: rgba(255, 255, 255); border: 2px solid black; }
-  #sync-video, #load-video { display: inline-block; padding: 10px; }
+  #sync-video-input, #load-video-input, #jump-video-input { width: 100px; padding: 10px; height: 17px; color: white; font-size: 13px; border: 1px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1b; }
+  #sync-video, #load-video, #jump-video { display: inline-block; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); }
   #player { display: block; position: absolute; height: calc(100vh + 60px); width: 81vw; margin: auto; margin: 0px; margin-top: -61px; margin-left: 0px; padding: 0px; overflow: none; background-color: black; border: 0px solid white; }
   #videoPlayButtonOverlay { display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; border: 0; background-color: transparent; } /* #ff000030 */
-  #videoPlayerControlButtons { display: none; position: absolute; width: auto; margin: 0; padding: 0px; bottom: 100px; left: 41.5%; z-index: 3; opacity: 70%; transform: translate(-50%); -ms-transform: translate(-50%); flex-direction: column; border: 0px solid white; background-color: transparent; }
+  #videoPlayerControlButtons { display: none; position: absolute; width: auto; margin: 0; padding: 0px; bottom: 12vh; left: 41.5%; z-index: 3; opacity: 70%; transform: translate(-50%); -ms-transform: translate(-50%); flex-direction: column; color: white; border: 1px solid rgba(255, 255, 255, 0.7); background-color: transparent; }
   /* #current-time-video { margin: 0px; padding: 0px; font-weight: bold; margin-top: 10px; margin-bottom: 10px; color: white; border: 0px; background-color: transparent; } */
   #playlistControls { display: none; }
   #restart-video { display: block; }
-  #videoPlayButtonSvg { position: absolute; margin-top: 0px; margin-left: 0px; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+  #videoPlayButtonSvg { position: absolute; margin-top: 0px; margin-left: 0px; top: 46%; left: 50%; height: 20vh; width: 40vh; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
   /* #videoTitle { font-size: 14px; font-weight: bold; text-align: center; color: white; width: 90%; margin: auto; margin-top: 3vh; margin-bottom: 0px; } */
   #videoPlayPauseOverlay { display: none; height: 100%; width: 100%; background-color: transparent; }
-  #videoLoadingOverlay { display: block; position: fixed; height: 100vh; width: 100vw; left: 0px; top: 0px; z-index: 4; background-size: cover; background-color: black; }
-  #loadingScreenGif { display: block;  top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: white; position: absolute; width: auto; text-align: center; background-color: transparent; }
+  #videoLoadingOverlay { display: block; position: fixed; height: 100vh; width: 100vw; left: 0px; top: 0px; z-index: 4; background-color: black; }
+  #loadingScreenGif { display: block;  top: 49%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: white; position: absolute; width: auto; text-align: center; background-color: transparent; }
   
   #form { width: 94%; margin: auto; margin-top: 2px; }
   /* #sync-video-input { width: 99px; } */
   #jump-video-input { height: 17px; }
-  #videoInfo { display: none; position: absolute; top: 3vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 90%; text-align: left; font-size: 14px; font-weight: bold; text-shadow: black 1px 1px; color: white; background-color: transparent; }
+  #videoInfo { display: none; position: absolute; top: 4vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 90%; text-align: left; font-size: 14px; font-weight: normal; text-shadow: black 1px 1px; color: white; background-color: transparent; }
   #videoChannel, #videoTitle, #videoQuality, #videoCurrentPlaylistIndex, #current-time-video, #videoCurrentRoom, #videoVolume, #videoCurrentRoomTotalUsers { margin: 6px; text-align: right; }
   #videoArea { display: block; }
-  #loadingScreenText { animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; }
-  #loadingScreenImage { display: block; position: absolute; height: 40vh; width: 40vh; top: 0px; left: 0px; margin-top: calc(-16vh + 1px); margin-left: 140px; transform: rotate(-45deg) translate(-50%, -50%); z-index: -1; background-size: cover; border-radius: 7%; border: 3px solid white; background-color: black; }
+  #loadingScreenText { color: white; animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; }
+  #loadingScreenImage { display: none; position: absolute; height: 40vh; width: 40vh; top: 0px; left: 0px; margin-top: calc(-16vh + 1px); margin-left: 140px; transform: rotate(-45deg) translate(-50%, -50%); z-index: -1; background-size: cover; border-radius: 7%; border: 3px solid white; background-color: black; }
   #currentRouteBar { display: none; color: white; background-color: red; position: absolute; bottom: 0px; width: 73vw; padding: 10px; z-index: 1 }
   #videoCurrentRoom { display: none; }
 
   #modal { position: absolute; display: block; height: 70vh; width: 60vw;  margin: 0; margin-left: -8vw; padding: 0px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; opacity: 90%; background-color: white; }
-  #modalSidebar { display: inline-block; height: 100%; width: 30%; vertical-align: top; font-weight: bold; text-align: center; user-select: none; color: #1c1b1b; }
+  #modalSidebar { display: inline-block; height: 100%; width: 30%; vertical-align: top; font-weight: bold; text-align: left; user-select: none; color: #1c1b1b; }
   #modalSidebar > div { padding: 10px; border-bottom: 3px solid #1c1b1b; }
   /* #modalSidebar > div:hover { color: white; background-color: black; } */
   #modalContent { display: inline-block; height: 100%; width: 70%; overflow: auto; text-align: center; color: white; background-color: #1c1b1b; }
@@ -3283,6 +3396,25 @@ export default {
   #addUsernameCurrentUsername { margin: 20px; }
   #buttonAddUserTest, #inputAddUser, #buttonCreateRoomTest, #inputCreateRoom { height: 40px; font-size: 16px; }
   #inputCreateRoom, #inputAddUser { width: calc(100% - 24px);  padding-left: 10px; padding-right: 10px; }
+
+  #modalCloseBar { display: block; padding: 4px; text-align: left; background-color: red; }
+  #videoPlayPauseOverlayText 
+  { position: absolute;
+    width: 40vw;
+    top: 43%;
+    padding: 23px;
+    padding-left: 20vw;
+    padding-right: 20vw;
+    font-weight: bold;
+    font-size: 19px;
+    text-align: center;
+    opacity: 100%;
+    color: white;
+    background-color: black;
+    text-shadow: 2px 1px black;
+    font-style: oblique;
+  }
+  #videoPlayPauseOverlayMobile { display: none; opacity: 0%; }
   
   /* classes */
   .buttonJoin, .buttonLeave { padding: 3px; overflow-wrap: break-word; font-weight: normal; font-size: 17px; }
@@ -3291,7 +3423,7 @@ export default {
   .buttonUser {}
   .buttonNamespace {}
   .errorMessage { display: block; margin: 20px; width: auto; background-color: transparent; }
-  .videoPlayerControlButton { display: block; max-height: 17px; min-width: 100px; padding: 10px; user-select: none; text-align: center; font-size: 14px; background-color: rgba(255, 255, 255); border: 2px solid black; }
+  .videoPlayerControlButton { display: block; max-height: 17px; min-width: 100px; padding: 10px; user-select: none; text-align: center; font-size: 14px; background-color: #1c1b1b; border: 1px solid rgba(255, 255, 255, 0.1); }
   .videoPlayerControlRow { display: inline-flex; margin: auto; }  
   /* .modalContentKeybindsTableRow { margin: 0px; margin-left: 10px; margin-right: 10px; padding: 10px; text-align: center; border: 1px solid black; background-color: red; } */
   .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; background-color: red; color: black; }
@@ -3302,69 +3434,39 @@ export default {
   .initializeNewCustomRoomText { margin: 0px; padding: 0px; }
 
   /* animations */
-  @keyframes fadeLoadingScreenText { from {opacity: 100%; } to {opacity: 0%; } }
+  @keyframes fadeLoadingScreenText { from {opacity: 100%; } to {opacity: 0%; } }  
 
   /*** mobile ***/
   /* @media screen and (min-device-width : 176px) and  (max-device-width : 360px) {
     body {background: green; } 
   } */
 
-  @media screen and (max-width: 1300px) {
-    #componentHome {
-        background-color: transparent;
-        font-size: 240%;
-        overflow: scroll;
-    }
-
-    /* #flex > div { display: block; width: 100%; border: 1px solid black } */
-    #flex > div { width: 100%; border: 1px solid black }
-
-    #menu { height: auto; }
-
-    #menu > div { padding: 20px; }
-
-    #mobileMenuCurrentRoom, #mobileMenuAllRooms { display: block; }
-
-    #inputChatMessage { display: inline-block; height: 71px; width: 83%; margin: 1px; margin-top: 6px; padding: 0px; padding-left: 10px; padding-right: 10px; font-size: 40px; }
-
-    #chat { height: 66%; }
-    
-    #currentRoomInfo, #allRoomsTitle { display: none; }
-
-    #mobileCurrentRoomInfo { padding: 30px; display: block; }
-
-    #buttonSend { height: 72px; margin-left: -14px; padding: 10px; font-size: 40px; }
-
-    .buttonLeave, .buttonJoin { min-height: 100px; min-width: 400px; padding: 10px; font-size: 40px; overflow-wrap: break-word; }
-
-    #mobileMenuAllRooms { display: flex; margin: 0px; padding: 0px; padding-left: 20px; padding-right: 20px; overflow-x: scroll; background-color: gray; }
-
-    #mobileMenuAllRooms > div { position: relative; display: inline-flex; margin: 30px 20px 30px 20px }
-
-    #createRoom, #addUsername { display: block; }
-    #createRoom, #addUsername > button, input { display: block; margin: 0px; padding: 0px; font-size: 40px; }
-
-    #buttonCreateRoomTest { display: inline-block; font-size: 40px; }
-
-    #createRoom, #addUsername { display: none; background-color: transparent; }
-
-    #inputCreateRoom, #buttonCreateRoomTest, #inputAddUser { height: 60px; }
-
-    #inputCreateRoom, #inputAddUser { padding-left: 20px; padding-right: 20px; width: calc(96% - 6px); font-size: 40px; }
-    
-    #buttonCreateRoomTest { width: calc(100% + 2px); }
-
-    .errorMessage { display: none; padding: 20px; width: calc(94% + 4px); background-color: red; border: 7px solid black; }
-
-    #chatBox { position: fixed; bottom: 0px; height: 90px; padding-top: 10px; padding-bottom: 10px; }
-
-    #allRoomsList { display: none; }
-    
-    #info { background-color: gray; }
-
-    #infoTitle, #allUsersTitle, #allRoomsTitle, #createRoomTitle, #addUsernameTitle { border: 2px solid black; }
-
-    #messages > li { padding: 40px; }
-
+  @media screen and (max-width: 1300px) and (orientation: portrait) {
+    #videoArea, #flex { display: none; }
   }
+
+  @media screen and (max-width: 1300px) and (orientation: landscape) 
+  {
+    /* ids */
+    #player { height: 90vh; width: 100vw; margin: 0px; margin-top: 0px; padding: 0px; padding-bottom: 10vh; }
+    #videoPlayPauseOverlay, #videoPlayButtonOverlay { height: 100vh; width: 100vw; }
+    #flex, #videoPlayerControlButtons { z-index: -1; }
+    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; bottom: -3px; overflow: scroll; opacity: 70%; z-index: 3; color: white; border: 0px solid black; }
+    #loadingScreenImage { display: none; }
+    #videoInfo { top: 1vh; right: 1vw; margin: 0px; z-index: 1; }
+    #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 10px; max-height: 14px; max-width: 100px; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
+    #unmute-video-mobile, #pause-video-mobile { display: none; }
+    #modal { display: block; top: 0px; left: 0px; margin: 0px; padding: 0px; height: 100vh; width: 100vw; transform: translate(0%, 0%); }
+    #changeVideoQualitySteps { width: 40%;  margin: auto; padding-bottom: 7vh; }
+    #modalSidebarKeybinds { display: none; }
+    #loadingScreenText { margin-right: 0px; }
+    #initializeNewCustomRoom { top: 50%; left: 50%; }
+    #videoPlayPauseOverlayMobile { display: block; position: absolute; left: 0px; top: 0px; height: 100vh; width: 100vw; z-index: 2; opacity: 100%; border: 0; background-color: black; }
+    #videoPlayPauseOverlayText { width: calc(60vw - 12px); top: 36vh; z-index: 3; background-color: transparent; padding-left: 20vw; padding-right: 20vw; font-size: 14px; }
+    
+    /* classes */
+    .videoPlayerControlButton { min-width: 110px; border: 0px; border-right: 2px solid rgba(255, 255, 255, 0.1); }
+    .videoPlayerControlButton:active { color: black; background-color: white; }
+
+} 
 </style>

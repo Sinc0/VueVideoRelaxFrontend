@@ -11,24 +11,23 @@
         <router-link to="/food"><div class="roomLink" v-if="!JSON.stringify(vuexAllRooms).toString().includes('food')">food (0)</div></router-link> -->
         
         <!-- current room -->
-        <!-- <h1 id="currentRoomsTitle" v-if="vuexAllRooms.length > 0">Current Room</h1>
+        <h1 id="currentRoomsTitle" v-if="vuexAllRooms.length > 0">Current Room</h1>
         <div id="currentRoom" v-if="vuexAllRooms.length > 0">
-            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key" style="border: 6px solid red;"> -->
+            <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
                 <!-- current room -->
-                <!-- <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) == room.room">
-                    <div class="roomLinkIcon"></div>
-                    <div class="roomLink" style="background-color: red;">({{room.clients.length}}) {{room.room}}</div>
-                </router-link> -->
+                <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) == room.room">
+                    <div class="roomLink">({{room.clients.length}}) {{room.room}}</div>
+                </router-link>
 
                 <!-- <router-link v-bind:to="'/' + room.room"><div class="roomLink">({{room.clients.length}}) {{room.room}}</div><div class="roomLinkIcon"></div></router-link> -->
-            <!-- </div>
-        </div> -->
+            </div>
+        </div>
 
         <!-- default rooms -->
         <h1 id="defaultRoomsTitle">Default rooms</h1>
         <div id="defaultRooms">
             <div class="room" v-for="room in defaultRooms" v-bind:key="room.key">
-                <router-link v-bind:to="'/' + room"><div class="roomLink">{{room}}</div></router-link>
+                <router-link v-bind:to="'/' + room" v-if="currentRoute.substr(1) != room"><div class="roomLink" v-if="currentRoute.substr(1) != room">{{room}}</div></router-link>
             </div>
         </div>
         
@@ -36,7 +35,7 @@
         <h1 id="activeRoomsTitle" v-if="vuexAllRooms.length > 0">Active Rooms</h1>
         <div id="activeRooms" v-if="vuexAllRooms.length > 0">
             <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
-                <router-link v-bind:to="'/' + room.room" v-if="room.room != 'temp'"><div class="roomLink" v-if="room.room != 'temp'">{{room.room}}</div></router-link>
+                <router-link v-bind:to="'/' + room.room" v-if="room.room != 'temp' && currentRoute.substr(1) != room.room"><div class="roomLink" v-if="room.room != 'temp' && currentRoute.substr(1) != room.room">{{room.room}}</div></router-link>
             </div>
         </div>
 

@@ -4,6 +4,7 @@
     <ComponentAbout />
     <ComponentHome />
     <ComponentStart />
+    <ComponentStartMobile />
 
     <!-- start menu -->
     <div id="startNav">
@@ -19,13 +20,15 @@
 import ComponentHome from '@/components/ComponentHome.vue'
 import ComponentAbout from '@/components/ComponentAbout.vue'
 import ComponentStart from '@/components/ComponentStart.vue'
+import ComponentStartMobile from '@/components/ComponentStartMobile.vue'
 
 export default {
   name: 'Home',
   components: {
     ComponentHome,
     ComponentAbout,
-    ComponentStart
+    ComponentStart,
+    ComponentStartMobile
   },
 
   setup() {
@@ -67,5 +70,17 @@ export default {
 
   /* classes */
   /* .startNavLink {background-color: lightgreen; min-width: 160px; display: inline-block; padding: 14.5px; text-align: center; user-select: none; border: 1px solid black; } */
-  .startNavLink {background-color: transparent; min-width: 160px; display: inline-block; padding: 3px; padding-top: 20px; padding-bottom: 20px; text-align: center; user-select: none; }
+  .startNavLink {background-color: transparent; min-width: 160px; display: inline-block; padding: 3px; padding-top: 20px; padding-bottom: 20px; text-align: center; user-select: none; opacity: 70%; }
+
+  /* mobile */
+  @media screen and (max-width: 1300px) and (orientation: portrait) 
+  {
+    #startNav { display: none; bottom: initial; background-color: transparent; }
+    #componentHome { display: none; }
+  }
+
+  @media screen and (max-width: 1300px) and (orientation: landscape)
+  {
+    #startNav, #componentAbout, #componentStart { display: none; }
+  }
 </style>
