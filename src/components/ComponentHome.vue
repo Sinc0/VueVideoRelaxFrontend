@@ -299,12 +299,12 @@
               <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
               <input id="load-video-input" placeholder="Load Id" maxlength="100" />
             </div>
-            <!-- <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('resync')">ReSync</div> -->
-          </div>        
+          </div>
+
+          <!-- <div class="videoPlayerControlRow"><div id="resync2-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('resync2')">resync</div></div>   -->
 
           <!-- localStorage variable = yt-player-quality {"data":"{\"quality\":144,\"previousQuality\":144}","expiration":1673896845001,"creation":1642792845001} -->
-          <div id="videoQualityControls" class="videoPlayerControlRow"><!-- playlist controls -->
-          </div>          
+          <!-- <div id="videoQualityControls" class="videoPlayerControlRow"></div>           -->
           
           <!-- might use later -->
           <!-- <button id="restart-video" class="videoPlayerControlButton" v-on:click="iframeLoader()">Restart</button> -->
@@ -515,10 +515,10 @@ export default {
     var playlistLength = null
     var loadingScreenTime = 7000
     var initializeVideoTime = 2000
-    var resyncTime1 = 3000
-    var resyncTime2 = 1000
+    var resync1Time = 3000
+    var resyncMargin = 1000
     var addToVideoOnJoinTime = 6
-    var totalLoadTime = initializeVideoTime + resyncTime1 + resyncTime2
+    var totalLoadTime = initializeVideoTime + resync1Time + resyncMargin
 
     var syncMaster = null
     var yourSocketId = null
@@ -545,6 +545,7 @@ export default {
     var waitingForRoomToBeInitialized = null
 
     var initializeNewCustomRoomVideoEnableKeybindsTime = 4000
+    var resync2Time = 6000
 
     // function pvideo1()
     // {
@@ -1590,9 +1591,9 @@ export default {
             socket.emit('chat message', msgObjChat);
           }
       }
-      else if(event == "resync")
+      else if(event == "resync1")
       {
-        console.log("resync: " + playingVideosLastWholeSecond + "s")
+        console.log("resync1: " + playingVideosLastWholeSecond + "s")
         // console.log("videoPlaylist: " + videoPlaylist)
         // console.log("playingVideoStatus: " + playingVideoStatus)
         // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
@@ -1623,7 +1624,7 @@ export default {
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');//pause video
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
-            }, resyncTime2)
+            }, resyncMargin)
                       
             displayPlayButton()
 
@@ -1644,7 +1645,7 @@ export default {
             setTimeout(() => {
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
-            }, resyncTime2)
+            }, resyncMargin)
           }
         }
         else if(videoPlaylist == false)
@@ -1659,7 +1660,7 @@ export default {
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');//pause video
-            }, resyncTime2)
+            }, resyncMargin)
             
             displayPlayButton()
 
@@ -1681,7 +1682,7 @@ export default {
   
               displayPauseButton()    
 
-            }, resyncTime2)
+            }, resyncMargin)
 
           }
         }
@@ -1723,6 +1724,13 @@ export default {
 
           //chat message
           socket.emit('chat message', msgObjChat);
+          
+          //video command
+          socket.emit('video command', msgObjVideoCommand);
+      }
+      else if(event == "resync2")
+      {
+          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "resync2 video" + "\"" + "," + "\"room\"" + ":" + "\"" + inputCurrentRoom.innerText + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + null + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + false + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + 0 + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + true + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + null + "\"" + "}")
           
           //video command
           socket.emit('video command', msgObjVideoCommand);
@@ -1913,7 +1921,8 @@ export default {
           loadVideoStart(playingVideoId, videoPlaylistId)
   
           //sync video
-          setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
+          setTimeout(() => {videoPlayerEvents("resync1")}, resync1Time)
+          setTimeout(() => {videoPlayerEvents("resync2")}, resync2Time)
   
           //undisplay playlist controls
           let playlistControls = document.getElementById("playlistControls")
@@ -1926,7 +1935,8 @@ export default {
           loadVideoStart(playingVideoId, videoPlaylistId)
   
           //sync video
-          setTimeout(() => {videoPlayerEvents("resync")}, resyncTime1)
+          setTimeout(() => {videoPlayerEvents("resync1")}, resync1Time)
+          setTimeout(() => {videoPlayerEvents("resync2")}, resync2Time)
           
           //display playlist controls
           let playlistControls = document.getElementById("playlistControls")
@@ -3260,6 +3270,33 @@ export default {
             setTimeout(() => {videoPlayerEvents("play")}, 3000)
           }
         }
+        else if(msg.content == "resync2 video")
+        {
+          // console.log("resync2")
+          // console.log(msg)
+          msg.playingVideosLastWholeSecond = parseInt(msg.playingVideosLastWholeSecond)
+
+          if(msg.userId == yourSocketId && playingVideosLastWholeSecond != msg.playingVideosLastWholeSecond)
+          {
+            if(msg.videoPlaying == "true")
+            {
+              console.log("resync2 to: " + msg.playingVideosLastWholeSecond)
+              msg.playingVideosLastWholeSecond++
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.playingVideosLastWholeSecond + ', true]}', '*');
+              // document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+            }
+            else if(msg.videoPlaying == "false")
+            {
+
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.playingVideosLastWholeSecond + ', true]}', '*');
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
+            }
+          }
+          else if(msg.userId == yourSocketId && playingVideosLastWholeSecond == msg.playingVideosLastWholeSecond)
+          {
+            console.log("resync2 not needed")
+          }
+        }
     });
 
     return {
@@ -3451,7 +3488,7 @@ export default {
     #player { height: 90vh; width: 100vw; margin: 0px; margin-top: 0px; padding: 0px; padding-bottom: 10vh; }
     #videoPlayPauseOverlay, #videoPlayButtonOverlay { height: 100vh; width: 100vw; }
     #flex, #videoPlayerControlButtons { z-index: -1; }
-    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; bottom: -3px; overflow: scroll; opacity: 70%; z-index: 3; color: white; border: 0px solid black; }
+    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; bottom: -3px; overflow-x: scroll; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: gray lightgray; opacity: 70%; z-index: 3; color: white; border: 0px solid black; }
     #loadingScreenImage { display: none; }
     #videoInfo { top: 1vh; right: 1vw; margin: 0px; z-index: 1; }
     #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 10px; max-height: 14px; max-width: 100px; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
