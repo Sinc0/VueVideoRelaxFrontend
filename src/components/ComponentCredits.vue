@@ -1,7 +1,13 @@
 <template>
-  <div id="componentAbout">
-    <h3 id="title">About Project</h3>
-    <p id="text">This is a student project made to learn about socket.io and server sync.</p>
+  <div id="componentCredits">
+    <h3 id="title">Thanks to following for making this app possible</h3>
+    <ul id="list">
+        <li>Socket.io</li>
+        <li>Node Js</li>
+        <li>Vue Js</li>
+        <li>Youtube embed</li>
+        <li>Stackoverflow</li>
+    </ul>
   </div>
 </template>
 
@@ -12,7 +18,7 @@ export default {
 </script>
 
 <style scoped>
-  #componentAbout 
+  #componentCredits 
   { 
     display: none; 
     position: absolute; 
@@ -29,9 +35,9 @@ export default {
     opacity: 90%;
     color: white;
     background-color: #1c1b1b;
-    border: 2px solid black;  
+    border: 2px solid black; 
   }
 
   #title { margin: 0px; padding: 0px; text-align: center; }
-  #text { margin: 0px; padding: 0px; padding-top: 7px; font-size: 17px;}
+  #list { margin: 0px; margin-left: 20px; padding: 0px; padding-top: 7px; }
 </style>

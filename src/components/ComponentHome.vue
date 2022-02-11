@@ -475,8 +475,10 @@ export default {
         //handle components
         let componentStart = document.getElementById("componentStart")
         let componentAbout = document.getElementById("componentAbout")
+        let componentCredits = document.getElementById("componentCredits")
         componentStart.style.display = "none"
         componentAbout.style.display = "none"
+        componentCredits.style.display = "none"
 
       }, initializeVideoTime)
     })
@@ -1740,9 +1742,16 @@ export default {
     function videoPlayButtonOverlay()
     {
         let modal = document.getElementById("modal")
+        let componentAbout = document.getElementById("componentAbout")
+        let componentCredits = document.getElementById("componentCredits")
 
-        //hide or show modal
-        if(modal.style.display == "block") { modal.style.display = "none" }
+        //hide or show modal/components
+        if(modal.style.display == "block" || componentAbout.style.display == "block" || componentCredits.style.display == "block") 
+        { 
+          modal.style.display = "none" 
+          componentAbout.style.display = "none"  
+          componentCredits.style.display = "none"   
+        } 
         //play or pause video
         else if(videoPlaying == false) { videoPlayerEvents("play") }
         else if(videoPlaying == true){ videoPlayerEvents("pause") }
@@ -1815,7 +1824,7 @@ export default {
                 let componentStart = document.getElementById("componentStart")
                 let inputChatMessage = document.getElementById("inputChatMessage")
                 let modal = document.getElementById("modal")
-                
+            
                 //deselect input
                 inputChatMessage.focus()
                 inputChatMessage.blur()
@@ -2069,8 +2078,10 @@ export default {
     {
       let componentAbout = document.getElementById("componentAbout")
       let componentStart = document.getElementById("componentStart")
+      let componentCredits = document.getElementById("componentCredits")
 
-      componentAbout.style.display = "none"     
+      componentAbout.style.display = "none"  
+      componentCredits.style.display = "none"   
       if(componentStart.style.display == "block") { componentStart.style.display = "none" }
       else if(componentStart.style.display == "none") { componentStart.style.display = "block" }
     }
@@ -2264,13 +2275,20 @@ export default {
           let componentStart = document.getElementById("componentStart")
           let inputChatMessage = document.getElementById("inputChatMessage")
           let modal = document.getElementById("modal")
+          let componentAbout = document.getElementById("componentAbout")
+          let componentCredits = document.getElementById("componentCredits")
           
           //deselect input
           inputChatMessage.focus()
           inputChatMessage.blur()
 
-          //hide or show sidebar
-          if(componentStart.style.display == "block") { componentStart.style.display = "none" }
+          //hide or show components
+          if(componentStart.style.display == "block" || componentAbout.style.display == "block" || componentCredits.style.display == "block") 
+          { 
+            componentStart.style.display = "none"
+            componentAbout.style.display = "none" 
+            componentCredits.style.display = "none"
+          }
           //hide or show modal
           else if(modal.style.display == "none") { modal.style.display = "block" }
           else if(modal.style.display == "block") { modal.style.display = "none"}
@@ -3410,7 +3428,7 @@ export default {
   #currentRouteBar { display: none; color: white; background-color: red; position: absolute; bottom: 0px; width: 73vw; padding: 10px; z-index: 1 }
   #videoCurrentRoom { display: none; }
 
-  #modal { position: absolute; display: block; height: 70vh; width: 60vw;  margin: 0; margin-left: -8vw; padding: 0px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; opacity: 90%; background-color: white; }
+  #modal { position: absolute; display: block; height: 70vh; width: 60vw; margin: 0; margin-left: -8vw; padding: 0px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; opacity: 90%; background-color: white; }
   #modalSidebar { display: inline-block; height: 100%; width: 30%; vertical-align: top; font-weight: bold; text-align: left; user-select: none; color: #1c1b1b; }
   #modalSidebar > div { padding: 10px; border-bottom: 3px solid #1c1b1b; }
   /* #modalSidebar > div:hover { color: white; background-color: black; } */
@@ -3432,7 +3450,7 @@ export default {
   #addUsername, #createRoom { width: 70%; margin: auto; }
   #addUsernameCurrentUsername { margin: 20px; }
   #buttonAddUserTest, #inputAddUser, #buttonCreateRoomTest, #inputCreateRoom { height: 40px; font-size: 16px; }
-  #inputCreateRoom, #inputAddUser { width: calc(100% - 24px);  padding-left: 10px; padding-right: 10px; }
+  #inputCreateRoom, #inputAddUser { width: calc(100% - 24px); padding-left: 10px; padding-right: 10px; }
 
   #modalCloseBar { display: block; padding: 4px; text-align: left; background-color: red; }
   #videoPlayPauseOverlayText 
