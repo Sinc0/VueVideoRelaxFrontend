@@ -1397,7 +1397,7 @@ export default {
         let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
         
         //update elements
-        videoPlayButtonOverlay.style = "display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 13px); width: calc(83vw - 1px); border: 0; background-color: transparent;" /* background-color: #ff000030; */
+        videoPlayButtonOverlay.style = "display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; border: 0; background-color: transparent;" /* background-color: #ff000030; */
         videoPlayPauseOverlay.style.backgroundColor = "transparent"
         videoPlayPauseOverlayText.style.width = "40vw"
         videoPlayPauseOverlayText.style.paddingLeft = "20vw"
@@ -2462,13 +2462,13 @@ export default {
   
   /* chat related */
   #chat { position: absolute; height: calc(87% - 16px); width: 100%; bottom: calc(100px - 6px);  right: 0; overflow-y: scroll; opacity: 70%; border-left: 1px solid black; }
-  #inputChatMessage { display: inline-block; width: calc(100% - 26px); margin: 0px; margin-top: 8px; padding: 10px; font-size: 14px; font-weight: bold; color: white; border: 3px solid white; background-color: black; }
+  #inputChatMessage { display: inline-block; width: calc(100% - 20px); margin: 0px; margin-top: 8px; padding: 10px; font-size: 14px; font-weight: normal; color: white; border: 0px; background-color: rgba(169, 169, 169, 0.09); }
   #chat { scrollbar-width: thin; scrollbar-color: #80808063 #1c1b1b; }
   #chatBox { width: 100%; margin: 0px; padding: 0px; bottom: 0px; position: absolute; text-align: center; background-color: #1c1b1b; }
   #currentRoomInfo { display: block; width: 100%; padding: 1.4vh; opacity: 90%; text-align: center; user-select: none; z-index: 1; color: white; border-bottom: 1px solid black; background-color: #1c1b1b; }
   #messages { list-style-type: none; margin: 0; padding: 0; font-size: 14px; }
   #flex { display: inline-flex; position: absolute; height: 100vh; width: calc(19vw - 1px); flex-wrap: wrap; align-content: flex-start; bottom: 0; right: 0; z-index: 2; overflow-y: hidden; filter: brightness(0.98); border-left: 1px solid black; background-color: #1c1b1b; }
-  #buttonSend { display: inline-block; width: 100%; margin: 0px; margin-bottom: 10px; padding: 10px; padding-top: 8px; font-weight: normal; font-family: Arial; font-size: 14px; border: 0px; color: black; background-color: white; }
+  #buttonSend { display: inline-block; width: 100%; margin: 0px; margin-bottom: 10px; padding: 11px; padding-top: 10px; font-weight: normal; font-family: Arial; font-size: 14px; border: 0px; color: rgba(169, 169, 169, 0.6); background-color: black; }
   #form { width: 93%; margin: auto; margin-top: 2px; opacity: 60% }
 
   /* modal related */
