@@ -17,7 +17,7 @@
         <!-- default rooms -->
         <h1 id="defaultRoomsTitle">Default rooms</h1>
         <div id="defaultRooms">
-            <div class="room" v-for="room in defaultRooms" v-bind:key="room.key"><router-link v-bind:to="'/' + room"><div class="roomLink">{{room}}</div></router-link></div>
+            <div class="room" v-for="room in vuexDefaultRooms" v-bind:key="room.key"><router-link v-bind:to="'/' + room"><div class="roomLink">{{room}}</div></router-link></div>
         </div>
 
     </div>
@@ -33,14 +33,13 @@ export default {
         //vuex
         const store = useStore()
         const vuexAllRooms = computed(() => { return store.getters['allRooms']})
+        const vuexDefaultRooms = computed(() => { return store.getters['defaultRooms']})
 
         //route
         const currentRoute = computed(() => { return useRouter().currentRoute.value.fullPath})
-        
-        var defaultRooms = ['general', 'gaming', 'food']
 
         onUpdated(() => {
-            console.log("onUpdated ComponentStart")
+            // console.log("onUpdated ComponentStartMobile")
             const vuexAllRooms = computed(() => { return store.getters['allRooms']})
         })
 
@@ -48,7 +47,7 @@ export default {
             //variables
             vuexAllRooms,
             currentRoute,
-            defaultRooms,
+            vuexDefaultRooms,
         }
     }
 }
@@ -78,7 +77,7 @@ export default {
         border-right: 1px solid black; 
      }
     #activeRooms, #defaultRooms { display: inline-flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; }
-    #defaultRoomsTitle, #activeRoomsTitle { width: auto; margin: 0px; margin-top: 10px; padding: 0px; opacity: 80%; font-size: 14px; }
+    #defaultRoomsTitle, #activeRoomsTitle { width: auto; margin: 0px; margin-top: 10px; padding: 0px; opacity: 0.8; font-size: 14px; }
 
     /* classes */
     .roomLink 
@@ -106,6 +105,6 @@ export default {
     @media screen and (max-width: 1300px) and (orientation: portrait) 
     {
         #ComponentStartMobile { display: block; height: 100vh; width: 100vw; left: 0px; background-color: #1c1b1b;  z-index: 3; padding-bottom: 20px; }
-        #rotateMobileScreenInfoText { font-weight: bold; opacity: 80%; color: white; }
+        #rotateMobileScreenInfoText { font-weight: bold; opacity: 0.8; color: white; }
     }
 </style>

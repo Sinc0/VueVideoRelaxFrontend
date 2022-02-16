@@ -1,6 +1,6 @@
 <template>
   <div id="componentAbout">
-    <h3 id="title">About Project</h3>
+    <h3 id="title">About project</h3>
     <p id="text">This is a student project made to learn about socket.io and server sync.</p>
   </div>
 </template>
@@ -18,15 +18,15 @@ export default {
     position: absolute; 
     z-index: 4; 
     height: auto; 
-    width: auto; 
+    width: 24vw; 
     margin: 0;
-    padding: 20px;
+    padding: 30px;
     position: absolute;
     top: 40%;
     left: 41.5%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    opacity: 90%;
+    opacity: 0.9;
     color: white;
     background-color: #1c1b1b;
     border: 2px solid white;  

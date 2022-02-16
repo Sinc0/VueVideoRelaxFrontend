@@ -12,6 +12,9 @@
       <b id="startNavLinkStart" class="startNavLink" v-on:click="showStartComponent()">Rooms</b>
       <b id="startNavLinkAbout" class="startNavLink" v-on:click="showAboutComponent()">About</b>
       <b id="startNavLinkAbout" class="startNavLink" v-on:click="showCreditsComponent()">Credits</b>
+      <!-- <div id="totalRooms" class="startNavStat"></div> -->
+      <!-- <div id="totalUsers" class="startNavStat"></div> -->
+      <!-- <div id="totalUsersCurrentRoom" class="startNavStat"></div> -->
     </div>
   
   </div>  
@@ -91,8 +94,8 @@ export default {
 
   /* classes */
   /* .startNavLink {background-color: lightgreen; min-width: 160px; display: inline-block; padding: 14.5px; text-align: center; user-select: none; border: 1px solid black; } */
-  .startNavLink {background-color: transparent; min-width: 90px; display: inline-block; padding: 20px; text-align: center; user-select: none; opacity: 80%; }
-
+  .startNavLink { background-color: transparent; min-width: 90px; display: inline-block; padding: 20px; text-align: center; user-select: none; opacity: 0.8; }
+  /* .startNavStat { font-weight: bold; padding: 20px; opacity: 0.8; } */
   /* mobile */
   @media screen and (max-width: 1300px) and (orientation: portrait) 
   {

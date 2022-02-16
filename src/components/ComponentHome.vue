@@ -75,11 +75,7 @@
           </table>
         </div>
 
-        <div id="modalContentSettings">
-          <p>settings #1</p>
-          <p>settings #2</p>
-          <p>settings #3</p>
-        </div>
+        <div id="modalContentSettings"></div>
 
         <div id="modalContentAddUsername">
           <div id="addUsername">
@@ -204,8 +200,10 @@
           <div class="videoPlayerControlRow">
             <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
             <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
-            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Video Quality')">Video Quality</div>
-            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Add Username')">Username</div>
+            <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Video Quality')">Video Quality</div> -->
+            <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Add Username')">Username</div> -->
+            <div id="shuffle-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'shuffle')">Shuffle</div>
+            <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
           </div>
       </div>
 
@@ -223,11 +221,11 @@
           <div id="previous-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
           <div id="next-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
           <div id="jump-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
-          <div><input id="jump-video-input-mobile" type="number" placeholder="video nr" max="1000"/></div>
+          <div><input id="jump-video-input-mobile" type="number" placeholder="Jump Nr" max="1000"/></div>
           <div id="sync-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
-          <div><input id="sync-video-input-mobile" type="number" placeholder="sync sec" max="1000000"/></div>
+          <div><input id="sync-video-input-mobile" type="number" placeholder="Sync Secs" max="1000000"/></div>
           <div id="load-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-          <div><input id="load-video-input-mobile" placeholder="video/pl id" maxlength="100" /></div>
+          <div><input id="load-video-input-mobile" placeholder="Load Id" maxlength="100" /></div>
         </div>
       </div>
       
@@ -275,7 +273,7 @@ export default {
 
     //lifecycle hooks
     onMounted(() => {
-      console.log("onMounted ComponentHome")
+      // console.log("onMounted ComponentHome")
 
       //debugging
       // console.log("onMounted playingVideoId: " + playingVideoId)
@@ -286,10 +284,15 @@ export default {
         //variables
         let roomExists = false
         let allActiveRooms = null
-        let selectedRoomFromUrl = null
-        
+        // let selectedRoomFromUrl = null
+        let urlRoom = null
+        let selectedRoomFromUrl = currentRoute._value
+        // selectedRoomFromUrl = currentRoute._value.substr(1)
+        // console.log("selectedRoomFromUrl 1: " + selectedRoomFromUrl)
+
         //get room name from url
-        selectedRoomFromUrl = currentRoute._value.substr(1)
+        urlRoom = selectedRoomFromUrl.split("/")[2]
+        console.log("urlRoom: " + urlRoom)
         
         //get all active rooms
         allActiveRooms = JSON.stringify(vuexAllRooms.value)
@@ -299,7 +302,7 @@ export default {
         // console.log("allActiveRooms")
 
         //join room specified
-        if(selectedRoomFromUrl != "")
+        if(urlRoom != "" || urlRoom != null || urlRoom != "undefined")
         {
           //check active rooms
           if(roomExists == false)
@@ -307,7 +310,7 @@ export default {
             for(let r in allActiveRooms)
             {
               // console.log("active room " + allActiveRooms[r].room)
-              if(selectedRoomFromUrl == allActiveRooms[r].room)
+              if(urlRoom == allActiveRooms[r].room)
               {
                 // console.log("match: " + selectedRoomFromUrl + " - " + allActiveRooms[r].room)
                 roomExists = true
@@ -321,7 +324,7 @@ export default {
             for(let r in defaultRooms)
             {
               // console.log("default room " + defaultRooms[r])
-              if(selectedRoomFromUrl == defaultRooms[r])
+              if(urlRoom == defaultRooms[r])
               {
                 // console.log("match: " + selectedRoomFromUrl + " - " + defaultRooms[r])
                 roomExists = true
@@ -329,13 +332,13 @@ export default {
             }
           }
 
-          if(selectedRoomFromUrl == "temp") //join default room
+          if(urlRoom == "temp" || urlRoom == "test" || urlRoom == "relax" || urlRoom == "undefined" || urlRoom == "null") //join default room
           {
             pushUrl("general")
           }
           else if(roomExists == true) //join specified room
           {
-            joinRoom(selectedRoomFromUrl)
+            joinRoom(urlRoom)
           }
           else //join default room
           {
@@ -359,12 +362,19 @@ export default {
     })
 
     onUpdated(() => {
-      console.log("onUpdated ComponentHome")
+      // console.log("onUpdated ComponentHome")
 
       //join room from url route
-      let selectedRoomFromUrl = currentRoute._value.substr(1)
+      // let selectedRoomFromUrl = currentRoute._value.substr(1)
       // console.log("selectedRoomFromUrl: " + selectedRoomFromUrl)
-      joinRoom(selectedRoomFromUrl)
+      // joinRoom(selectedRoomFromUrl)
+
+      //join room from url route
+      let selectedRoomFromUrl = currentRoute._value
+      let urlRoom = selectedRoomFromUrl.split("/")[2]
+
+      console.log("urlRoom: " + urlRoom)
+      joinRoom(urlRoom)
     })
 
     //elements
@@ -417,7 +427,7 @@ export default {
     var youtubeEmbedPlaylistParameters = "&enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=1&mute=1&amp;"
 
     //rooms
-    var defaultRooms = ['general', 'gaming', 'food']
+    var defaultRooms = []
     var waitingForRoomToBeInitialized = null
 
     //stats
@@ -627,9 +637,23 @@ export default {
                   }
                 }
 
-                //check playlist reached end
-                if(roomIsDefault == true && (playlistCurrentVideoIndex + 1) == playlistLength)
+                //check video and playlist reached end
+                if(roomIsDefault == true && (playlistCurrentVideoIndex + 1) != playlistLength) //video reached end
                 {
+                  //debugging
+                  console.log("video reached end")
+
+                  //random next video jump number
+                  let randomVideoNumber = generateRandomNumber(playlistLength)
+                  if(randomVideoNumber == playlistCurrentVideoIndex || randomVideoNumber == playlistLength) { randomVideoNumber = generateRandomNumber(playlistLength) }
+                  console.log("random new video from playlist: " + randomVideoNumber)
+                  
+                  //jump to new video
+                  setTimeout(() => { videoPlayerEvents("jump", randomVideoNumber) }, 3000)
+                }
+                else if(roomIsDefault == true && (playlistCurrentVideoIndex + 1) == playlistLength) //playlist reached end
+                {
+                  //debugging
                   console.log("playlist reached end")
                   console.log("loading new playlist")
                   
@@ -690,6 +714,18 @@ export default {
       
       //check if room already exists
       let roomLink = document.getElementsByClassName("roomLink")
+
+      if(newRoom == "temp" || newRoom == "test" || newRoom == "relax" || newRoom == "undefined" || newRoom == "null")
+      {
+        //set error message
+        errorMessageCreateRoom.style.display = "block"
+        errorMessageCreateRoom.innerText = "room " + "'" + newRoom + "'" + " already exists"
+        
+        //reset create room textbox
+        inputCreateRoom.value = ""
+
+        return
+      }
 
       for(let rm in roomLink)
       {
@@ -812,24 +848,24 @@ export default {
       yourUsername = user.username
     }
 
-    function leaveRoom(roomName)
-    {
-        //clear messages
-        messages.innerHTML = ""
+    // function leaveRoom(roomName)
+    // {
+    //     //clear messages
+    //     messages.innerHTML = ""
 
-        //send to server app
-        socket.emit('leave room', roomName);
+    //     //send to server app
+    //     socket.emit('leave room', roomName);
         
-        //elements
-        let videoArea = document.getElementById("videoArea")
-        let iframeContainer = document.getElementById("iframeContainer")
-        let flex = document.getElementById("flex")
+    //     //elements
+    //     let videoArea = document.getElementById("videoArea")
+    //     let iframeContainer = document.getElementById("iframeContainer")
+    //     let flex = document.getElementById("flex")
         
-        //update elements
-        iframeContainer.innerHTML = ""
-        videoArea.style.display = "none"
-        flex.style.display = "none"
-    }
+    //     //update elements
+    //     iframeContainer.innerHTML = ""
+    //     videoArea.style.display = "none"
+    //     flex.style.display = "none"
+    // }
 
     function forbiddenCharacterCheck(string)
     {
@@ -939,15 +975,8 @@ export default {
         playlistCurrentVideoIndex = 0
         videoPlaylist = false
         
-        //check if player is muted
-        if(videoMuted == false)
-        {
-          iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + youtubeEmbedVideoParameters
-        }
-        else if(videoMuted == true)
-        {
-          iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + youtubeEmbedVideoParameters
-        }
+        //set iframe src
+        iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + youtubeEmbedVideoParameters
         
         //append iframe
         container.innerHTML = ""
@@ -1007,22 +1036,24 @@ export default {
       else if(event == "sync")
       {
         //elements
-        let syncTime = document.getElementById("sync-video-input").value
+        let syncTime = document.getElementById("sync-video-input")
+
         //check sync time
-        if(syncTime == "") 
+        if(syncTime.value == "") 
         { 
-          let syncTimeMobile = document.getElementById("sync-video-input-mobile").value
-          syncTime = syncTimeMobile 
+          let syncTimeMobile = document.getElementById("sync-video-input-mobile")
+          syncTime.value = syncTimeMobile.value
+          syncTimeMobile.value = "" 
         }
         
         //variables
-        let syncMessage = "synced video to " + syncTime + " secs"
+        let syncMessage = "synced video to " + syncTime.value + " secs"
         
-        if(syncTime != "" && syncTime < parseInt(playingVideoTotalDuration))
+        if(syncTime.value != "" && syncTime.value < parseInt(playingVideoTotalDuration) && syncTime.value > -1)
         {
           //variables
           let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + syncMessage + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
-          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "sync video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime + "\"" + "}")
+          let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "sync video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + playingVideosLastWholeSecond + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "," + "\"syncTime\"" + ":" + "\"" + syncTime.value + "\"" + "}")
 
           //chat message
           socket.emit('chat message', msgObjChat);
@@ -1032,6 +1063,9 @@ export default {
 
           //set local variable
           videoPlaying = true
+
+          //reset sync time input
+          syncTime.value = ""
         }
       }
       else if(event == "mute")
@@ -1078,7 +1112,7 @@ export default {
         videoPlaying = true
 
         //variables
-        let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "▶ restarted video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+        let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "restarted video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
         let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "restart video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
         
         //video command
@@ -1148,7 +1182,7 @@ export default {
           playlistCurrentVideoIndex++
 
           //variables
-          let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "next video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+          let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "next video " + parseInt(playlistCurrentVideoIndex + 1) + "/" + playlistLength + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
           let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "next video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
           
           //video command
@@ -1170,7 +1204,7 @@ export default {
             playlistCurrentVideoIndex--
 
             //variables
-            let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "previous video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
+            let msgObjChat = JSON.parse("{" + "\"content\"" + ":" + "\"" + "previous video " + parseInt(playlistCurrentVideoIndex + 1) + "/" + playlistLength + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "}")
             let msgObjVideoCommand = JSON.parse("{" + "\"content\"" + ":" + "\"" + "previous video" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + "," + "\"playingVideosLastWholeSecond\"" + ":" + "\"" + 0 + "\"" + "," + "\"playingVideoId\"" + ":" + "\"" + playingVideoId + "\"" + "," + "\"videoPlaying\"" + ":" + "\"" + videoPlaying + "\"" + "," + "\"playlistCurrentVideoIndex\"" + ":" + "\"" + playlistCurrentVideoIndex + "\"" + "," + "\"videoPlaylist\"" + ":" + "\"" + videoPlaylist + "\"" + "," + "\"videoPlaylistId\"" + ":" + "\"" + videoPlaylistId + "\"" + "}")
             
             //video command
@@ -1277,17 +1311,37 @@ export default {
       else if(event == "jump")
       {
         //variables
-        let jumpVideoInput = document.getElementById("jump-video-input").value
-        if(jumpVideoInput == "")
+        let randomNextVideoNr = param1
+
+        //elements
+        let jumpVideoInput = document.getElementById("jump-video-input")
+        if(jumpVideoInput.value == "")
         {
-          let jumpVideoInputMobile = document.getElementById("jump-video-input-mobile").value
-          jumpVideoInput = jumpVideoInputMobile
+          let jumpVideoInputMobile = document.getElementById("jump-video-input-mobile")
+          jumpVideoInput.value = jumpVideoInputMobile.value
+          jumpVideoInputMobile.value = ""
         }
-        let jumpIndex = jumpVideoInput - 1
+        let jumpIndex = jumpVideoInput.value - 1
         let videoNr = jumpIndex + 1
         let currentVideo = (playlistCurrentVideoIndex + 1)
 
-        //check jump number
+        //random video number
+        if(randomNextVideoNr != null && randomNextVideoNr != "undefined")
+        {
+          //set jumpIndex
+          jumpIndex = randomNextVideoNr
+          
+          //shuffle button pressed
+          if(randomNextVideoNr == "shuffle") { jumpIndex = generateRandomNumber(playlistLength) }
+
+          //double check random number is not current video number
+          if(jumpIndex == currentVideo) { jumpIndex = generateRandomNumber(playlistLength) }
+
+          //set videoNr
+          videoNr = jumpIndex + 1
+        }
+        
+        //check jump number is valid
         if(videoNr != currentVideo && videoNr >= 1 && videoNr <= playlistLength)
         {
           //variables
@@ -1299,7 +1353,11 @@ export default {
           
           //video command
           socket.emit('video command', msgObjVideoCommand);
+
+          //reset jump number input
+          jumpVideoInput.value = ""
         }
+
       }
       else if(event == "volume")
       {
@@ -1450,16 +1508,7 @@ export default {
         iframeEle.height = "100%"
         iframeEle.width = "100%"
         iframeEle.title = "YouTube video player"
-
-        //check if player is muted
-        if(videoMuted == false)
-        {
-          iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + youtubeEmbedPlaylistParameters
-        }
-        else if(videoMuted == true)
-        {
-          iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + youtubeEmbedPlaylistParameters
-        }
+        iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + youtubeEmbedPlaylistParameters
 
         //check if new custom room
         if(playlistId == "newCustomRoom")
@@ -1563,7 +1612,7 @@ export default {
         player.style.transform = "scale(1)"
         videoPlayPauseOverlay.style.display = "none"
         videoPlayPauseOverlayMobile.style.display = "none"
-      }, 100)
+      }, 200)
     }
 
     function displayLoadingOverlay()
@@ -1600,7 +1649,19 @@ export default {
       vp.style.border = "0px"
       videoPlayPauseOverlayText.style.display = "block"
       displayVideoInfoAndControls()
-      if(videoPlaylistId == "newCustomRoom") //check if new custom room
+
+      //check if muted
+      if(videoMuted == false)
+      {
+        videoPlayerEvents("unMute")
+      }
+      else if(videoMuted == true)
+      {
+        videoPlayerEvents("mute")
+      }
+
+      //check if new custom room
+      if(videoPlaylistId == "newCustomRoom")
       {
         videoPlayPauseOverlay.style.display = "none"
         resetVideoInfo()
@@ -1615,7 +1676,7 @@ export default {
       // console.log("pushUrl: " + room)
       
       //set room url path
-      router.push({ path: '/' + room} )
+      router.push({ path: '/relax/' + room} )
     }
 
     function resetCurrentTimeVideo()
@@ -1756,8 +1817,8 @@ export default {
       }
       else if(category == "Settings")
       {
-        modalSidebarSettings.style.backgroundColor = "#1c1b1b"
-        modalSidebarSettings.style.color = "white"
+        // modalSidebarSettings.style.backgroundColor = "#1c1b1b"
+        // modalSidebarSettings.style.color = "white"
         modalContentSettings.style.display = "block"
       }
       else if(category == "Video Quality")
@@ -2035,12 +2096,19 @@ export default {
       chat.scrollTo(0, chat.scrollHeight);
     }
 
+    function generateRandomNumber(maxNumber)
+    {
+      let randomNumber = Math.floor(Math.random() * maxNumber);
+      console.log("generateRandomNumber: " + randomNumber)
+      return randomNumber
+    }
+
     //socket stream
     socket.on('chat message', function(msg) {
       formatChatMessage(msg)
     });
 
-    socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying, defaultPlaylistsFromServer) {
+    socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying, defaultPlaylistsFromServer, defaultRoomsFromServer) {
         //debugging
         // console.log(socket)
         // console.log(allClients)
@@ -2056,9 +2124,12 @@ export default {
         // console.log(clientInfo)
         // console.log("allClients")
         // console.log(allClients)
+        // console.log("defaultRoomsFromServer")
+        // console.log(defaultRoomsFromServer)
         
         //set default playlists
         defaultPlaylists = JSON.parse(defaultPlaylistsFromServer)
+        defaultRooms = defaultRoomsFromServer
 
         //set yourSocketId
         yourSocketId = socket.id
@@ -2075,7 +2146,8 @@ export default {
         }
 
         //vuex
-        store.dispatch('actionSetAllRooms', allRooms)
+        store.dispatch('actionSetAllRooms', allRooms) //all active rooms
+        store.dispatch('actionSetDefaultRooms', defaultRoomsFromServer)
 
         //set current room
         for(let n in clientInfo)
@@ -2101,14 +2173,14 @@ export default {
                 currentRoom = inputCurrentRoom.innerText
             }
 
-            console.log("currentRoom: " + currentRoom)
+            // console.log("currentRoom: " + currentRoom)
           }
         }
 
         //set video/playlist variables
         if(videosCurrentlyPlaying.length != 0 && currentRoom != "temp") //active room exist
         {
-          console.log("active room exist")
+          // console.log("active room exist")
           
           //debugging
           // console.log("videosCurrentlyPlaying")
@@ -2122,7 +2194,7 @@ export default {
           {
             if(currentRoom == videosCurrentlyPlaying[x].room)
             {
-              console.log("current room is: " + currentRoom)
+              // console.log("current room is: " + currentRoom)
 
               //set video variables
               playingVideosLastWholeSecond = videosCurrentlyPlaying[x].lastWholeSecond
@@ -2138,13 +2210,13 @@ export default {
               //set default playlist
               if(videoPlaylistId == "undefined" || videoPlaylistId == null)
               { 
-                let randomNumber = Math.floor(Math.random() * 3);
+                let randomNumber = generateRandomNumber(3)
                 
                 for(let pl in defaultPlaylists)
                 {
                   if(defaultPlaylists[pl].category == currentRoom)
                   {
-                    console.log("set default playlist")
+                    // console.log("set default playlist")
 
                     videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
 
@@ -2177,15 +2249,15 @@ export default {
                   
               //set playlist variables
               videoPlaylist = "true"
-              playlistCurrentVideoIndex = 0
+              playlistCurrentVideoIndex = generateRandomNumber(playlistLength)
 
               //set default playlist
-              let randomNumber = Math.floor(Math.random() * 3);
+              let randomNumber = generateRandomNumber(3)
               for(let pl in defaultPlaylists)
               {
                 if(defaultPlaylists[pl].category == currentRoom)
                 {
-                  console.log("set default playlist")
+                  // console.log("set default playlist")
 
                   videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
 
@@ -2207,7 +2279,7 @@ export default {
         }
         else if(videosCurrentlyPlaying.length == 0  && currentRoom != "temp")  //no active room exist
         {
-          console.log("no active room exist")
+          // console.log("no active room exist")
           
           //set video variables
           playingVideosLastWholeSecond = 0
@@ -2217,15 +2289,15 @@ export default {
               
           //set playlist variables
           videoPlaylist = "true"
-          playlistCurrentVideoIndex = 0
+          playlistCurrentVideoIndex = generateRandomNumber(playlistLength)
 
           //set default playlist
-          let randomNumber = Math.floor(Math.random() * 3);
+          let randomNumber = generateRandomNumber(3)
           for(let pl in defaultPlaylists)
           {
             if(defaultPlaylists[pl].category == currentRoom)
             {
-              console.log("set default playlist")
+              // console.log("set default playlist")
 
               videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
 
@@ -2269,10 +2341,12 @@ export default {
         temp = JSON.parse(temp)
         if(temp.length > 0) { totalRoomsCount = temp.length }
         // console.log("total rooms: " + totalRoomsCount)
+        // totalRooms.innerText = "total rooms: " + totalRoomsCount
 
         //set total users all rooms count
         if(allClients.length > 0) { totalUsersCount = allClients.length }
         // console.log("total users all rooms: " + totalUsersCount)
+        // totalUsers.innerText = "Total Users: " + totalUsersCount
 
         //set total users current room count
         for(let r in allRooms)
@@ -2283,6 +2357,7 @@ export default {
           {
             totalUsersCurrentRoomCount = count
             // console.log("total users current room: " + totalUsersCurrentRoomCount)
+            // totalUsersCurrentRoom.innerText = currentRoom + " Users: " + count
           }
         }
         // console.log(inputCurrentRoom)
@@ -2360,14 +2435,15 @@ export default {
         else if(msg.content == "jump video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + msg.jumpIndex + ']}', '*');
-          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
-          
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*'); //add event listener for getCurrentTime
+      
           //update elements
           displayPlayButton()
           resetCurrentTimeVideo()
           
           //set local variable
-          videoPlaying = false
+          videoPlaying = true
           playingVideosLastWholeSecond = 0
         }
         else if(msg.content == "restart video")
@@ -2383,9 +2459,16 @@ export default {
         {
           loadVideoCustom(msg)
 
+          let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
+          videoPlayPauseOverlayText.innerText = "Loading..."
+
           if(yourSocketId == syncMaster)
           {
-            setTimeout(() => {videoPlayerEvents("play")}, 3000)
+            // setTimeout(() => {videoPlayerEvents("play")}, 3000)
+            setTimeout(() => {
+              videoPlayerEvents("jump", "shuffle")
+              undisplayPauseOverlay()
+            }, 4000)
           }
         }
         else if(msg.content == "resync2 video")
@@ -2424,7 +2507,7 @@ export default {
       //functions
       joinRoom,
       addUser,
-      leaveRoom,
+      // leaveRoom,
       forbiddenCharacterCheck,
       currentTimeStamp,
       sendChatMessage,
@@ -2461,22 +2544,22 @@ export default {
   #componentHome { display: block; font-family: Arial, Helvetica, sans-serif; overflow: hidden; background-color: black; }
   
   /* chat related */
-  #chat { position: absolute; height: calc(87% - 16px); width: 100%; bottom: calc(100px - 6px);  right: 0; overflow-y: scroll; opacity: 70%; border-left: 1px solid black; }
+  #chat { position: absolute; height: calc(87% - 16px); width: 100%; bottom: calc(100px - 6px);  right: 0; overflow-y: scroll; opacity: 0.7; border-left: 1px solid black; }
   #inputChatMessage { display: inline-block; width: calc(100% - 20px); margin: 0px; margin-top: 8px; padding: 10px; font-size: 14px; font-weight: normal; color: white; border: 0px; background-color: rgba(169, 169, 169, 0.09); }
   #chat { scrollbar-width: thin; scrollbar-color: #80808063 #1c1b1b; }
   #chatBox { width: 100%; margin: 0px; padding: 0px; bottom: 0px; position: absolute; text-align: center; background-color: #1c1b1b; }
-  #currentRoomInfo { display: block; width: 100%; padding: 1.4vh; opacity: 90%; text-align: center; user-select: none; z-index: 1; color: white; border-bottom: 1px solid black; background-color: #1c1b1b; }
+  #currentRoomInfo { display: block; width: 100%; padding: 1.4vh; opacity: 0.9; text-align: center; user-select: none; z-index: 1; color: white; border-bottom: 1px solid black; background-color: #1c1b1b; }
   #messages { list-style-type: none; margin: 0; padding: 0; font-size: 14px; }
   #flex { display: inline-flex; position: absolute; height: 100vh; width: calc(19vw - 1px); flex-wrap: wrap; align-content: flex-start; bottom: 0; right: 0; z-index: 2; overflow-y: hidden; filter: brightness(0.98); border-left: 1px solid black; background-color: #1c1b1b; }
   #buttonSend { display: inline-block; width: 100%; margin: 0px; margin-bottom: 10px; padding: 11px; padding-top: 10px; font-weight: normal; font-family: Arial; font-size: 14px; border: 0px; color: rgba(169, 169, 169, 0.6); background-color: black; }
-  #form { width: 93%; margin: auto; margin-top: 2px; opacity: 60% }
+  #form { width: 93%; margin: auto; margin-top: 2px; opacity: 0.6 }
 
   /* modal related */
   #createRoom, #addUsername { display: block; }
   #createRoom, #addUsername { padding: 0px; background-color: transparent; }
   #addUsername, #createRoom { width: 70%; margin: auto; }
   #addUsernameCurrentUsername { margin: 20px; }
-  #modal { position: absolute; display: block; height: 70vh; width: 60vw; margin: 0; margin-left: -8vw; padding: 0px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; opacity: 90%; background-color: white; }
+  #modal { position: absolute; display: block; height: 70vh; width: 60vw; margin: 0; margin-left: -8vw; padding: 0px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; opacity: 0.9; background-color: white; }
   #modalSidebar { display: inline-block; height: 100%; width: 30%; vertical-align: top; font-weight: bold; text-align: left; user-select: none; color: #1c1b1b; }
   #modalSidebar > div { padding: 10px; border-bottom: 3px solid #1c1b1b; }
   #modalContent { display: inline-block; height: 100%; width: 70%; overflow: auto; text-align: center; color: white; background-color: #1c1b1b; }
@@ -2490,19 +2573,19 @@ export default {
   #buttonAddUser, #inputAddUser, #buttonCreateRoom, #inputCreateRoom { height: 40px; font-size: 16px; }
   #inputCreateRoom, #inputAddUser { width: calc(100% - 24px); padding-left: 10px; padding-right: 10px; }
   #modalCloseBar { display: block; padding: 4px; text-align: left; background-color: red; }
+  #modalSidebarSettings { display: none }
 
   /* video player controls related */
   #pause-video, #unmute-video { display: none; }
-  #sync-video-input, #load-video-input, #jump-video-input { width: 100px; padding: 10px; height: 17px; color: white; font-size: 13px; border: 1px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1b; }
+  #sync-video-input, #load-video-input, #jump-video-input { width: 100px; padding: 10px; height: 17px; color: white; font-size: 13px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1b; }
   #sync-video, #load-video, #jump-video { display: inline-block; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); }
-  #videoPlayerControlButtons { display: none; position: absolute; width: auto; margin: 0; padding: 0px; bottom: 12vh; left: 41.5%; z-index: 3; opacity: 70%; transform: translate(-50%); -ms-transform: translate(-50%); flex-direction: column; color: white; border: 1px solid rgba(255, 255, 255, 0.7); background-color: transparent; }
+  #videoPlayerControlButtons { display: none; position: absolute; width: auto; margin: 0; padding: 0px; bottom: 12vh; left: 41.5%; z-index: 3; opacity: 0.7; transform: translate(-50%); -ms-transform: translate(-50%); flex-direction: column; color: white; border: 1px solid rgba(255, 255, 255, 0.7); background-color: transparent; }
   #playlistControls { display: none; }
   #restart-video { display: block; }
-  #jump-video-input { height: 17px; }
   
   /* video player related */
   #videoArea { display: block; }
-  #iframeContainer { width: 100%; height: 100%; }
+  #iframeContainer { width: 100%; height: 112%; margin-top: -3.9%; }
   #player { display: block; position: absolute; height: calc(100vh + 60px); width: 81vw; margin: auto; margin: 0px; margin-top: -61px; margin-left: 0px; padding: 0px; overflow: none; background-color: black; border: 0px solid white; }
   
   /* overlays related */
@@ -2521,16 +2604,16 @@ export default {
     font-weight: bold;
     font-size: 19px;
     text-align: center;
-    opacity: 100%;
+    opacity: 1.0;
     color: white;
     background-color: black;
     text-shadow: 2px 1px black;
     font-style: oblique;
   }
-  #videoPlayPauseOverlayMobile { display: none; opacity: 0%; }
+  #videoPlayPauseOverlayMobile { display: none; opacity: 0.0; }
 
   /* video info related */
-  #videoInfo { display: none; position: absolute; top: 4vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 90%; text-align: left; font-size: 14px; font-weight: normal; text-shadow: black 1px 1px; color: white; background-color: transparent; }
+  #videoInfo { display: none; position: absolute; top: 4vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 0.9; text-align: left; font-size: 14px; font-weight: normal; text-shadow: black 1px 1px; color: white; background-color: transparent; }
   #videoChannel, #videoTitle, #videoQuality, #videoCurrentPlaylistIndex, #current-time-video, #videoCurrentRoom, #videoVolume, #videoCurrentRoomTotalUsers { margin: 6px; text-align: right; }
   #loadingScreenText { color: white; animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; }
   #loadingScreenImage { display: none; position: absolute; height: 40vh; width: 40vh; top: 0px; left: 0px; margin-top: calc(-16vh + 1px); margin-left: 140px; transform: rotate(-45deg) translate(-50%, -50%); z-index: -1; background-size: cover; border-radius: 7%; border: 3px solid white; background-color: black; }
@@ -2549,7 +2632,7 @@ export default {
   /* modal related */
   .buttonCreate, #buttonCreateRoom { width: calc(100%); border-color: lightgray; }
   .errorMessage { display: block; margin: 20px; width: auto; background-color: transparent; }
-  .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; background-color: red; color: black; }
+  .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; background-color: white; color: black; }
   .modalContentKeybindsEqual { width: 13%; background-color: #1c1b1b }
   .modalContentKeybindsCharacter { width: auto; padding: 10px; border: 1px solid white; background-color: #1c1b1b; }
   .modalContentKeybindsTableRow { border: 1px solid red; }
@@ -2563,7 +2646,7 @@ export default {
   .initializeNewCustomRoomText { margin: 0px; padding: 0px; }
 
   /*** animations ***/
-  @keyframes fadeLoadingScreenText { from {opacity: 100%; } to {opacity: 0%; } }  
+  @keyframes fadeLoadingScreenText { from {opacity: 1.0; } to {opacity: 0.0; } }  
 
   /*** mobile portrait ***/
   @media screen and (max-width: 1300px) and (orientation: portrait) { #videoArea, #flex { display: none; } }
@@ -2579,7 +2662,7 @@ export default {
     #videoPlayPauseOverlay, #videoPlayButtonOverlay { height: 100vh; width: 100vw; }
     #loadingScreenImage { display: none; }
     #loadingScreenText { margin-right: 0px; }
-    #videoPlayPauseOverlayMobile { display: block; position: absolute; left: 0px; top: 0px; height: 100vh; width: 100vw; z-index: 2; opacity: 100%; border: 0; background-color: black; }
+    #videoPlayPauseOverlayMobile { display: block; position: absolute; left: 0px; top: 0px; height: 100vh; width: 100vw; z-index: 2; opacity: 1.0; border: 0; background-color: black; }
     #videoPlayPauseOverlayText { width: calc(60vw - 12px); top: 36vh; z-index: 3; background-color: transparent; padding-left: 20vw; padding-right: 20vw; font-size: 14px; }
     
     /* chat related */
@@ -2587,9 +2670,10 @@ export default {
 
     /* video player controls related */
     #videoPlayerControlButtons { z-index: -1; }
-    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; bottom: -3px; overflow-x: scroll; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: gray lightgray; opacity: 70%; z-index: 3; color: white; border: 0px solid black; }
-    #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 10px; max-height: 14px; max-width: 100px; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
+    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; bottom: 0px; overflow-x: scroll; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: gray lightgray; opacity: 0.7; z-index: 3; color: white; border: 0px solid black; }
+    #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 7px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
     #unmute-video-mobile, #pause-video-mobile { display: none; }
+    #iframeContainer { width: 100%; height: 100%; margin-top: 1px; }
     
     /* video info related */
     #videoInfo { top: 1vh; right: 1vw; margin: 0px; z-index: 1; }
