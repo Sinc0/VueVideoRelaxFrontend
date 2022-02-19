@@ -79,7 +79,7 @@ export default {
         border-right: 1px solid black; 
         background-color: #1c1b1bda;
     }
-    #activeRooms, #defaultRooms { display: inline-flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; }
+    #activeRooms, #defaultRooms { display: flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; }
     #defaultRoomsTitle, #activeRoomsTitle { width: auto; margin: 0px; margin-top: 10px; padding: 0px; opacity: 0.7; font-size: 14px; }
 
     /* classes */
