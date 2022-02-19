@@ -148,78 +148,86 @@
           </div>
           <div id="videoPlayPauseOverlayMobile"></div>
         </div>
+        <div id="videoPlayInitialStartOverlayMobile" v-on:click="initialStartMobile()">
+          <div id="videoPlayInitialStartOverlayMobileLoadingScreenGif"><h1 id="videoPlayInitialStartOverlayMobileLoadingScreenText">Press to Play</h1></div>
+        </div>
 
         <!-- iframe -->
         <div id="iframeContainer"></div> 
       </div>
 
-        <!-- video info -->
-        <div id="videoInfo">
-          <div id="roomInfo">
-              <div id="videoCurrentRoom"></div>
-              <!-- <div id="videoCurrentRoomTotalUsers"></div> -->
-          </div>
-          <div id="videoTitle"></div>
-          <div id="videoChannel"></div>
-          <div id="videoCurrentPlaylistIndex"></div>
-          <div id="current-time-video"></div>
-          <div id="videoQuality"></div>
-          <div id="videoVolume"></div>
+      <!-- video info -->
+      <div id="videoInfo">
+        <div id="roomInfo">
+            <div id="videoCurrentRoom"></div>
+            <!-- <div id="videoCurrentRoomTotalUsers"></div> -->
         </div>
+        <div id="videoTitle"></div>
+        <div id="videoChannel"></div>
+        <div id="videoCurrentPlaylistIndex"></div>
+        <div id="current-time-video"></div>
+        <div id="videoQuality"></div>
+        <div id="videoVolume"></div>
+      </div>
                   
-        <!-- player controls -->
-        <div id="videoPlayerControlButtons">
-          <!-- player controls row -->
-          <div class="videoPlayerControlRow">
-            <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
-            <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
-            <div id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
-            <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
-            <div><input id="jump-video-input" type="number" placeholder="Jump Nr" max="1000"/></div>
+      <!-- player controls -->
+      <div id="videoPlayerControlButtons">
+        <!-- player controls row -->
+        <div class="videoPlayerControlRow">
+          <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
+          <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
+          <div id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
+          <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
+          <div><input id="jump-video-input" type="number" placeholder="Jump Nr" max="1000"/></div>
+        </div>
+        <!-- player controls row -->
+        <div id="playlistControls" class="videoPlayerControlRow"><!-- playlist controls -->
+          <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
+          <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
+          <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
+          <div id="sync-video-elems">
+            <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
+            <input id="sync-video-input" type="number" placeholder="Sync Secs" max="1000000"/>
           </div>
-          <!-- player controls row -->
-          <div id="playlistControls" class="videoPlayerControlRow"><!-- playlist controls -->
-            <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
-                      <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
-                      <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
-            <div id="sync-video-elems">
-              <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
-              <input id="sync-video-input" type="number" placeholder="Sync Secs" max="1000000"/>
-            </div>
+        </div>
+        <!-- player controls row -->
+        <div class="videoPlayerControlRow">
+          <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
+          <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
+          <div id="load-video-elems">
+            <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
+            <input id="load-video-input" placeholder="Load Id" maxlength="100" />
           </div>
-          <!-- player controls row -->
-          <div class="videoPlayerControlRow">
-            <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
-            <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
-            <div id="load-video-elems">
-              <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-              <input id="load-video-input" placeholder="Load Id" maxlength="100" />
-            </div>
-          </div>
-          <!-- player controls row -->
-          <div class="videoPlayerControlRow">
-            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
-            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
-            <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Video Quality')">Video Quality</div> -->
-            <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Add Username')">Username</div> -->
-            <div id="shuffle-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'shuffle')">Shuffle</div>
-            <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
-          </div>
+        </div>
+        <!-- player controls row -->
+        <div class="videoPlayerControlRow">
+          <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
+          <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
+          <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Video Quality')">Video Quality</div> -->
+          <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Add Username')">Username</div> -->
+          <div id="shuffle-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'shuffle')">Shuffle</div>
+          <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
+        </div>
       </div>
 
       <div id="videoPlayerControlButtonsMobile">
         <div class="videoPlayerControlRow">
-          <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
+            <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
+          <!-- <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div> -->
           <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Video Info</div>
           <div id="play-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
           <div id="pause-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
           <div id="restart-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
           <div id="mute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
           <div id="unmute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
-          <div id="volume-up-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeUp()">Volume +</div>
-          <div id="volume-down-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeDown()">Volume -</div>
+          <!-- <div id="volume-up-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeUp()">Volume +</div> -->
+          <!-- <div id="volume-down-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeDown()">Volume -</div> -->
           <div id="previous-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
           <div id="next-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
+          
+            <div id="shuffle-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'shuffle')">Shuffle</div>
+            <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
+
           <div id="jump-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
           <div><input id="jump-video-input-mobile" type="number" placeholder="Jump Nr" max="1000"/></div>
           <div id="sync-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
@@ -228,8 +236,8 @@
           <div><input id="load-video-input-mobile" placeholder="Load Id" maxlength="100" /></div>
         </div>
       </div>
-      
     </div>
+    
     <!-- chat -->
     <div id="flex">
       <!-- chat room title -->
@@ -265,14 +273,14 @@ export default {
   setup() {
     //vuex
     const store = useStore()
-    const vuexAllRooms = computed(() => { return store.getters['allRooms']})
+    const vuexAllRooms = computed(function() { return store.getters['allRooms']})
 
     //router
     const router = useRouter()
-    const currentRoute = computed(() => { return useRouter().currentRoute.value.fullPath})
+    const currentRoute = computed(function() { return useRouter().currentRoute.value.fullPath})
 
     //lifecycle hooks
-    onMounted(() => {
+    onMounted(function() {
       // console.log("onMounted ComponentHome")
 
       //debugging
@@ -280,7 +288,7 @@ export default {
       // console.log("onMounted videoPlaylistId: " + videoPlaylistId)
       // console.log(currentRoute)
 
-      setTimeout(() => {
+      setTimeout(function() {
         //variables
         let roomExists = false
         let allActiveRooms = null
@@ -361,7 +369,7 @@ export default {
       }, initializeVideoTime)
     })
 
-    onUpdated(() => {
+    onUpdated(function() {
       // console.log("onUpdated ComponentHome")
 
       //join room from url route
@@ -412,6 +420,7 @@ export default {
     var defaultPlaylists = null
     
     //timers
+    var totalLoadTime = initializeVideoTime + resync1Time + resyncMargin
     var loadingScreenTime = 7000
     var addToVideoOnJoinTime = 6
     var initializeVideoTime = 2000
@@ -420,7 +429,10 @@ export default {
     var resync1Time = 3000
     var resync2Time = 6000
     var resyncMargin = 1000
-    var totalLoadTime = initializeVideoTime + resync1Time + resyncMargin
+    var readdEscapeKeybindTimer = 300
+    var resetVideoPlayerScaleTimer = 300
+    var appendVideoiframeTimer = 1000
+    var randomPlaylistTimer = 4000
 
     //youtube
     var youtubeEmbedVideoParameters = "?enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=1&mute=1&amp;"
@@ -451,7 +463,7 @@ export default {
         //check video volume
         if(e.data.toString().includes("volume"))
         {
-          let data = JSON.parse(e.data)
+          // let data = JSON.parse(e.data)
           let volume = data.info.volume
 
           //set local variable
@@ -465,7 +477,7 @@ export default {
         //check video playback quality
         if(e.data.toString().includes("playbackQuality"))
         {
-          let data = JSON.parse(e.data)
+          // let data = JSON.parse(e.data)
           let oldVideoQuality = videoQualityValue
           let newVideoQuality = data.info.playbackQuality
           
@@ -649,7 +661,7 @@ export default {
                   console.log("random new video from playlist: " + randomVideoNumber)
                   
                   //jump to new video
-                  setTimeout(() => { videoPlayerEvents("jump", randomVideoNumber) }, 3000)
+                  setTimeout(function() { videoPlayerEvents("jump", randomVideoNumber) }, 3000)
                 }
                 else if(roomIsDefault == true && (playlistCurrentVideoIndex + 1) == playlistLength) //playlist reached end
                 {
@@ -658,7 +670,7 @@ export default {
                   console.log("loading new playlist")
                   
                   //load new playlist
-                  setTimeout(() => { videoPlayerEvents("random") }, 4000)
+                  setTimeout(function() { videoPlayerEvents("random") }, 4000)
                 }
               }
             }
@@ -815,7 +827,7 @@ export default {
       }
 
       //load video
-      setTimeout(() => {initializeVideo()}, initializeVideoTime)
+      setTimeout(function() {initializeVideo()}, initializeVideoTime)
 
       //update elements
       let videoArea = document.getElementById("videoArea")
@@ -918,15 +930,16 @@ export default {
       iframeEle.height = "100%"
       iframeEle.width = "100%"
       iframeEle.title = "YouTube video player"
+      iframeEle.allow = "autoplay; fullscreen"
       
       if(videoPlaylist == "true") //load playlist
       {
-        setTimeout(() => {undisplayLoadingOverlay()}, loadingScreenTime)
+        setTimeout(function() {undisplayLoadingOverlay()}, loadingScreenTime)
         loadPlaylist(playlistId)
       }
       else if(videoPlaylist == "false") //load video
       {
-        setTimeout(() => {undisplayLoadingOverlay()}, loadingScreenTime)
+        setTimeout(function() {undisplayLoadingOverlay()}, loadingScreenTime)
         
         //set local variable
         videoPlaylist = false
@@ -955,6 +968,7 @@ export default {
       iframeEle.height = "100%"
       iframeEle.width = "100%"
       iframeEle.title = "YouTube video player"
+      iframeEle.allow = "autoplay; fullscreen"
 
       //update elements
       undisplayVideoInfoAndControls()
@@ -985,7 +999,7 @@ export default {
         //update elements
         let vp = document.getElementById("videoPlayer")
         vp.style.border = "0px"
-        setTimeout(() => {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
+        setTimeout(function() {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
       }
       //load playlist
       else if(loadThisId.videoPlaylistId != "null")
@@ -996,7 +1010,7 @@ export default {
         //variables
         let playlistId = loadThisId.videoPlaylistId
         
-        setTimeout(() => {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
+        setTimeout(function() {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
         loadPlaylist(playlistId)
       }
     }
@@ -1216,7 +1230,7 @@ export default {
       }
       else if(event == "resync1")
       {
-        console.log("resync1: " + playingVideosLastWholeSecond + "s")
+        console.log("resync1 to: " + playingVideosLastWholeSecond + "s")
 
         //debugging
         // console.log("videoPlaylist: " + videoPlaylist)
@@ -1233,6 +1247,7 @@ export default {
         
         if(playingVideosLastWholeSecond == 0 && playingVideoStatus == false)
         {
+          displayPlayButton()
           displayPauseOverlay()
         }
         else if(videoPlaylist == true)
@@ -1243,7 +1258,7 @@ export default {
 
             document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*');
             
-            setTimeout(() => {
+            setTimeout(function() {
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');//pause video
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
@@ -1264,7 +1279,7 @@ export default {
 
             document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*');
             
-            setTimeout(() => {
+            setTimeout(function() {
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
             }, resyncMargin)
@@ -1279,7 +1294,7 @@ export default {
           
             document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*'); //play video
 
-            setTimeout(() => {
+            setTimeout(function() {
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*'); //sync to lastWholeSecond
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');//pause video
@@ -1298,7 +1313,7 @@ export default {
             
             document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*'); //play video
 
-            setTimeout(() => {
+            setTimeout(function() {
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*');//sync to lastWholeSecond
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*') //add event listener for getCurrentTime
   
@@ -1410,7 +1425,6 @@ export default {
       //elements
       var element = document.getElementById("player")
       var videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
-      var videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
       
       //variables
       var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
@@ -1418,10 +1432,7 @@ export default {
       if(requestMethod) 
       { 
         videoPlayPauseOverlay.style.backgroundColor = "black"
-        videoPlayPauseOverlayText.style.width = "100%"
-        videoPlayPauseOverlayText.style.paddingLeft = "0px"
-        videoPlayPauseOverlayText.style.paddingRight = "0px"
-        videoPlayPauseOverlayText.style.fontSize = "30px"
+        videoPlayPauseOverlay.style.width = "100%"
 
         //activate fullscreen mode
         requestMethod.call(element);
@@ -1452,21 +1463,25 @@ export default {
         //elements        
         let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
         let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
-        let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
+        let mediaQueryMobile = window.matchMedia( "(max-width: 1300px)" );
         
         //update elements
-        videoPlayButtonOverlay.style = "display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; border: 0; background-color: transparent;" /* background-color: #ff000030; */
-        videoPlayPauseOverlay.style.backgroundColor = "transparent"
-        videoPlayPauseOverlayText.style.width = "40vw"
-        videoPlayPauseOverlayText.style.paddingLeft = "20vw"
-        videoPlayPauseOverlayText.style.paddingRight = "20vw"
-        videoPlayPauseOverlayText.style.fontSize = "19px"
+        if(!mediaQueryMobile.matches) //desktop
+        {
+          videoPlayButtonOverlay.style = "display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; z-index: 1; border: 0; background-color: transparent;" /* background-color: #ff000030; */
+          videoPlayPauseOverlay.style.backgroundColor = "transparent"
+        }
+        else if(mediaQueryMobile.matches) //mobile
+        {
+          videoPlayButtonOverlay.style = "display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 100vw; z-index: 1; border: 0; background-color: transparent;" /* background-color: #ff000030; */
+          videoPlayPauseOverlay.style.backgroundColor = "transparent"
+        }
         
         //set local variable
         fullScreenActive = false
         
         //readd escape keybind
-        setTimeout(() => {
+        setTimeout(function() {
           window.addEventListener('keyup', (event) => {
             // console.log(event)
             
@@ -1488,7 +1503,7 @@ export default {
             }
           })
 
-        }, 100)
+        }, readdEscapeKeybindTimer)
       }
     }
 
@@ -1509,6 +1524,7 @@ export default {
         iframeEle.width = "100%"
         iframeEle.title = "YouTube video player"
         iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + youtubeEmbedPlaylistParameters
+        iframeEle.allow = "autoplay; fullscreen"
 
         //check if new custom room
         if(playlistId == "newCustomRoom")
@@ -1565,8 +1581,8 @@ export default {
         loadVideoStart(playingVideoId, videoPlaylistId)
 
         //sync video
-        setTimeout(() => {videoPlayerEvents("resync1")}, resync1Time)
-        setTimeout(() => {videoPlayerEvents("resync2")}, resync2Time)
+        setTimeout(function() {videoPlayerEvents("resync1")}, resync1Time)
+        setTimeout(function() {videoPlayerEvents("resync2")}, resync2Time)
 
         //update elements
         let playlistControls = document.getElementById("playlistControls")
@@ -1578,8 +1594,8 @@ export default {
         loadVideoStart(playingVideoId, videoPlaylistId)
 
         //sync video
-        setTimeout(() => {videoPlayerEvents("resync1")}, resync1Time)
-        setTimeout(() => {videoPlayerEvents("resync2")}, resync2Time)
+        setTimeout(function() {videoPlayerEvents("resync1")}, resync1Time)
+        setTimeout(function() {videoPlayerEvents("resync2")}, resync2Time)
         
         //update elements
         let playlistControls = document.getElementById("playlistControls")
@@ -1593,26 +1609,28 @@ export default {
       let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
       let videoPlayPauseOverlayMobile = document.getElementById("videoPlayPauseOverlayMobile")
       let player = document.getElementById("player")
+      let mediaQueryMobile = window.matchMedia( "(max-width: 1300px)" );
       
       //update elements
-      videoPlayPauseOverlay.style.display = "block"
       videoPlayPauseOverlayMobile.style.display = "block"
-      player.style.transform = "scale(1.6)"
+      videoPlayPauseOverlay.style.display = "block"
+      if(!mediaQueryMobile.matches) { player.style.transform = "scale(1.6)" } //desktop
     }
 
     function undisplayPauseOverlay()
     {
       //elements
       let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
-      let player = document.getElementById("player")
       let videoPlayPauseOverlayMobile = document.getElementById("videoPlayPauseOverlayMobile")
+      let player = document.getElementById("player")
+      let mediaQueryMobile = window.matchMedia( "(max-width: 1300px)" );
       
       //update elements
-      setTimeout(() => {
-        player.style.transform = "scale(1)"
+      setTimeout(function() {
+        if(!mediaQueryMobile.matches) { player.style.transform = "scale(1)" } //desktop
         videoPlayPauseOverlay.style.display = "none"
         videoPlayPauseOverlayMobile.style.display = "none"
-      }, 200)
+      }, resetVideoPlayerScaleTimer)
     }
 
     function displayLoadingOverlay()
@@ -1876,7 +1894,7 @@ export default {
             //append iframe
             changeVideoQuality.append(iframe)
   
-            setTimeout(() => {
+            setTimeout(function() {
               let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
               
               //update elements
@@ -1889,7 +1907,7 @@ export default {
               //update elements
               changeVideoQualityLoadingText.innerText = ""
               changeVideoQualitySteps.style.display = "block"
-            }, 1000)
+            }, appendVideoiframeTimer)
           }
         }
 
@@ -2010,7 +2028,7 @@ export default {
     function initializeNewCustomRoomVideo()
     {
       videoPlayerEvents('load')
-      setTimeout(() => {window.addEventListener('keyup', enableKeybinds)}, initializeNewCustomRoomVideoEnableKeybindsTime)
+      setTimeout(function() {window.addEventListener('keyup', enableKeybinds)}, initializeNewCustomRoomVideoEnableKeybindsTime)
     }
 
     function volumeUp()
@@ -2099,8 +2117,19 @@ export default {
     function generateRandomNumber(maxNumber)
     {
       let randomNumber = Math.floor(Math.random() * maxNumber);
-      console.log("generateRandomNumber: " + randomNumber)
+      // console.log("generateRandomNumber: " + randomNumber)
       return randomNumber
+    }
+
+    function initialStartMobile()
+    {
+      //elements
+      let videoPlayInitialStartOverlayMobile = document.getElementById("videoPlayInitialStartOverlayMobile")
+      
+      //update elements
+      videoPlayInitialStartOverlayMobile.style.display = "none"
+      
+      videoPlayerEvents("resync2")
     }
 
     //socket stream
@@ -2457,18 +2486,20 @@ export default {
         }
         else if(msg.content == "random playlist")
         {
+          //elements
+          let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
+          
           loadVideoCustom(msg)
 
-          let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
+          //update elements
           videoPlayPauseOverlayText.innerText = "Loading..."
 
           if(yourSocketId == syncMaster)
           {
-            // setTimeout(() => {videoPlayerEvents("play")}, 3000)
-            setTimeout(() => {
+            setTimeout(function() {
               videoPlayerEvents("jump", "shuffle")
               undisplayPauseOverlay()
-            }, 4000)
+            }, randomPlaylistTimer)
           }
         }
         else if(msg.content == "resync2 video")
@@ -2489,9 +2520,11 @@ export default {
               msg.playingVideosLastWholeSecond++
 
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.playingVideosLastWholeSecond + ', true]}', '*');
-            }
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+}
             else if(msg.videoPlaying == "false")
             {
+              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.playingVideosLastWholeSecond + ', true]}', '*');
               document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
             }
@@ -2528,6 +2561,7 @@ export default {
       volumeUp,
       volumeDown,
       closeModal,
+      initialStartMobile,
     }
   }
 }
@@ -2589,33 +2623,36 @@ export default {
   #player { display: block; position: absolute; height: calc(100vh + 60px); width: 81vw; margin: auto; margin: 0px; margin-top: -61px; margin-left: 0px; padding: 0px; overflow: none; background-color: black; border: 0px solid white; }
   
   /* overlays related */
-  #videoPlayButtonOverlay { display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; border: 0; background-color: transparent; } /* #ff000030 */
+  #videoPlayButtonOverlay { display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; z-index: 1; border: 0; background-color: transparent; } /* #ff000030 */
   #videoPlayButtonSvg { position: absolute; margin-top: 0px; margin-left: 0px; top: 46%; left: 50%; height: 20vh; width: 40vh; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
-  #videoPlayPauseOverlay { display: none; height: 100%; width: 100%; background-color: transparent; }
+  #videoPlayPauseOverlay { position: absolute; display: none; height: 100%; width: 100%; z-index: 2; background-color: transparent; }
   #videoLoadingOverlay { display: block; position: fixed; height: 100vh; width: 100vw; left: 0px; top: 0px; z-index: 4; background-color: black; }
-  #loadingScreenGif { display: block;  top: 47%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: white; position: absolute; width: auto; text-align: center; background-color: transparent; }
+  #loadingScreenGif { display: block; position: absolute; top: 47%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: white; width: auto; text-align: center; background-color: transparent; }
   #videoPlayPauseOverlayText 
   { position: absolute;
-    width: 40vw;
-    top: 43%;
-    padding: 23px;
+    display: block;
+    width: auto;
+    min-width: 44vw;
+    top: 41%;
+    padding: 30px;
     padding-left: 20vw;
     padding-right: 20vw;
     font-weight: bold;
-    font-size: 19px;
-    text-align: center;
+    font-size: 20px;
+    text-align: center; 
     opacity: 1.0;
     color: white;
-    background-color: black;
-    text-shadow: 2px 1px black;
     font-style: oblique;
+    text-shadow: 2px 1px black;
+    background-color: black;
   }
-  #videoPlayPauseOverlayMobile { display: none; opacity: 0.0; }
+  #videoPlayPauseOverlayMobile { display: none; opacity: 0.0; z-index: 1; }
+  #videoPlayInitialStartOverlayMobile { display: none; }
 
   /* video info related */
   #videoInfo { display: none; position: absolute; top: 4vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 0.9; text-align: left; font-size: 14px; font-weight: normal; text-shadow: black 1px 1px; color: white; background-color: transparent; }
   #videoChannel, #videoTitle, #videoQuality, #videoCurrentPlaylistIndex, #current-time-video, #videoCurrentRoom, #videoVolume, #videoCurrentRoomTotalUsers { margin: 6px; text-align: right; }
-  #loadingScreenText { color: white; animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; }
+  #loadingScreenText, #videoPlayInitialStartOverlayMobileLoadingScreenText { color: white; animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; }
   #loadingScreenImage { display: none; position: absolute; height: 40vh; width: 40vh; top: 0px; left: 0px; margin-top: calc(-16vh + 1px); margin-left: 140px; transform: rotate(-45deg) translate(-50%, -50%); z-index: -1; background-size: cover; border-radius: 7%; border: 3px solid white; background-color: black; }
   #currentRouteBar { display: none; color: white; background-color: red; position: absolute; bottom: 0px; width: 73vw; padding: 10px; z-index: 1 }
   #videoCurrentRoom { display: none; }
@@ -2649,7 +2686,7 @@ export default {
   @keyframes fadeLoadingScreenText { from {opacity: 1.0; } to {opacity: 0.0; } }  
 
   /*** mobile portrait ***/
-  @media screen and (max-width: 1300px) and (orientation: portrait) { #videoArea, #flex { display: none; } }
+  @media screen and (max-width: 1300px) and (orientation: portrait) { #videoArea, #flex { display: none; } } 
 
   /*** mobile landscape ***/
   @media screen and (max-width: 1300px) and (orientation: landscape) 
@@ -2659,24 +2696,28 @@ export default {
     #player { height: 90vh; width: 100vw; margin: 0px; margin-top: 0px; padding: 0px; padding-bottom: 10vh; }
     
     /* overlays related */
-    #videoPlayPauseOverlay, #videoPlayButtonOverlay { height: 100vh; width: 100vw; }
+    #videoPlayButtonOverlay { height: 100vh; width: 100vw; }
     #loadingScreenImage { display: none; }
     #loadingScreenText { margin-right: 0px; }
-    #videoPlayPauseOverlayMobile { display: block; position: absolute; left: 0px; top: 0px; height: 100vh; width: 100vw; z-index: 2; opacity: 1.0; border: 0; background-color: black; }
-    #videoPlayPauseOverlayText { width: calc(60vw - 12px); top: 36vh; z-index: 3; background-color: transparent; padding-left: 20vw; padding-right: 20vw; font-size: 14px; }
-    
+    #videoPlayPauseOverlayMobile { display: block; position: absolute; left: 0px; top: 0px; height: 100vh; width: 100vw; z-index: 1; opacity: 1.0; border: 0; background-color: black; }
+    #videoPlayInitialStartOverlayMobile { display: block; position: absolute; height: 100vh; width: 100vw; left: 0px; top: 0px; z-index: 3; opacity: 1.0; border: 0; background-color: black; }
+    #videoPlayPauseOverlayText { width: auto; min-width: 60vw; top: 32vh; z-index: 3; background-color: transparent; padding-left: 20vw; padding-right: 20vw; font-size: 20px; }
+    #videoPlayInitialStartOverlayMobileLoadingScreenText { display: block; }
+    #videoPlayInitialStartOverlayMobileLoadingScreenGif  { display: block; top: 49%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: white; position: absolute; width: auto; text-align: center; background-color: transparent; }
+    #videoPlayPauseOverlay { display: none; }
+
     /* chat related */
     #flex { z-index: -1; }
 
     /* video player controls related */
     #videoPlayerControlButtons { z-index: -1; }
-    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; bottom: 0px; overflow-x: scroll; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: gray lightgray; opacity: 0.7; z-index: 3; color: white; border: 0px solid black; }
+    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; top: 0px; overflow-x: scroll; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: gray lightgray; opacity: 0.7; z-index: 2; color: white; border: 0px solid black; }
     #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 7px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
     #unmute-video-mobile, #pause-video-mobile { display: none; }
-    #iframeContainer { width: 100%; height: 100%; margin-top: 1px; }
+    #iframeContainer { width: 100%; height: 110%; margin-top: 1px; }
     
     /* video info related */
-    #videoInfo { top: 1vh; right: 1vw; margin: 0px; z-index: 1; }
+    #videoInfo { top: 9vh; right: 1vw; margin: 0px; z-index: 0; }
     
     /* modal related */
     #modal { display: block; top: 0px; left: 0px; margin: 0px; padding: 0px; height: 100vh; width: 100vw; transform: translate(0%, 0%); }
@@ -2688,7 +2729,7 @@ export default {
     
     /*** classes */
     /* video player controls related */
-    .videoPlayerControlButton { min-width: 110px; border: 0px; border-right: 2px solid rgba(255, 255, 255, 0.1); }
+    .videoPlayerControlButton { min-width: 110px; border: 0px; border-right: 2px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1bb7;}
     .videoPlayerControlButton:active { color: black; background-color: white; }
-} 
+  }
 </style>

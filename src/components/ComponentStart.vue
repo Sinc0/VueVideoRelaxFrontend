@@ -1,8 +1,8 @@
 <template>
     <div id="componentStart" v-if="vuexAllRooms">
         <!-- active rooms -->
-        <h1 id="activeRoomsTitle" v-if="vuexAllRooms.length > 0">Active Rooms</h1>
         <div id="activeRooms" v-if="vuexAllRooms.length > 0">
+            <h1 id="activeRoomsTitle">Active Rooms</h1>
             <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
                 <!-- active room -->
                 <router-link v-bind:to="'/relax/' + room.room" v-if="currentRoute.substr(1) == room.room && room.room != 'temp'">
@@ -16,8 +16,8 @@
         </div>
 
         <!-- default rooms -->
-        <h1 id="defaultRoomsTitle">Default rooms</h1>
         <div id="defaultRooms">
+            <h1 id="defaultRoomsTitle">Default rooms</h1>
             <div class="room" v-for="room in vuexDefaultRooms" v-bind:key="room.key">
                 <router-link v-bind:to="'/relax/' + room">
                     <div class="roomLink">{{room}}</div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {onMounted, onUpdated, computed} from 'vue'
+import {onUpdated, computed} from 'vue'
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router' //instead of this.$route
 

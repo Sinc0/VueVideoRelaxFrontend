@@ -1,30 +1,27 @@
 <template>
     <div id="ComponentStartMobile" v-if="vuexAllRooms">
-
         <p id="rotateMobileScreenInfoText">rotate mobile screen to show video</p>
 
-        <br />
-
         <!-- active rooms -->
-        <h1 id="activeRoomsTitle" v-if="vuexAllRooms.length > 0">Active Rooms</h1>
         <div id="activeRooms" v-if="vuexAllRooms.length > 0">
+            <h1 id="activeRoomsTitle">Active Rooms</h1>
             <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
-                <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) == room.room && room.room != 'temp'"><div class="roomLink" style="color: #1c1b1b; background-color: white;">({{room.clients.length}}) {{room.room}}</div></router-link>
-                <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) != room.room && room.room != 'temp'"><div class="roomLink">({{room.clients.length}}) {{room.room}}</div></router-link>
+                <router-link v-bind:to="'/relax/' + room.room" v-if="currentRoute.substr(1) == room.room && room.room != 'temp'"><div class="roomLink" style="color: #1c1b1b; background-color: white;">({{room.clients.length}}) {{room.room}}</div></router-link>
+                <router-link v-bind:to="'/relax/' + room.room" v-if="currentRoute.substr(1) != room.room && room.room != 'temp'"><div class="roomLink">({{room.clients.length}}) {{room.room}}</div></router-link>
             </div>
         </div>
 
         <!-- default rooms -->
-        <h1 id="defaultRoomsTitle">Default rooms</h1>
         <div id="defaultRooms">
-            <div class="room" v-for="room in vuexDefaultRooms" v-bind:key="room.key"><router-link v-bind:to="'/' + room"><div class="roomLink">{{room}}</div></router-link></div>
+            <h1 id="defaultRoomsTitle">Default rooms</h1>
+            <div class="room" v-for="room in vuexDefaultRooms" v-bind:key="room.key"><router-link v-bind:to="'/relax/' + room"><div class="roomLink">{{room}}</div></router-link></div>
         </div>
 
     </div>
 </template>
 
 <script>
-import {onMounted, onUpdated, computed} from 'vue'
+import {onUpdated, computed} from 'vue'
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router' //instead of this.$route
 
@@ -77,7 +74,9 @@ export default {
         border-right: 1px solid black; 
      }
     #activeRooms, #defaultRooms { display: inline-flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; }
-    #defaultRoomsTitle, #activeRoomsTitle { width: auto; margin: 0px; margin-top: 10px; padding: 0px; opacity: 0.8; font-size: 14px; }
+    #defaultRooms { padding-bottom: 10px; }
+    #defaultRoomsTitle, #activeRoomsTitle { width: auto; margin: 0px; padding: 0px; opacity: 0.8; font-size: 14px; }
+    #activeRooms { padding-bottom: 6px; }
 
     /* classes */
     .roomLink 
@@ -92,7 +91,7 @@ export default {
         background-color: black; 
         height: auto; 
         width: 70vw; 
-        margin: 10px;
+        margin: 9px;
         margin-right: 20px; 
         margin-left: 20px;
         border: 1px solid white;
@@ -105,6 +104,6 @@ export default {
     @media screen and (max-width: 1300px) and (orientation: portrait) 
     {
         #ComponentStartMobile { display: block; height: 100vh; width: 100vw; left: 0px; background-color: #1c1b1b;  z-index: 3; padding-bottom: 20px; }
-        #rotateMobileScreenInfoText { font-weight: bold; opacity: 0.8; color: white; }
+        #rotateMobileScreenInfoText { font-size: 14px; font-weight: bold; opacity: 0.8; color: white; }
     }
 </style>
