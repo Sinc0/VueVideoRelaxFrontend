@@ -433,6 +433,7 @@ export default {
     var resetVideoPlayerScaleTimer = 300
     var appendVideoiframeTimer = 1000
     var randomPlaylistTimer = 4000
+    var initialStartMobileTimer = 3000
 
     //youtube
     var youtubeEmbedVideoParameters = "?enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=1&mute=1&amp;"
@@ -2129,7 +2130,8 @@ export default {
       //update elements
       videoPlayInitialStartOverlayMobile.style.display = "none"
       
-      videoPlayerEvents("resync2")
+      document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*'); //play video
+      setTimeout(function() {videoPlayerEvents("resync2")}, initialStartMobileTimer)
     }
 
     //socket stream
@@ -2712,12 +2714,12 @@ export default {
     /* video player controls related */
     #videoPlayerControlButtons { z-index: -1; }
     #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; top: 0px; overflow-x: scroll; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: gray lightgray; opacity: 0.7; z-index: 2; color: white; border: 0px solid black; }
-    #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 7px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
+    #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 8px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
     #unmute-video-mobile, #pause-video-mobile { display: none; }
     #iframeContainer { width: 100%; height: 110%; margin-top: 1px; }
     
     /* video info related */
-    #videoInfo { top: 9vh; right: 1vw; margin: 0px; z-index: 0; }
+    #videoInfo { top: 10vh; right: 2vh; margin: 0px; z-index: 0; }
     
     /* modal related */
     #modal { display: block; top: 0px; left: 0px; margin: 0px; padding: 0px; height: 100vh; width: 100vw; transform: translate(0%, 0%); }
