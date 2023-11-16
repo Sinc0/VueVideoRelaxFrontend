@@ -1,6 +1,6 @@
 <template>
   <div id="componentHome">
-    <!-- modal -->
+    <!-- modal settings -->
     <div id="modal" style="display: none;">
       <div id="modalSidebar">
         <div id="modalCloseBar" v-on:click="closeModal()">Close</div>
@@ -11,6 +11,7 @@
         <div id="modalSidebarVideoQuality" v-on:click="showModalCategory('Video Quality')">Change Video Quality</div>
       </div>
 
+      <!-- modal video controls -->
       <div id="modalContent">
         <div id="modalContentKeybinds">
           <table id="modalContentKeybindsTable">
@@ -75,8 +76,10 @@
           </table>
         </div>
 
+        <!-- modal settings -->
         <div id="modalContentSettings"></div>
 
+        <!-- modal add username -->
         <div id="modalContentAddUsername">
           <div id="addUsername">
               <div id="errorMessageAddUsername" class="errorMessage"></div>
@@ -86,6 +89,7 @@
           </div>
         </div>
 
+        <!-- modal create room -->
         <div id="modalContentCreateRoom">
           <div id="createRoom">
               <div id="errorMessageCreateRoom" class="errorMessage"></div>
@@ -94,6 +98,7 @@
           </div>
         </div>
 
+        <!-- modal change video quality -->
         <div id="modalContentVideoQuality">
           <div id="changeVideoQuality">
             <p id="changeVideoQualityLoadingText"><b>Loading...</b></p>
@@ -111,10 +116,12 @@
       </div>
     </div>
 
-    <!-- current route bar -->
+    
+    <!-- current url path -->
     <div id="currentRouteBar">{{currentRoute}}</div>
     
-    <!-- video area -->
+
+    <!-- initialize custom room -->
     <div id="videoArea">
       <div id="initializeNewCustomRoom">
         <div id="initializeNewCustomRoomSteps">
@@ -125,6 +132,7 @@
           <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
         </div>
 
+        <!-- initialize room url input -->
         <div id="initializeNewCustomRoom-load-video-elems">
             <input id="initializeNewCustomRoom-load-video-input" placeholder="video or playlist id" maxlength="100" />
             <div id="initializeNewCustomRoom-load-video" v-on:click="initializeNewCustomRoomVideo()">Load</div>
@@ -172,7 +180,8 @@
                   
       <!-- player controls -->
       <div id="videoPlayerControlButtons">
-        <!-- player controls row -->
+
+        <!-- player controls row 1-->
         <div class="videoPlayerControlRow">
           <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
           <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
@@ -180,7 +189,8 @@
           <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
           <div><input id="jump-video-input" type="number" placeholder="Jump Nr" max="1000"/></div>
         </div>
-        <!-- player controls row -->
+
+        <!-- player controls row 2 -->
         <div id="playlistControls" class="videoPlayerControlRow"><!-- playlist controls -->
           <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
           <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
@@ -190,7 +200,8 @@
             <input id="sync-video-input" type="number" placeholder="Sync Secs" max="1000000"/>
           </div>
         </div>
-        <!-- player controls row -->
+
+        <!-- player controls row 3 -->
         <div class="videoPlayerControlRow">
           <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
           <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
@@ -199,7 +210,8 @@
             <input id="load-video-input" placeholder="Load Id" maxlength="100" />
           </div>
         </div>
-        <!-- player controls row -->
+
+        <!-- player controls row 4 -->
         <div class="videoPlayerControlRow">
           <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
           <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
@@ -210,192 +222,219 @@
         </div>
       </div>
 
+      <!-- mobile player controls -->
       <div id="videoPlayerControlButtonsMobile">
         <div class="videoPlayerControlRow">
+            <!-- fullscreen-->
             <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
-          <!-- <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div> -->
-          <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Video Info</div>
-          <div id="play-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
-          <div id="pause-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
-          <div id="restart-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
-          <div id="mute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
-          <div id="unmute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
-          <!-- <div id="volume-up-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeUp()">Volume +</div> -->
-          <!-- <div id="volume-down-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeDown()">Volume -</div> -->
-          <div id="previous-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
-          <div id="next-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
+            
+            <!-- settings -->
+            <!-- <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div> -->
+            
+            <!-- video info -->
+            <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Video Info</div>
+            
+            <!-- play/pause/restart -->
+            <div id="play-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
+            <div id="pause-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
+            <div id="restart-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
+
+            <!-- mute/unmute -->
+            <div id="mute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
+            <div id="unmute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
+
+            <!-- volume up/down -->
+            <!-- <div id="volume-up-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeUp()">Volume +</div> -->
+            <!-- <div id="volume-down-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeDown()">Volume -</div> -->
+
+            <!-- previous/next -->
+            <div id="previous-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
+            <div id="next-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
           
+            <!-- shuffle -->
             <div id="shuffle-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'shuffle')">Shuffle</div>
+
+            <!-- resync -->
             <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
 
-          <div id="jump-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
-          <div><input id="jump-video-input-mobile" type="number" placeholder="Jump Nr" max="1000"/></div>
-          <div id="sync-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
-          <div><input id="sync-video-input-mobile" type="number" placeholder="Sync Secs" max="1000000"/></div>
-          <div id="load-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-          <div><input id="load-video-input-mobile" placeholder="Load Id" maxlength="100" /></div>
+            <!-- jump-->
+            <div id="jump-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
+            <div><input id="jump-video-input-mobile" type="number" placeholder="Jump Nr" max="1000"/></div>
+
+            <!-- sync -->
+            <div id="sync-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
+            <div><input id="sync-video-input-mobile" type="number" placeholder="Sync Secs" max="1000000"/></div>
+
+            <!-- load-->
+            <div id="load-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
+            <div><input id="load-video-input-mobile" placeholder="Load Id" maxlength="100" /></div>
         </div>
       </div>
     </div>
     
+
     <!-- chat -->
     <div id="flex">
-      <!-- chat room title -->
-      <div id="currentRoomInfo">
-        <b id="inputCurrentRoom"></b>
-      </div>
+        <!-- chat room title -->
+        <div id="currentRoomInfo"><b id="inputCurrentRoom"></b></div>
 
-      <!-- chat messages -->
-      <div id="chat" style="border: 0;">
-          <!-- <b>Current Room</b> -->
-          <ul id="messages">
-          </ul>
-      </div>
+        <!-- chat messages -->
+        <div id="chat" style="border: 0;">
+            <!-- <b>Current Room</b> -->
+            <ul id="messages">
+            </ul>
+        </div>
 
-      <!-- chat textbox -->
-      <div id="chatBox">
-          <form id="form" action="" @submit.prevent="sendChatMessage()">
-            <input id="inputChatMessage" autocomplete="off" maxlength="1000" />
-            <button id="buttonSend">Send</button>
-          </form>
-      </div>
+        <!-- chat textbox -->
+        <div id="chatBox">
+            <form id="form" action="" @submit.prevent="sendChatMessage()">
+              <input id="inputChatMessage" autocomplete="off" maxlength="1000" />
+              <button id="buttonSend">Send</button>
+            </form>
+        </div>
     </div>
+
+
   </div>
 </template>
 
+
 <script>
+//imports
 import { io } from "socket.io-client";
 import {onMounted, onUpdated, computed} from 'vue'
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router' //instead of this.$route
 
+
 export default {
   setup() {
+    /*** initialize vue related */
     //vuex
     const store = useStore()
     const vuexAllRooms = computed(function() { return store.getters['allRooms']})
-
     //router
     const router = useRouter()
     const currentRoute = computed(function() { return useRouter().currentRoute.value.fullPath})
 
-    //lifecycle hooks
+
+    /*** lifecycle hooks ***/
     onMounted(function() {
-      // console.log("onMounted ComponentHome")
-
-      //debugging
-      // console.log("onMounted playingVideoId: " + playingVideoId)
-      // console.log("onMounted videoPlaylistId: " + videoPlaylistId)
-      // console.log(currentRoute)
-
-      setTimeout(function() {
-        //variables
-        let roomExists = false
-        let allActiveRooms = null
-        // let selectedRoomFromUrl = null
-        let urlRoom = null
-        let selectedRoomFromUrl = currentRoute._value
-        // selectedRoomFromUrl = currentRoute._value.substr(1)
-        // console.log("selectedRoomFromUrl 1: " + selectedRoomFromUrl)
-
-        //get room name from url
-        urlRoom = selectedRoomFromUrl.split("/")[2]
-        console.log("urlRoom: " + urlRoom)
-        
-        //get all active rooms
-        allActiveRooms = JSON.stringify(vuexAllRooms.value)
-        allActiveRooms = JSON.parse(allActiveRooms)
+        // console.log("onMounted ComponentHome")
 
         //debugging
-        // console.log("allActiveRooms")
+        // console.log("onMounted playingVideoId: " + playingVideoId)
+        // console.log("onMounted videoPlaylistId: " + videoPlaylistId)
+        // console.log(currentRoute)
 
-        //join room specified
-        if(urlRoom != "" || urlRoom != null || urlRoom != "undefined")
-        {
-          //check active rooms
-          if(roomExists == false)
-          {
-            for(let r in allActiveRooms)
-            {
-              // console.log("active room " + allActiveRooms[r].room)
-              if(urlRoom == allActiveRooms[r].room)
-              {
-                // console.log("match: " + selectedRoomFromUrl + " - " + allActiveRooms[r].room)
-                roomExists = true
-              }
-            }
-          }
+        setTimeout(function() {
+          //variables
+          let roomExists = false
+          let allActiveRooms = null
+          // let selectedRoomFromUrl = null
+          let urlRoom = null
+          let selectedRoomFromUrl = currentRoute._value
+          // selectedRoomFromUrl = currentRoute._value.substr(1)
+          // console.log("selectedRoomFromUrl 1: " + selectedRoomFromUrl)
+
+          //get room name from url
+          urlRoom = selectedRoomFromUrl.split("/")[2]
+          console.log("urlRoom: " + urlRoom)
           
-          //check default rooms
-          if(roomExists == false)
+          //get all active rooms
+          allActiveRooms = JSON.stringify(vuexAllRooms.value)
+          allActiveRooms = JSON.parse(allActiveRooms)
+
+          //debugging
+          // console.log("allActiveRooms")
+
+          //join room specified
+          if(urlRoom != "" || urlRoom != null || urlRoom != "undefined")
           {
-            for(let r in defaultRooms)
+            //check active rooms
+            if(roomExists == false)
             {
-              // console.log("default room " + defaultRooms[r])
-              if(urlRoom == defaultRooms[r])
+              for(let r in allActiveRooms)
               {
-                // console.log("match: " + selectedRoomFromUrl + " - " + defaultRooms[r])
-                roomExists = true
+                // console.log("active room " + allActiveRooms[r].room)
+                if(urlRoom == allActiveRooms[r].room)
+                {
+                  // console.log("match: " + selectedRoomFromUrl + " - " + allActiveRooms[r].room)
+                  roomExists = true
+                }
               }
             }
-          }
+            
+            //check default rooms
+            if(roomExists == false)
+            {
+              for(let r in defaultRooms)
+              {
+                // console.log("default room " + defaultRooms[r])
+                if(urlRoom == defaultRooms[r])
+                {
+                  // console.log("match: " + selectedRoomFromUrl + " - " + defaultRooms[r])
+                  roomExists = true
+                }
+              }
+            }
 
-          if(urlRoom == "temp" || urlRoom == "test" || urlRoom == "relax" || urlRoom == "undefined" || urlRoom == "null") //join default room
-          {
-            pushUrl("general")
-          }
-          else if(roomExists == true) //join specified room
-          {
-            joinRoom(urlRoom)
+            if(urlRoom == "temp" || urlRoom == "test" || urlRoom == "relax" || urlRoom == "undefined" || urlRoom == "null") //join default room
+            {
+              pushUrl("general")
+            }
+            else if(roomExists == true) //join specified room
+            {
+              joinRoom(urlRoom)
+            }
+            else //join default room
+            {
+              pushUrl("general")
+            }
           }
           else //join default room
           {
             pushUrl("general")
           }
-        }
-        else //join default room
-        {
-          pushUrl("general")
-        }
 
-        //handle components
-        let componentStart = document.getElementById("componentStart")
-        let componentAbout = document.getElementById("componentAbout")
-        let componentCredits = document.getElementById("componentCredits")
-        componentStart.style.display = "none"
-        componentAbout.style.display = "none"
-        componentCredits.style.display = "none"
+          //handle components
+          let componentStart = document.getElementById("componentStart")
+          let componentAbout = document.getElementById("componentAbout")
+          let componentCredits = document.getElementById("componentCredits")
+          componentStart.style.display = "none"
+          componentAbout.style.display = "none"
+          componentCredits.style.display = "none"
 
-      }, initializeVideoTime)
+        }, initializeVideoTime)
     })
 
     onUpdated(function() {
-      // console.log("onUpdated ComponentHome")
+        // console.log("onUpdated ComponentHome")
 
-      //join room from url route
-      // let selectedRoomFromUrl = currentRoute._value.substr(1)
-      // console.log("selectedRoomFromUrl: " + selectedRoomFromUrl)
-      // joinRoom(selectedRoomFromUrl)
+        //join room from url route
+        // let selectedRoomFromUrl = currentRoute._value.substr(1)
+        // console.log("selectedRoomFromUrl: " + selectedRoomFromUrl)
+        // joinRoom(selectedRoomFromUrl)
 
-      //join room from url route
-      let selectedRoomFromUrl = currentRoute._value
-      let urlRoom = selectedRoomFromUrl.split("/")[2]
+        //join room from url route
+        let selectedRoomFromUrl = currentRoute._value
+        let urlRoom = selectedRoomFromUrl.split("/")[2]
 
-      console.log("urlRoom: " + urlRoom)
-      joinRoom(urlRoom)
+        console.log("urlRoom: " + urlRoom)
+        joinRoom(urlRoom)
     })
 
+
+    /*** variables ***/
     //elements
     var form = document.getElementById('form');  
     var input = document.getElementById('input');
-    
     //user
     var socket = io("http://localhost:3000");
     var syncMaster = null
     var yourSocketId = null
     var currentRoom = null
     var yourUsername = null
-
     //video
     var playingVideosLastWholeSecond = null
     var playingVideoTotalDuration = null
@@ -412,13 +451,11 @@ export default {
     var videoAvailableQualities = null
     var videoPlaylistId = null
     var fullScreenActive = false
-      
     //playlist
     var playlistCurrentVideoIndex = 0
     var playlistArray = null
     var playlistLength = null
     var defaultPlaylists = null
-    
     //timers
     var totalLoadTime = initializeVideoTime + resync1Time + resyncMargin
     var loadingScreenTime = 7000
@@ -434,24 +471,22 @@ export default {
     var appendVideoiframeTimer = 1000
     var randomPlaylistTimer = 4000
     var initialStartMobileTimer = 3000
-
     //youtube
     var youtubeEmbedVideoParameters = "?enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=1&mute=1&amp;"
     var youtubeEmbedPlaylistParameters = "&enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=1&mute=1&amp;"
-
     //rooms
     var defaultRooms = []
     var waitingForRoomToBeInitialized = null
-
     //stats
     var totalRoomsCount = 0
     var totalUsersCount = 0
     var totalUsersCurrentRoomCount = 0
- 
     //others
     var forbiddenCharactersString = "\nspace ! @ % < > | , . ; : [ ]"
 
-    //event listen to player
+
+    /*** event listeners ***/
+    //video player
     window.onmessage = function(e){
       //debugging
       // console.log(e.data)
@@ -680,16 +715,17 @@ export default {
       }
     }
 
-    //event listen to keyboard
+    //keyboard
     window.addEventListener('keyup', enableKeybinds)
       
-    //event listen to fullscreen
+    //fullscreen
     document.addEventListener('fullscreenchange', onExitFullScreen);
     document.addEventListener('webkitfullscreenchange', onExitFullScreen);
     document.addEventListener('mozfullscreenchange', onExitFullScreen);
     document.addEventListener('MSFullscreenChange', onExitFullScreen);
     
-    //functions
+
+    /*** functions ***/
     function sendChatMessage() 
     {
       //null check
@@ -702,6 +738,7 @@ export default {
           inputChatMessage.value = '';
       }
     }
+
 
     function createRoom() {
       let createRoomInfo = []
@@ -768,10 +805,7 @@ export default {
 
       //reset player to cancel current time sync
       let vp = document.getElementById("videoPlayer")
-      if(vp != null)
-      {
-        vp.remove()
-      }
+      if(vp != null) { vp.remove() }
 
       //set local variable
       playingVideoId = "null"
@@ -787,6 +821,7 @@ export default {
       modal.style.display = "none"
     }
     
+
     function joinRoom(roomName)
     {
       //debugging
@@ -837,6 +872,7 @@ export default {
       flex.style.display = "inline-flex"
     }
 
+
     function addUser(socketId)
     {
       //variables
@@ -844,10 +880,7 @@ export default {
 
       //check forbidden chars
       let characterCheck = forbiddenCharacterCheck(inputAddUser.value)
-      if(characterCheck == true)
-      {
-          return
-      }
+      if(characterCheck == true) { return }
 
       //send to server app
       let username = inputAddUser.value
@@ -860,6 +893,7 @@ export default {
       //set new username
       yourUsername = user.username
     }
+
 
     // function leaveRoom(roomName)
     // {
@@ -880,23 +914,25 @@ export default {
     //     flex.style.display = "none"
     // }
 
+
     function forbiddenCharacterCheck(string)
     {
-        if(string == "") return true
-        if(string.includes(" ")) return true
-        if(string.includes("!")) return true
-        if(string.includes("@")) return true
-        if(string.includes("<")) return true
-        if(string.includes(">")) return true
-        if(string.includes("|")) return true
-        if(string.includes(",")) return true
-        if(string.includes("%")) return true
-        if(string.includes(".")) return true
-        if(string.includes(";")) return true
-        if(string.includes(":")) return true
-        if(string.includes("[")) return true
-        if(string.includes("]")) return true
+        if(string == "") { return true }
+        else if(string.includes(" ")) { return true }
+        else if(string.includes("!")) { return true }
+        else if(string.includes("@")) { return true }
+        else if(string.includes("<")) { return true }
+        else if(string.includes(">")) { return true }
+        else if(string.includes("|")) { return true }
+        else if(string.includes(",")) { return true }
+        else if(string.includes("%")) { return true }
+        else if(string.includes(".")) { return true }
+        else if(string.includes(";")) { return true }
+        else if(string.includes(":")) { return true }
+        else if(string.includes("[")) { return true }
+        else if(string.includes("]")) { return true }
     }
+
 
     function currentTimeStamp()
     {
@@ -906,19 +942,19 @@ export default {
       let currentMinutes = currentDate.getMinutes()
       let currentSeconds = currentDate.getSeconds()
 
-      //correct time format
-      if (currentHours < 10)
-          currentHours + "0" + currentHours.toString()
-      if (currentMinutes < 10)
-          currentMinutes = "0" + currentMinutes.toString()
-      if (currentSeconds < 10)
-          currentSeconds = "0" + currentSeconds.toString()
+      //set correct time format
+      if (currentHours < 10) { currentHours + "0" + currentHours.toString() }
+      if (currentMinutes < 10) { currentMinutes = "0" + currentMinutes.toString() }
+      if (currentSeconds < 10) { currentSeconds = "0" + currentSeconds.toString() }
+          
 
       //set time
       let time = + currentHours + ":" + currentMinutes + ":" + currentSeconds;
       
+      //return value
       return time
     }
+
 
     function loadVideoStart(videoId, playlistId)
     {
@@ -955,6 +991,7 @@ export default {
         vp.style.border = "0px"
       }
     }
+
 
     function loadVideoCustom(loadThisId)
     {
@@ -1002,6 +1039,7 @@ export default {
         vp.style.border = "0px"
         setTimeout(function() {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
       }
+      
       //load playlist
       else if(loadThisId.videoPlaylistId != "null")
       {
@@ -1015,6 +1053,7 @@ export default {
         loadPlaylist(playlistId)
       }
     }
+
 
     function videoPlayerEvents(event, param1, param2, param3)
     {
@@ -1033,6 +1072,7 @@ export default {
         //chat message
         socket.emit('chat message', msgObjChat);
       }
+
       else if(event == "pause")
       {
         //set local variable
@@ -1048,6 +1088,7 @@ export default {
         //chat message
         socket.emit('chat message', msgObjChat);          
       }
+
       else if(event == "sync")
       {
         //elements
@@ -1083,6 +1124,7 @@ export default {
           syncTime.value = ""
         }
       }
+
       else if(event == "mute")
       {
         //mute player
@@ -1103,6 +1145,7 @@ export default {
         //set local variable
         videoMuted = true
       }
+
       else if(event == "unMute")
       {
         //unmute player
@@ -1121,6 +1164,7 @@ export default {
         //set local variable
         videoMuted = false
       }
+
       else if(event == "restart")
       {
         //set local variable
@@ -1136,6 +1180,7 @@ export default {
         //chat message
         socket.emit('chat message', msgObjChat);
       }
+
       else if(event == "load")
       {
         //elements
@@ -1185,6 +1230,7 @@ export default {
           socket.emit('video command', msgObjVideoCommand);
         }
       }
+
       else if(event == "next")
       {
         //debugging
@@ -1207,6 +1253,7 @@ export default {
           socket.emit('chat message', msgObjChat);
         }
       }
+
       else if(event == "previous")
       { 
           //debugging
@@ -1229,6 +1276,7 @@ export default {
             socket.emit('chat message', msgObjChat);
           }
       }
+
       else if(event == "resync1")
       {
         console.log("resync1 to: " + playingVideosLastWholeSecond + "s")
@@ -1324,6 +1372,7 @@ export default {
           }
         }
       }
+
       else if(event == "jump")
       {
         //variables
@@ -1375,11 +1424,13 @@ export default {
         }
 
       }
+
       else if(event == "volume")
       {
         //change player volume
         document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'setVolume' + '","args":[' + param1 + ']}', '*');
       }
+
       else if(event == "random")
       {
           //variables
@@ -1392,6 +1443,7 @@ export default {
           //video command
           socket.emit('video command', msgObjVideoCommand);
       }
+
       else if(event == "resync2")
       {
         //variables
@@ -1401,6 +1453,7 @@ export default {
         socket.emit('video command', msgObjVideoCommand);
       }
     }
+
 
     function videoPlayButtonOverlay()
     {
@@ -1415,11 +1468,13 @@ export default {
         modal.style.display = "none" 
         componentAbout.style.display = "none"  
         componentCredits.style.display = "none"   
-      } 
+      }
+
       //play or pause video
       else if(videoPlaying == false) { videoPlayerEvents("play") }
       else if(videoPlaying == true){ videoPlayerEvents("pause") }
     }
+
 
     function requestFullScreen()
     { 
@@ -1450,12 +1505,14 @@ export default {
       } 
     }
 
+
     function requestCloseFullScreen()
     {      
       if(document.exitFullscreen) { document.exitFullscreen(); } 
       else if(document.mozCancelFullScreen) { document.mozCancelFullScreen(); } 
       else if(document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
     }
+
 
     function onExitFullScreen()
     {
@@ -1508,6 +1565,7 @@ export default {
       }
     }
 
+
     function loadPlaylist(playlistId)
     {
         //set local variables
@@ -1544,6 +1602,7 @@ export default {
         vp.style.border = "0px"
     }
 
+
     function displayPlayButton()
     {
       //elements
@@ -1558,6 +1617,7 @@ export default {
       btnPlayMobile.style.display = "block"
       btnPauseMobile.style.display = "none"
     }
+
 
     function displayPauseButton()
     {
@@ -1574,6 +1634,7 @@ export default {
       btnPauseMobile.style.display = "block"
     }
 
+
     function initializeVideo()
     {        
       if(videoPlaylistId == "null" || videoPlaylistId == null)
@@ -1589,6 +1650,7 @@ export default {
         let playlistControls = document.getElementById("playlistControls")
         playlistControls.style.display = "none"
       }
+
       else if(videoPlaylistId != "null" || videoPlaylistId != null)
       {
         console.log("initializeVideo playlist: " + videoPlaylistId)
@@ -1604,6 +1666,7 @@ export default {
       }
     }
 
+
     function displayPauseOverlay()
     {
       //elements
@@ -1618,6 +1681,7 @@ export default {
       if(!mediaQueryMobile.matches) { player.style.transform = "scale(1.6)" } //desktop
     }
 
+
     function undisplayPauseOverlay()
     {
       //elements
@@ -1628,11 +1692,15 @@ export default {
       
       //update elements
       setTimeout(function() {
-        if(!mediaQueryMobile.matches) { player.style.transform = "scale(1)" } //desktop
+        if(!mediaQueryMobile.matches) 
+        { player.style.transform = "scale(1)" } //desktop
+        
         videoPlayPauseOverlay.style.display = "none"
         videoPlayPauseOverlayMobile.style.display = "none"
+
       }, resetVideoPlayerScaleTimer)
     }
+
 
     function displayLoadingOverlay()
     {   
@@ -1650,6 +1718,7 @@ export default {
       componentStart.scrollTop = 0
       videoPlayPauseOverlayText.innerText = "Press to Play"
     }
+
 
     function undisplayLoadingOverlay()
     {
@@ -1670,14 +1739,8 @@ export default {
       displayVideoInfoAndControls()
 
       //check if muted
-      if(videoMuted == false)
-      {
-        videoPlayerEvents("unMute")
-      }
-      else if(videoMuted == true)
-      {
-        videoPlayerEvents("mute")
-      }
+      if(videoMuted == false) { videoPlayerEvents("unMute") }
+      else if(videoMuted == true) { videoPlayerEvents("mute") }
 
       //check if new custom room
       if(videoPlaylistId == "newCustomRoom")
@@ -1689,6 +1752,7 @@ export default {
       }
     }
 
+
     function pushUrl(room)
     {
       //debugging
@@ -1698,6 +1762,7 @@ export default {
       router.push({ path: '/relax/' + room} )
     }
 
+
     function resetCurrentTimeVideo()
     {
       //elements
@@ -1706,6 +1771,7 @@ export default {
       //update elements
       currentTimeVideo.innerText = ""
     }
+
 
     function displayVideoInfoAndControls()
     {
@@ -1720,6 +1786,7 @@ export default {
       videoPlayerControlButtonsMobile.style.display = "block"
     }
 
+
     function undisplayVideoInfoAndControls()
     {
       //elements
@@ -1732,6 +1799,7 @@ export default {
       videoInfo.style.display = "none"
       videoPlayerControlButtonsMobile.style.display = "none"
     }
+
 
     function showStartComponent()
     {
@@ -1746,6 +1814,7 @@ export default {
       if(componentStart.style.display == "block") { componentStart.style.display = "none" }
       else if(componentStart.style.display == "none") { componentStart.style.display = "block" }
     }
+
 
     function resetVideoInfo()
     {
@@ -1768,6 +1837,7 @@ export default {
       videoQuality.innerText = ""
     }
 
+
     function toggleVideoInfoAndControls()
     {
       //elements
@@ -1788,6 +1858,7 @@ export default {
         videoPlayerControlButtonsMobile.style.display = "block"
       }
     }
+
 
     function showModalCategory(category)
     {
@@ -1834,12 +1905,14 @@ export default {
         modalSidebarKeybinds.style.color = "white"
         modalContentKeybinds.style.display = "block"
       }
+
       else if(category == "Settings")
       {
         // modalSidebarSettings.style.backgroundColor = "#1c1b1b"
         // modalSidebarSettings.style.color = "white"
         modalContentSettings.style.display = "block"
       }
+
       else if(category == "Video Quality")
       {
         modalSidebarVideoQuality.style.backgroundColor = "#1c1b1b"
@@ -1914,6 +1987,7 @@ export default {
 
         appendVideoiframe()
       }
+
       else if(category == "Add Username")
       {
         //elements
@@ -1925,6 +1999,7 @@ export default {
         modalContentAddUsername.style.display = "block"
         errorMessageAddUsername.innerText = "username cannot be empty or contain " + forbiddenCharactersString
       }
+
       else if(category == "Create Room")
       {
         //elements
@@ -1938,6 +2013,7 @@ export default {
       }
     }
 
+
     function displayInitializeNewCustomRoom()
     {
       //elements
@@ -1948,6 +2024,7 @@ export default {
       initializeNewCustomRoom.style.display = "block"
       videoPlayButtonOverlay.style.display = "none"
     }
+
 
     function enableKeybinds(event)
     {
@@ -1976,6 +2053,7 @@ export default {
         else if(modal.style.display == "none") { modal.style.display = "block" }
         else if(modal.style.display == "block") { modal.style.display = "none"}
       }
+
       else if(document.activeElement.id != "inputChatMessage" && document.activeElement.id != "inputCreateRoom" && document.activeElement.id != "inputAddUser" && document.activeElement.id != "initializeNewCustomRoom-load-video-input")
       {
         if(event.code === "Space")
@@ -2017,6 +2095,7 @@ export default {
       }
     }
     
+
     function disableKeybinds()
     {
       //debugging
@@ -2026,11 +2105,13 @@ export default {
       window.removeEventListener('keyup', enableKeybinds)
     }
 
+
     function initializeNewCustomRoomVideo()
     {
       videoPlayerEvents('load')
       setTimeout(function() {window.addEventListener('keyup', enableKeybinds)}, initializeNewCustomRoomVideoEnableKeybindsTime)
     }
+
 
     function volumeUp()
     {
@@ -2043,6 +2124,7 @@ export default {
       }
     }
 
+
     function volumeDown()
     {
       if(playingVideoVolume != 0)
@@ -2054,6 +2136,7 @@ export default {
       }
     }
     
+
     function closeModal()
     {
       //elements
@@ -2062,6 +2145,7 @@ export default {
       //update elements
       modal.style.display = "none"
     }
+
 
     function formatChatMessage(msg)
     {
@@ -2082,6 +2166,7 @@ export default {
         item.style.overflowWrap = "break-word"
         item.style.color = "white"
       }
+      
       else
       {
         item.style.padding = "10px"
@@ -2115,12 +2200,14 @@ export default {
       chat.scrollTo(0, chat.scrollHeight);
     }
 
+
     function generateRandomNumber(maxNumber)
     {
       let randomNumber = Math.floor(Math.random() * maxNumber);
       // console.log("generateRandomNumber: " + randomNumber)
       return randomNumber
     }
+
 
     function initialStartMobile()
     {
@@ -2134,10 +2221,9 @@ export default {
       setTimeout(function() {videoPlayerEvents("resync2")}, initialStartMobileTimer)
     }
 
-    //socket stream
-    socket.on('chat message', function(msg) {
-      formatChatMessage(msg)
-    });
+
+    /*** handle socket stream ***/
+    socket.on('chat message', function(msg) { formatChatMessage(msg) });
 
     socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying, defaultPlaylistsFromServer, defaultRoomsFromServer) {
         //debugging
@@ -2394,17 +2480,11 @@ export default {
         // console.log(inputCurrentRoom)
     });
 
-    socket.on('leave room', function(msg) {
-      formatChatMessage(msg)
-    });
-
-    socket.on('join room', function(msg) {
-      formatChatMessage(msg)
-    });
-
-    socket.on('create room', function(msg) {
-      formatChatMessage(msg)
-    });
+    socket.on('leave room', function(msg) { formatChatMessage(msg) });
+    
+    socket.on('join room', function(msg) { formatChatMessage(msg) });
+    
+    socket.on('create room', function(msg) { formatChatMessage(msg) });
 
     socket.on('video command', function(msg) {
         //debugging
@@ -2416,11 +2496,13 @@ export default {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*'); //add event listener for getCurrentTime
           displayPauseButton()
         }
+
         else if(msg.content == "pause video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
           displayPlayButton()
         }
+
         else if(msg.content == "sync video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.syncTime + ', true]}', '*');
@@ -2428,6 +2510,7 @@ export default {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*') //add event listener for getCurrentTime
           displayPauseButton()
         }
+
         else if(msg.content == "load video")
         {
           //debugging
@@ -2443,6 +2526,7 @@ export default {
           //set local variable
           videoPlaying = false
         }
+
         else if(msg.content == "next video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'nextVideo' + '","args":""}', '*');
@@ -2453,6 +2537,7 @@ export default {
           //set local variable
           videoPlaying = true
         }
+
         else if(msg.content == "previous video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'previousVideo' + '","args":""}', '*');
@@ -2463,6 +2548,7 @@ export default {
           //set local variable
           videoPlaying = true
         }
+
         else if(msg.content == "jump video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + msg.jumpIndex + ']}', '*');
@@ -2477,6 +2563,7 @@ export default {
           videoPlaying = true
           playingVideosLastWholeSecond = 0
         }
+
         else if(msg.content == "restart video")
         {
           document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[0, true]}', '*');
@@ -2486,6 +2573,7 @@ export default {
           videoPlaying = true
           playingVideosLastWholeSecond = 0
         }
+
         else if(msg.content == "random playlist")
         {
           //elements
@@ -2504,6 +2592,7 @@ export default {
             }, randomPlaylistTimer)
           }
         }
+        
         else if(msg.content == "resync2 video")
         {
           //debugging
@@ -2538,6 +2627,7 @@ export default {
         }
     });
 
+
     return {
       //functions
       joinRoom,
@@ -2569,17 +2659,19 @@ export default {
 }
 </script>
 
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   /*** elements ***/
   button { border-radius: 0%; outline: none; color: black; }
-  input[type="number"], input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: textfield; -moz-appearance: textfield; appearance: textfield; }
+  input[type="number"] { -webkit-appearance: textfield; -moz-appearance: textfield; appearance: textfield; } 
+  input[type=number]::-webkit-inner-spin-button { -webkit-appearance: textfield; -moz-appearance: textfield; appearance: textfield; } 
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: textfield; -moz-appearance: textfield; appearance: textfield; }
+
 
   /***  ids ***/
   /* components */
   #componentHome { display: block; font-family: Arial, Helvetica, sans-serif; overflow: hidden; background-color: black; }
-  
-  /* chat related */
   #chat { position: absolute; height: calc(87% - 16px); width: 100%; bottom: calc(100px - 6px);  right: 0; overflow-y: scroll; opacity: 0.7; border-left: 1px solid black; }
   #inputChatMessage { display: inline-block; width: calc(100% - 20px); margin: 0px; margin-top: 8px; padding: 10px; font-size: 14px; font-weight: normal; color: white; border: 0px; background-color: rgba(169, 169, 169, 0.09); }
   #chat { scrollbar-width: thin; scrollbar-color: #80808063 #1c1b1b; }
@@ -2589,41 +2681,119 @@ export default {
   #flex { display: inline-flex; position: absolute; height: 100vh; width: calc(19vw - 1px); flex-wrap: wrap; align-content: flex-start; bottom: 0; right: 0; z-index: 2; overflow-y: hidden; filter: brightness(0.98); border-left: 1px solid black; background-color: #1c1b1b; }
   #buttonSend { display: inline-block; width: 100%; margin: 0px; margin-bottom: 10px; padding: 11px; padding-top: 10px; font-weight: normal; font-family: Arial; font-size: 14px; border: 0px; color: rgba(169, 169, 169, 0.6); background-color: black; }
   #form { width: 93%; margin: auto; margin-top: 2px; opacity: 0.6 }
-
   /* modal related */
-  #createRoom, #addUsername { display: block; }
-  #createRoom, #addUsername { padding: 0px; background-color: transparent; }
-  #addUsername, #createRoom { width: 70%; margin: auto; }
+  #buttonCreateRoom { width: calc(100%); border-color: lightgray; }
+  #createRoom { display: block; width: 70%; margin: auto; padding: 0px; background-color: transparent; } 
+  #addUsername { display: block; width: 70%; margin: auto; padding: 0px; background-color: transparent; }
   #addUsernameCurrentUsername { margin: 20px; }
-  #modal { position: absolute; display: block; height: 70vh; width: 60vw; margin: 0; margin-left: -8vw; padding: 0px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; opacity: 0.9; background-color: white; }
-  #modalSidebar { display: inline-block; height: 100%; width: 30%; vertical-align: top; font-weight: bold; text-align: left; user-select: none; color: #1c1b1b; }
+  #modal 
+  { 
+      position: absolute; 
+      display: block; 
+      height: 70vh; 
+      width: 60vw; 
+      margin: 0; 
+      margin-left: -8vw; 
+      padding: 0px; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      z-index: 4; 
+      opacity: 0.9; 
+      background-color: white; 
+  }
+  #modalSidebar 
+  { 
+      display: inline-block; 
+      height: 100%; 
+      width: 30%; 
+      vertical-align: top; 
+      font-weight: bold; 
+      text-align: left; 
+      user-select: none; 
+      color: #1c1b1b; 
+  }
   #modalSidebar > div { padding: 10px; border-bottom: 3px solid #1c1b1b; }
   #modalContent { display: inline-block; height: 100%; width: 70%; overflow: auto; text-align: center; color: white; background-color: #1c1b1b; }
   #modalContent > div { height: auto; width: calc(100% - 2px); margin: auto; padding: 0px; padding-top: 10px; padding-bottom: 10px; }
-  #modalContentKeybindsTable { display: block; width: max-content; margin: auto; margin-top: 10px; padding: 20px; padding-top: 0px; padding-bottom: 0px; border-spacing: 10px 17px; user-select: none; }
-  #modalContentSettings, #modalContentVideoQuality, #modalContentAddUsername, #modalContentCreateRoom { display: none; }
+  #modalContentKeybindsTable 
+  { 
+      display: block; 
+      width: max-content; 
+      margin: auto; 
+      margin-top: 10px; 
+      padding: 20px; 
+      padding-top: 0px; 
+      padding-bottom: 0px; 
+      border-spacing: 10px 17px; 
+      user-select: none; 
+  }
+  #modalContentSettings { display: none; } 
+  #modalContentVideoQuality { display: none; } 
+  #modalContentAddUsername { display: none; } 
+  #modalContentCreateRoom { display: none; }
   #changeVideoQuality { user-select: none; height: 100%; width: 100%; }
   #changeVideoQualitySteps { display: none; text-align: left; margin-bottom: 30px; margin-left: 34%; }
   #modalSidebarKeybinds { color: white; background-color: #1c1b1b; }
-  #modalSidebarSettings, #modalSidebarVideoQuality, #modalSidebarAddUsername, #modalSidebarCreateRoom { background-color: white; }
-  #buttonAddUser, #inputAddUser, #buttonCreateRoom, #inputCreateRoom { height: 40px; font-size: 16px; }
-  #inputCreateRoom, #inputAddUser { width: calc(100% - 24px); padding-left: 10px; padding-right: 10px; }
+  #modalSidebarSettings { background-color: white; } 
+  #modalSidebarVideoQuality { background-color: white; } 
+  #modalSidebarAddUsername { background-color: white; } 
+  #modalSidebarCreateRoom { background-color: white; }
+  #buttonAddUser { height: 40px; font-size: 16px; } 
+  #inputAddUser { height: 40px; font-size: 16px; } 
+  #buttonCreateRoom { height: 40px; font-size: 16px; } 
+  #inputCreateRoom { height: 40px; font-size: 16px; }
+  #inputCreateRoom { width: calc(100% - 24px); padding-left: 10px; padding-right: 10px; } 
+  #inputAddUser { width: calc(100% - 24px); padding-left: 10px; padding-right: 10px; }
   #modalCloseBar { display: block; padding: 4px; text-align: left; background-color: red; }
   #modalSidebarSettings { display: none }
-
   /* video player controls related */
-  #pause-video, #unmute-video { display: none; }
-  #sync-video-input, #load-video-input, #jump-video-input { width: 100px; padding: 10px; height: 17px; color: white; font-size: 13px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1b; }
-  #sync-video, #load-video, #jump-video { display: inline-block; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); }
-  #videoPlayerControlButtons { display: none; position: absolute; width: auto; margin: 0; padding: 0px; bottom: 12vh; left: 41.5%; z-index: 3; opacity: 0.7; transform: translate(-50%); -ms-transform: translate(-50%); flex-direction: column; color: white; border: 1px solid rgba(255, 255, 255, 0.7); background-color: transparent; }
+  #pause-video { display: none; } 
+  #unmute-video { display: none; }
+  #sync-video-input { width: 100px; padding: 10px; height: 17px; color: white; font-size: 13px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1b; } 
+  #load-video-input { width: 100px; padding: 10px; height: 17px; color: white; font-size: 13px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1b; } 
+  #jump-video-input { width: 100px; padding: 10px; height: 17px; color: white; font-size: 13px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1b; }
+  #sync-video { display: inline-block; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); } 
+  #load-video { display: inline-block; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); } 
+  #jump-video { display: inline-block; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); }
+  #videoPlayerControlButtons 
+  { 
+      display: none; 
+      position: absolute; 
+      width: auto; 
+      margin: 0; 
+      padding: 0px; 
+      bottom: 12vh; 
+      left: 41.5%; 
+      z-index: 3; 
+      opacity: 0.7; 
+      transform: translate(-50%); 
+      -ms-transform: translate(-50%); 
+      flex-direction: column; 
+      color: white; 
+      border: 1px solid rgba(255, 255, 255, 0.7); 
+      background-color: transparent; 
+  }
   #playlistControls { display: none; }
   #restart-video { display: block; }
-  
   /* video player related */
   #videoArea { display: block; }
   #iframeContainer { width: 100%; height: 112%; margin-top: -3.9%; }
-  #player { display: block; position: absolute; height: calc(100vh + 60px); width: 81vw; margin: auto; margin: 0px; margin-top: -61px; margin-left: 0px; padding: 0px; overflow: none; background-color: black; border: 0px solid white; }
-  
+  #player 
+  { 
+      display: block; 
+      position: absolute; 
+      height: calc(100vh + 60px); 
+      width: 81vw; 
+      margin: auto; 
+      margin: 0px; 
+      margin-top: -61px; 
+      margin-left: 0px; 
+      padding: 0px; 
+      overflow: none; 
+      background-color: black; 
+      border: 0px solid white; 
+  }
   /* overlays related */
   #videoPlayButtonOverlay { display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; z-index: 1; border: 0; background-color: transparent; } /* #ff000030 */
   #videoPlayButtonSvg { position: absolute; margin-top: 0px; margin-left: 0px; top: 46%; left: 50%; height: 20vh; width: 40vh; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
@@ -2631,64 +2801,155 @@ export default {
   #videoLoadingOverlay { display: block; position: fixed; height: 100vh; width: 100vw; left: 0px; top: 0px; z-index: 4; background-color: black; }
   #loadingScreenGif { display: block; position: absolute; top: 47%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: white; width: auto; text-align: center; background-color: transparent; }
   #videoPlayPauseOverlayText 
-  { position: absolute;
-    display: block;
-    width: auto;
-    min-width: 44vw;
-    top: 41%;
-    padding: 30px;
-    padding-left: 20vw;
-    padding-right: 20vw;
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center; 
-    opacity: 1.0;
-    color: white;
-    font-style: oblique;
-    text-shadow: 2px 1px black;
-    background-color: black;
+  { 
+      position: absolute;
+      display: block;
+      width: auto;
+      min-width: 44vw;
+      top: 41%;
+      padding: 30px;
+      padding-left: 20vw;
+      padding-right: 20vw;
+      font-weight: bold;
+      font-size: 20px;
+      text-align: center; 
+      opacity: 1.0;
+      color: white;
+      font-style: oblique;
+      text-shadow: 2px 1px black;
+      background-color: black;
   }
   #videoPlayPauseOverlayMobile { display: none; opacity: 0.0; z-index: 1; }
   #videoPlayInitialStartOverlayMobile { display: none; }
-
   /* video info related */
-  #videoInfo { display: none; position: absolute; top: 4vh; right: 0; width: auto; margin-right: 22vw; z-index: 2; opacity: 0.9; text-align: left; font-size: 14px; font-weight: normal; text-shadow: black 1px 1px; color: white; background-color: transparent; }
-  #videoChannel, #videoTitle, #videoQuality, #videoCurrentPlaylistIndex, #current-time-video, #videoCurrentRoom, #videoVolume, #videoCurrentRoomTotalUsers { margin: 6px; text-align: right; }
-  #loadingScreenText, #videoPlayInitialStartOverlayMobileLoadingScreenText { color: white; animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; }
-  #loadingScreenImage { display: none; position: absolute; height: 40vh; width: 40vh; top: 0px; left: 0px; margin-top: calc(-16vh + 1px); margin-left: 140px; transform: rotate(-45deg) translate(-50%, -50%); z-index: -1; background-size: cover; border-radius: 7%; border: 3px solid white; background-color: black; }
-  #currentRouteBar { display: none; color: white; background-color: red; position: absolute; bottom: 0px; width: 73vw; padding: 10px; z-index: 1 }
+  #videoInfo 
+  { 
+      display: none; 
+      position: absolute; 
+      top: 4vh; 
+      right: 0; 
+      width: auto; 
+      margin-right: 22vw; 
+      z-index: 2; 
+      opacity: 0.9; 
+      text-align: left; 
+      font-size: 14px; 
+      font-weight: normal; 
+      text-shadow: black 1px 1px; 
+      color: white; 
+      background-color: transparent; 
+  }
+  #videoChannel { margin: 6px; text-align: right; } 
+  #videoTitle { margin: 6px; text-align: right; } 
+  #videoQuality { margin: 6px; text-align: right; }
+  #videoCurrentPlaylistIndex { margin: 6px; text-align: right; } 
+  #current-time-video { margin: 6px; text-align: right; } 
+  #videoCurrentRoom { margin: 6px; text-align: right; }
+  #videoVolume { margin: 6px; text-align: right; } 
+  #videoCurrentRoomTotalUsers { margin: 6px; text-align: right; }
+  #loadingScreenText { color: white; animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; } 
+  #videoPlayInitialStartOverlayMobileLoadingScreenText 
+  { 
+    color: white; 
+    animation-name: fadeLoadingScreenText; 
+    animation-duration: 1.8s; 
+    animation-iteration-count: infinite; 
+  }
+  #loadingScreenImage 
+  { 
+      display: none; 
+      position: absolute; 
+      height: 40vh; 
+      width: 40vh; 
+      top: 0px; 
+      left: 0px; 
+      margin-top: calc(-16vh + 1px); 
+      margin-left: 140px; 
+      transform: rotate(-45deg) translate(-50%, -50%); 
+      z-index: -1; 
+      background-size: cover; 
+      border-radius: 7%; 
+      border: 3px solid white; 
+      background-color: black; 
+  }
+  #currentRouteBar 
+  { 
+      display: none; 
+      color: white; 
+      background-color: red; 
+      position: absolute; 
+      bottom: 0px; 
+      width: 73vw; 
+      padding: 10px; 
+      z-index: 1 
+  }
   #videoCurrentRoom { display: none; }
-
   /* initialize new custom room related */
-  #initializeNewCustomRoom { display: none; position: absolute; color: white; border: 1px solid white; z-index: 1; padding: 20px; transform: translate(-50%, -50%); left: 41.5%; top: 46% }
+  #initializeNewCustomRoom 
+  { 
+      display: none; 
+      position: absolute; 
+      color: white; 
+      border: 1px solid white; 
+      z-index: 1; 
+      padding: 20px; 
+      transform: translate(-50%, -50%); 
+      left: 41.5%; 
+      top: 46% 
+  }
   #initializeNewCustomRoom-load-video-elems { height: auto; width: 100%; background-color: black; }
-  #initializeNewCustomRoom-load-video-input { height: auto; width: calc(90% - 4px); margin-top: 10px; padding: 10px; color: black; background-color: white; }
+  #initializeNewCustomRoom-load-video-input 
+  { 
+      height: auto; 
+      width: calc(90% - 4px); 
+      margin-top: 10px; 
+      padding: 10px; 
+      color: black; 
+      background-color: white; 
+  }
   #initializeNewCustomRoom-load-video { height: auto; width: 90%; padding: 10px; text-align: center; color: black; background-color: lightgray; }
   #initializeNewCustomRoomSteps { margin: 0px; margin-bottom: 10px; }
   #initializeNewCustomRoomTitle { margin: 0px; margin-bottom: 10px; text-align: center; }
   
+
   /*** classes ***/
   /* modal related */
-  .buttonCreate, #buttonCreateRoom { width: calc(100%); border-color: lightgray; }
+  .buttonCreate { width: calc(100%); border-color: lightgray; }
   .errorMessage { display: block; margin: 20px; width: auto; background-color: transparent; }
   .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; background-color: white; color: black; }
   .modalContentKeybindsEqual { width: 13%; background-color: #1c1b1b }
   .modalContentKeybindsCharacter { width: auto; padding: 10px; border: 1px solid white; background-color: #1c1b1b; }
   .modalContentKeybindsTableRow { border: 1px solid red; }
   .changeVideoQualityStepsText { margin: 0px; padding: 0px; }
-  
   /* video player controls related */
-  .videoPlayerControlButton { display: block; max-height: 17px; min-width: 100px; padding: 10px; user-select: none; text-align: center; font-size: 14px; background-color: #1c1b1b; border: 1px solid rgba(255, 255, 255, 0.1); }
+  .videoPlayerControlButton 
+  { 
+      display: block; 
+      max-height: 17px; 
+      min-width: 100px; 
+      padding: 10px; 
+      user-select: none; 
+      text-align: center; 
+      font-size: 14px; 
+      background-color: #1c1b1b; 
+      border: 1px solid rgba(255, 255, 255, 0.1); 
+  }
   .videoPlayerControlRow { display: inline-flex; margin: auto; }
-  
   /* initialize new custom room related */
   .initializeNewCustomRoomText { margin: 0px; padding: 0px; }
+
 
   /*** animations ***/
   @keyframes fadeLoadingScreenText { from {opacity: 1.0; } to {opacity: 0.0; } }  
 
+
   /*** mobile portrait ***/
-  @media screen and (max-width: 1300px) and (orientation: portrait) { #videoArea, #flex { display: none; } } 
+  @media screen and (max-width: 1300px) and (orientation: portrait) 
+  { 
+    #videoArea { display: none; }  
+    #flex { display: none; } 
+  } 
+
 
   /*** mobile landscape ***/
   @media screen and (max-width: 1300px) and (orientation: landscape) 
@@ -2696,39 +2957,98 @@ export default {
     /*** ids ***/
     /* video player related */
     #player { height: 90vh; width: 100vw; margin: 0px; margin-top: 0px; padding: 0px; padding-bottom: 10vh; }
-    
     /* overlays related */
     #videoPlayButtonOverlay { height: 100vh; width: 100vw; }
     #loadingScreenImage { display: none; }
     #loadingScreenText { margin-right: 0px; }
-    #videoPlayPauseOverlayMobile { display: block; position: absolute; left: 0px; top: 0px; height: 100vh; width: 100vw; z-index: 1; opacity: 1.0; border: 0; background-color: black; }
-    #videoPlayInitialStartOverlayMobile { display: block; position: absolute; height: 100vh; width: 100vw; left: 0px; top: 0px; z-index: 3; opacity: 1.0; border: 0; background-color: black; }
-    #videoPlayPauseOverlayText { width: auto; min-width: 60vw; top: 32vh; z-index: 3; background-color: transparent; padding-left: 20vw; padding-right: 20vw; font-size: 20px; }
+    #videoPlayPauseOverlayMobile 
+    { 
+        display: block; 
+        position: absolute; 
+        left: 0px; 
+        top: 0px; 
+        height: 100vh; 
+        width: 100vw; 
+        z-index: 1; 
+        opacity: 1.0; 
+        border: 0; 
+        background-color: black; 
+    }
+    #videoPlayInitialStartOverlayMobile 
+    { 
+        display: block; 
+        position: absolute; 
+        height: 100vh; 
+        width: 100vw; 
+        left: 0px; 
+        top: 0px; 
+        z-index: 3; 
+        opacity: 1.0; 
+        border: 0; 
+        background-color: black; 
+    }
+    #videoPlayPauseOverlayText 
+    { 
+        width: auto; 
+        min-width: 60vw; 
+        top: 32vh; 
+        z-index: 3; 
+        background-color: transparent; 
+        padding-left: 20vw;
+        padding-right: 20vw; 
+        font-size: 20px; 
+    }
     #videoPlayInitialStartOverlayMobileLoadingScreenText { display: block; }
-    #videoPlayInitialStartOverlayMobileLoadingScreenGif  { display: block; top: 49%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); color: white; position: absolute; width: auto; text-align: center; background-color: transparent; }
+    #videoPlayInitialStartOverlayMobileLoadingScreenGif  
+    { 
+        display: block; 
+        top: 49%; 
+        left: 50%; 
+        -ms-transform: translate(-50%, -50%); 
+        transform: translate(-50%, -50%); 
+        color: white; 
+        position: absolute;
+        width: auto; 
+        text-align: center; 
+        background-color: transparent; 
+    }
     #videoPlayPauseOverlay { display: none; }
-
     /* chat related */
     #flex { z-index: -1; }
-
     /* video player controls related */
     #videoPlayerControlButtons { z-index: -1; }
-    #videoPlayerControlButtonsMobile { position: absolute; display: block; left: 0px; width: 100vw; top: 0px; overflow-x: scroll; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: gray lightgray; opacity: 0.7; z-index: 2; color: white; border: 0px solid black; }
-    #sync-video-input-mobile, #jump-video-input-mobile, #load-video-input-mobile { padding: 8px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
-    #unmute-video-mobile, #pause-video-mobile { display: none; }
+    #videoPlayerControlButtonsMobile 
+    { 
+        position: absolute; 
+        display: block; 
+        left: 0px; 
+        width: 100vw; 
+        top: 0px; 
+        overflow-x: scroll; 
+        overflow-y: hidden; 
+        scrollbar-width: thin; 
+        scrollbar-color: gray lightgray; 
+        opacity: 0.7; 
+        z-index: 2; 
+        color: white; 
+        border: 0px solid black; 
+    }
+    #sync-video-input-mobile { padding: 8px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; } 
+    #jump-video-input-mobile { padding: 8px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; } 
+    #load-video-input-mobile { padding: 8px; max-height: 14px; max-width: 100px; text-align: center; border: 3px solid transparent; color: white; background-color: #1c1b1b; }
+    #unmute-video-mobile { display: none; }  
+    #pause-video-mobile { display: none; }
     #iframeContainer { width: 100%; height: 110%; margin-top: 1px; }
-    
     /* video info related */
     #videoInfo { top: 10vh; right: 2vh; margin: 0px; z-index: 0; }
-    
     /* modal related */
     #modal { display: block; top: 0px; left: 0px; margin: 0px; padding: 0px; height: 100vh; width: 100vw; transform: translate(0%, 0%); }
     #changeVideoQualitySteps { width: 40%;  margin: auto; padding-bottom: 7vh; }
     #modalSidebarKeybinds { display: none; }
-    
     /* initialize new custom room related */
     #initializeNewCustomRoom { top: 50%; left: 50%; }
     
+
     /*** classes */
     /* video player controls related */
     .videoPlayerControlButton { min-width: 110px; border: 0px; border-right: 2px solid rgba(255, 255, 255, 0.1); background-color: #1c1b1bb7;}

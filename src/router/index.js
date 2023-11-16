@@ -1,6 +1,9 @@
+//imports
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 
+
+//set routes
 const routes = [
   {
     path: '/',
@@ -13,24 +16,28 @@ const routes = [
     component: Home
     // component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
   },
-  {
-    path: '/relax/:room',
-    name: 'specifiedWithRoom',
-    component: Home,
+  { 
+    path: '/relax/:room', 
+    name: 'specifiedWithRoom', 
+    component: Home 
   },
-  {
-    path: '/:room',
+  { 
+    path: '/:room', 
     redirect: '/relax'
   },
-  {
-    path: '/:pathMatch(.*)*',
+  { 
+    path: '/:pathMatch(.*)*', 
     redirect: '/relax'
   },
 ]
 
+
+//set router
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
+
+//exports
 export default router

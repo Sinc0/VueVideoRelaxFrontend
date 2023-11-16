@@ -9,13 +9,14 @@
   </div>
 </template>
 
-<script>
-export default {
 
-}
+<script>
+  export default { }
 </script>
 
+
 <style scoped>
+  /*** ids ***/
   #componentCredits 
   { 
     display: none; 
@@ -35,7 +36,6 @@ export default {
     background-color: #1c1b1b;
     border: 2px solid white; 
   }
-
   #title { margin: 0px; padding: 0px; text-align: center; }
   #list { margin: 0px; margin-left: 20px; padding: 0px; padding-top: 7px; }
 </style>
