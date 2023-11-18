@@ -3,6 +3,7 @@
         <!-- active rooms -->
         <div id="activeRooms" v-if="vuexAllRooms.length > 0">
             <h1 id="activeRoomsTitle">Active Rooms</h1>
+            
             <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
                 <!-- active room -->
                 <router-link v-bind:to="'/relax/' + room.room" v-if="currentRoute.substr(1) == room.room && room.room != 'temp'">
@@ -112,7 +113,17 @@ export default {
     border: 1px solid white;
     background-color: #1c1b1b; 
  }
- .roomLink:active, .roomLink:hover { color: #1c1b1b; background-color: white; }
- /* .roomLinkIcon { height: 142px; width: 170px; margin: auto; background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F643%2F326%2Foriginal%2Fvector-group-people-icon.jpg&f=1&nofb=1'); background-size: cover; background-position-y: center; background-color: white; } */
+ .roomLink:active { color: #1c1b1b; background-color: white; } 
+ .roomLink:hover { color: #1c1b1b; background-color: white; }
+ /* .roomLinkIcon { 
+    height: 142px; 
+    width: 170px; 
+    margin: auto; 
+    background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F643%2F326%2Foriginal%2Fvector-group-people-icon.jpg&f=1&nofb=1'); 
+    background-size: cover; 
+    background-position-y: center; 
+    background-color: 
+    white; 
+ } */
  /* .room { height: auto; width: 170px; margin: 10px; margin-right: 20px; margin-left: 20px; background-color: red; } */
 </style>
