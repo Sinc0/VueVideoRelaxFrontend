@@ -5,29 +5,29 @@ import Home from '../views/Home.vue'
 
 //set routes
 const routes = [
+  // {
+  //   path: '/',
+  //   redirect: '/general',
+  //   // component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
+  // },
   {
     path: '/',
-    redirect: '/relax'
-    // component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
-  },
-  {
-    path: '/relax',
     name: 'Home',
     component: Home
     // component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
   },
   { 
-    path: '/relax/:room', 
+    path: '/:room', 
     name: 'specifiedWithRoom', 
     component: Home 
   },
   { 
     path: '/:room', 
-    redirect: '/relax'
+    redirect: '/'
   },
   { 
     path: '/:pathMatch(.*)*', 
-    redirect: '/relax'
+    redirect: '/'
   },
 ]
 

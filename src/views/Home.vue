@@ -5,13 +5,11 @@
     <ComponentHome />
     <ComponentStart />
     <ComponentStartMobile />
-    <ComponentCredits />
 
     <!-- start menu -->
     <div id="startNav">
       <b id="startNavLinkStart" class="startNavLink" v-on:click="showStartComponent()">Rooms</b>
       <b id="startNavLinkAbout" class="startNavLink" v-on:click="showAboutComponent()">About</b>
-      <b id="startNavLinkAbout" class="startNavLink" v-on:click="showCreditsComponent()">Credits</b>
       <!-- <div id="totalRooms" class="startNavStat"></div> -->
       <!-- <div id="totalUsers" class="startNavStat"></div> -->
       <!-- <div id="totalUsersCurrentRoom" class="startNavStat"></div> -->
@@ -27,7 +25,6 @@ import ComponentHome from '@/components/ComponentHome.vue'
 import ComponentAbout from '@/components/ComponentAbout.vue'
 import ComponentStart from '@/components/ComponentStart.vue'
 import ComponentStartMobile from '@/components/ComponentStartMobile.vue'
-import ComponentCredits from '@/components/ComponentCredits.vue'
 
 
 export default {
@@ -37,35 +34,17 @@ export default {
     ComponentAbout,
     ComponentStart,
     ComponentStartMobile,
-    ComponentCredits,
   },
 
   setup() {
-    function showCreditsComponent()
-    {
-      //elements
-      let componentAbout = document.getElementById("componentAbout")
-      let componentStart = document.getElementById("componentStart")
-      let componentCredits = document.getElementById("componentCredits")
-
-      //reset elements
-      componentStart.style.display = "none"
-      componentAbout.style.display = "none"
-      if(componentCredits.style.display == "block") { componentCredits.style.display = "none" }
-      else if(componentCredits.style.display == "none") { componentCredits.style.display = "block" }
-    }
-
-
     function showAboutComponent()
     {
       //elements
       let componentAbout = document.getElementById("componentAbout")
       let componentStart = document.getElementById("componentStart")
-      let componentCredits = document.getElementById("componentCredits")
 
       //reset elements
       componentStart.style.display = "none"
-      componentCredits.style.display = "none"
       if(componentAbout.style.display == "block") { componentAbout.style.display = "none" }
       else if(componentAbout.style.display == "none") { componentAbout.style.display = "block" }
     }
@@ -76,11 +55,9 @@ export default {
       //elements
       let componentAbout = document.getElementById("componentAbout")
       let componentStart = document.getElementById("componentStart")
-      let componentCredits = document.getElementById("componentCredits")
 
       //reset elements
       componentAbout.style.display = "none"      
-      componentCredits.style.display = "none"      
       if(componentStart.style.display == "block") { componentStart.style.display = "none" }
       else if(componentStart.style.display == "none") { componentStart.style.display = "block" }
     }
@@ -90,7 +67,6 @@ export default {
       //functions
       showAboutComponent,
       showStartComponent,
-      showCreditsComponent,
     }
   }
 }
@@ -125,6 +101,5 @@ export default {
     #startNav { display: none; } 
     #componentAbout { display: none; } 
     #componentStart { display: none; } 
-    #componentCredits { display: none; }
   }
 </style>

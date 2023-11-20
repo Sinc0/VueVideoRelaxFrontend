@@ -2,25 +2,29 @@
     <div id="componentStart" v-if="vuexAllRooms">
         <!-- active rooms -->
         <div id="activeRooms" v-if="vuexAllRooms.length > 0">
-            <h1 id="activeRoomsTitle">Active Rooms</h1>
+            <!-- title -->
+            <h1 id="activeRoomsTitle">Active</h1>
             
+            <!-- room -->
             <div class="room" v-for="room in vuexAllRooms" v-bind:key="room.key">
-                <!-- active room -->
-                <router-link v-bind:to="'/relax/' + room.room" v-if="currentRoute.substr(1) == room.room && room.room != 'temp'">
-                    <div class="roomLink" style="color: #1c1b1b; background-color: white;">({{room.clients.length}}) {{room.room}}</div>
+                <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) == room.room && room.room != 'temp' && room.room !='null' && room.room !=''">
+                    <div class="roomLink" style="color: #1c1b1b; background-color: white;">{{room.room}} · {{room.clients.length}}</div>
                 </router-link>
 
-                <router-link v-bind:to="'/relax/' + room.room" v-if="currentRoute.substr(1) != room.room && room.room != 'temp'">
-                    <div class="roomLink">({{room.clients.length}}) {{room.room}}</div>
+                <router-link v-bind:to="'/' + room.room" v-if="currentRoute.substr(1) != room.room && room.room != 'temp' && room.room !='null' && room.room !=''">
+                    <div class="roomLink">{{room.room}} · {{room.clients.length}}</div>
                 </router-link>
             </div>
         </div>
 
         <!-- default rooms -->
         <div id="defaultRooms">
-            <h1 id="defaultRoomsTitle">Default rooms</h1>
+            <!-- title-->
+            <h1 id="defaultRoomsTitle">Default</h1>
+
+            <!-- room -->
             <div class="room" v-for="room in vuexDefaultRooms" v-bind:key="room.key">
-                <router-link v-bind:to="'/relax/' + room">
+                <router-link v-bind:to="'/' + room">
                     <div class="roomLink">{{room}}</div>
                 </router-link>
             </div>
@@ -67,6 +71,12 @@ export default {
 
 
 <style scoped>
+ /*** scrollbar ***/
+ #componentStart::-webkit-scrollbar { width: 10px; }
+ #componentStart::-webkit-scrollbar-track { background: #1c1b1b; }
+ #componentStart::-webkit-scrollbar-thumb { background: #ffffff1e; }
+ #componentStart::-webkit-scrollbar-thumb:hover { background: #ffffffaf; }
+  
  /*** elements ***/
  a { text-decoration: none; color: white; }
 
@@ -83,16 +93,15 @@ export default {
     text-align: center; 
     overflow-x: hidden; 
     overflow-y: scroll; 
-    scrollbar-width: none; 
-    scrollbar-color: black transparent; 
     color: white; 
+    opacity: 0.9;
     border-right: 1px solid black; 
     background-color: #1c1b1bda;
  }
  #activeRooms { display: flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; } 
  #defaultRooms { display: flex; flex-direction: column; overflow: hidden; scrollbar-width: thin; border: 0px solid white; }
- #defaultRoomsTitle { width: auto; margin: 0px; margin-top: 10px; padding: 0px; opacity: 0.7; font-size: 14px; } 
- #activeRoomsTitle { width: auto; margin: 0px; margin-top: 10px; padding: 0px; opacity: 0.7; font-size: 14px; }
+ #activeRoomsTitle { width: auto; margin: 18px 0px 0px 20px; padding: 0px; opacity: 0.7; font-size: 16px; text-align: left; }
+ #defaultRoomsTitle { width: auto; margin: 30px 0px 0px 20px; padding: 0px; opacity: 0.7; font-size: 16px; text-align: left; } 
 
 
  /*** classes ***/
@@ -100,17 +109,16 @@ export default {
  { 
     height: auto; 
     width: 170px; 
-    margin: 10px;
-    margin-right: 20px; 
-    margin-left: 20px;
+    margin: 4px 20px 0px 20px;
     padding: 10px; 
-    font-size: 14px; 
+    font-size: 16px; 
     font-weight: bold; 
     user-select: none; 
-    text-decoration: none; 
-    opacity: 1.0;
-    color: white; 
-    border: 1px solid white;
+    text-decoration: none;
+    text-align: center;
+    opacity: 0.9;
+    color: #ffffffb3; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
     background-color: #1c1b1b; 
  }
  .roomLink:active { color: #1c1b1b; background-color: white; } 
