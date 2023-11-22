@@ -5,6 +5,7 @@ ls1.gif
 ls2.gif
 ls3.gif
 images
+dist.zip
 
 # local env files
 .env.local

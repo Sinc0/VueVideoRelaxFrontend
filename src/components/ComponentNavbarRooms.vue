@@ -1,7 +1,5 @@
 <template>
     <div id="componentNavbarRooms" v-if="vuexActiveRooms">
-        <p id="rotateMobileScreenInfoText">rotate mobile screen to show video</p>
-
         <!-- active rooms -->
         <div id="activeRooms" v-if="vuexActiveRooms.length > 0">
             <h1 id="activeRoomsTitle">Active</h1> <!-- title -->
@@ -90,7 +88,6 @@ export default {
  #activeRoomsTitle { width: auto; margin: 18px 0px 0px 20px; padding: 0px; opacity: 0.7; font-size: 16px; text-align: left; }
  #defaultRoomsTitle { width: auto; margin: 30px 0px 0px 20px; padding: 0px; opacity: 0.7; font-size: 16px; text-align: left; }
  #currentRoom { color: #1c1b1b; background-color: white }
-#rotateMobileScreenInfoText { display: none; }
 
  /*** classes ***/
  .roomLink 
@@ -105,6 +102,7 @@ export default {
     user-select: none; 
     text-decoration: none;
     text-align: center;
+    text-transform: capitalize;
     opacity: 0.9;
     color: #ffffffb3; 
     border: 1px solid rgba(255, 255, 255, 0.1);

@@ -217,9 +217,14 @@
           </div>
         </div>
 
+        <!-- toggle controls -->
+        <div id="toggle-controls-mobile-fixed" class="videoPlayerControlButton" v-on:click="toggleMobileControls()">></div>
+        
         <!-- video player controls MOBILE -->
         <div id="videoPlayerControlButtonsMobile">
           <div class="videoPlayerControlRow">
+              <div id="toggle-controls-mobile" class="videoPlayerControlButton" v-on:click="toggleMobileControls()">></div>
+
               <!-- fullscreen-->
               <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
               
@@ -227,7 +232,7 @@
               <!-- <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div> -->
               
               <!-- video info -->
-              <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Video Info</div>
+              <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Info</div>
               
               <!-- play/pause/restart -->
               <div id="play-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
@@ -365,7 +370,7 @@ export default { setup() {
           let selectedRoomFromUrl = currentRoute._value
 
           //null check
-          if(selectedRoomFromUrl) { urlRoom = selectedRoomFromUrl.split("/")[1] }
+          if(selectedRoomFromUrl) { urlRoom = selectedRoomFromUrl.split("/")[1].toLowerCase() }
           
           //log
           console.log("room: " + urlRoom)
@@ -411,7 +416,7 @@ export default { setup() {
         if(selectedRoomFromUrl) 
         {
           //set url room
-          urlRoom = selectedRoomFromUrl.split("/")[1] 
+          urlRoom = selectedRoomFromUrl.split("/")[1].toLowerCase()
           
           //log
           console.log("room: " + urlRoom)
@@ -688,7 +693,7 @@ export default { setup() {
 
       //variables
       let createRoomInfo = []
-      let newRoom = inputCreateRoom.value
+      let newRoom = inputCreateRoom.value.toLowerCase()
 
       //add rooms to array
       createRoomInfo.push(inputCreateRoom.value) //new room
@@ -2356,6 +2361,12 @@ export default { setup() {
       setTimeout(function() {videoPlayerEvents("resync2")}, initialStartMobileTimer)
     }
 
+    
+    function firstLetterToUppercase(value)
+    {
+      return value.substr(0, 1).toUpperCase() + value.substr(1, value.length)
+    }
+
 
     /****** HANDLE SOCKET STREAM ******/
     socket.on('info', function(activeRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying, defaultPlaylistsFromServer, defaultRoomsFromServer) 
@@ -2379,20 +2390,20 @@ export default { setup() {
           
           if(name == socket.id)
           {
-            inputCurrentRoom.innerText = room
-            currentRoom = inputCurrentRoom.innerText
+            inputCurrentRoom.innerText = firstLetterToUppercase(room)
+            currentRoom = room
             
             if(currentRoom == "")
             {
                 chat.style.display = "none"
                 chatBox.style.display = "none"
-                currentRoom = inputCurrentRoom.innerText
+                currentRoom = room
             }
             else if(currentRoom != "")
             {
                 chat.style.display = "block"
                 chatBox.style.display = "block"
-                currentRoom = inputCurrentRoom.innerText
+                currentRoom = room
             }
           }
         }
@@ -2513,6 +2524,24 @@ export default { setup() {
         for(let r in activeRooms) //users in current room
         { if(currentRoom == activeRooms[r].room) { totalUsersCurrentRoomCount = activeRooms[r].clients.length } }
     })
+
+
+    function toggleMobileControls()
+    {
+      let videoPlayerControlButtonsMobile = document.getElementById("videoPlayerControlButtonsMobile")
+      let videoInfo = document.getElementById("videoInfo")
+
+      if(videoPlayerControlButtonsMobile.style.display == "none" || videoPlayerControlButtonsMobile.style.display == "")
+      {
+        videoPlayerControlButtonsMobile.style.display = "block"
+        videoInfo.style.display = "block"
+      }
+      else if(videoPlayerControlButtonsMobile.style.display == "block")
+      {
+        videoPlayerControlButtonsMobile.style.display = "none"
+        videoInfo.style.display = "none"
+      }
+    }
 
 
     socket.on('video command', function(msg) {
@@ -2776,6 +2805,7 @@ export default { setup() {
       volumeDown,
       closeModal,
       initialStartMobile,
+      toggleMobileControls
     }
   }
 }
@@ -2788,7 +2818,7 @@ export default { setup() {
   #chat::-webkit-scrollbar-track { background: #1c1b1b; }
   #chat::-webkit-scrollbar-thumb { background: #ffffff1e; }
   #chat::-webkit-scrollbar-thumb:hover { background: #ffffffaf; }
-    #modalContent::-webkit-scrollbar { width: 10px; }
+  #modalContent::-webkit-scrollbar { width: 10px; }
   #modalContent::-webkit-scrollbar-track { background: transparent; }
   #modalContent::-webkit-scrollbar-thumb { background: transparent; }
   #modalContent::-webkit-scrollbar-thumb:hover { background: transparent; }
@@ -2812,7 +2842,7 @@ export default { setup() {
     bottom: calc(100px - 6px); 
     right: 0; 
     overflow-y: scroll; 
-    opacity: 0.7; 
+    opacity: 0.6;
     border-left: 1px solid black; 
   }
   #inputChatMessage 
@@ -3166,7 +3196,8 @@ export default { setup() {
   }
   #initializeNewCustomRoom-load-video { height: auto; width: -webkit-fill-available; padding: 10px; text-align: center; color: black; background-color: lightgray; }
   #initializeNewCustomRoomSteps { margin: 0px; margin-bottom: 10px; }
-  #initializeNewCustomRoomTitle { margin: 0px; margin-bottom: 10px; text-align: center; }  
+  #initializeNewCustomRoomTitle { margin: 0px; margin-bottom: 10px; text-align: center; } 
+  #toggle-controls-mobile-fixed { display: none; } 
 
   /*** classes ***/
     .buttonCreate { width: calc(100%); border-color: lightgray; }
@@ -3323,6 +3354,19 @@ export default { setup() {
     #changeVideoQualitySteps { width: 40%;  margin: auto; padding-bottom: 7vh; }
     #modalSidebarKeybinds { display: none; }
     #initializeNewCustomRoom { top: 50%; left: 50%; }
+    #toggle-controls-mobile { display: block; min-width: 20px; }
+    #toggle-controls-mobile-fixed 
+    { 
+      display: block; 
+      position: fixed; 
+      top: 0px; 
+      left: 0px; 
+      min-width: 20px; 
+      z-index: 3;
+      font-weight: bold;
+      border: 0px;
+      background: transparent;
+    }
     
 
     /*** classes */
