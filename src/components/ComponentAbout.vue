@@ -1,8 +1,10 @@
 <template>
   <div id="componentAbout">
+    <!-- about -->
     <h3 id="titleAbout" class="title">About Project</h3>
     <p id="textAbout" class="text">This is a student project made to learn about socket.io and server sync.</p>
 
+    <!-- privacy policy -->
     <h3 id="titlePrivacyPolicy" class="title">Privacy Policy</h3>
     <p class="privacyPolicyItem">Collects Account Data: <span class="no">No</span></p>
     <p class="privacyPolicyItem">Collects Personal Data: <span class="no">No</span></p>
@@ -18,6 +20,7 @@
     <p class="privacyPolicyItem">Links to Other Websites: <span class="no">No</span></p>
     <p class="privacyPolicyItem">Policy Might Change: <span class="yes">Yes</span></p>
 
+    <!-- contact-->
     <h3 id="titleContact" class="title">Contact</h3>
     <p id="contactEmail" class="text">sinco.developer@gmail.com</p>
   </div>
@@ -55,6 +58,7 @@
   #titlePrivacyPolicy { margin: 30px 0px 0px 0px; }
   #titleContact { margin: 30px 0px 0px 0px; }
   #listCredits { margin: 0px; margin-left: 20px; padding: 0px; }
+
 
   /*** classes ***/
   .title { margin: 0px; padding: 0px; text-align: left; }

@@ -3,8 +3,8 @@
     <!-- components -->
     <ComponentAbout />
     <ComponentHome />
-    <ComponentStart />
-    <ComponentStartMobile />
+    <componentNavbarRooms />
+    <componentNavbarRoomsMobile />
 
     <!-- start menu -->
     <div id="startNav">
@@ -23,8 +23,8 @@
 //imports
 import ComponentHome from '@/components/ComponentHome.vue'
 import ComponentAbout from '@/components/ComponentAbout.vue'
-import ComponentStart from '@/components/ComponentStart.vue'
-import ComponentStartMobile from '@/components/ComponentStartMobile.vue'
+import componentNavbarRooms from '@/components/ComponentNavbarRooms.vue'
+import componentNavbarRoomsMobile from '@/components/ComponentNavbarRoomsMobile.vue'
 
 
 export default {
@@ -32,8 +32,8 @@ export default {
   components: {
     ComponentHome,
     ComponentAbout,
-    ComponentStart,
-    ComponentStartMobile,
+    componentNavbarRooms,
+    componentNavbarRoomsMobile,
   },
 
   setup() {
@@ -41,10 +41,10 @@ export default {
     {
       //elements
       let componentAbout = document.getElementById("componentAbout")
-      let componentStart = document.getElementById("componentStart")
+      let componentNavbarRooms = document.getElementById("componentNavbarRooms")
 
       //reset elements
-      componentStart.style.display = "none"
+      componentNavbarRooms.style.display = "none"
       if(componentAbout.style.display == "block") { componentAbout.style.display = "none" }
       else if(componentAbout.style.display == "none") { componentAbout.style.display = "block" }
     }
@@ -54,12 +54,12 @@ export default {
     {
       //elements
       let componentAbout = document.getElementById("componentAbout")
-      let componentStart = document.getElementById("componentStart")
+      let componentNavbarRooms = document.getElementById("componentNavbarRooms")
 
       //reset elements
       componentAbout.style.display = "none"      
-      if(componentStart.style.display == "block") { componentStart.style.display = "none" }
-      else if(componentStart.style.display == "none") { componentStart.style.display = "block" }
+      if(componentNavbarRooms.style.display == "block") { componentNavbarRooms.style.display = "none" }
+      else if(componentNavbarRooms.style.display == "none") { componentNavbarRooms.style.display = "block" }
     }
     
 
@@ -77,13 +77,10 @@ export default {
   /*** ids ***/
   #startNav { display: inline-flex; position: absolute; width: 100vw; bottom: 0px; z-index: 1; color: white; background-color: black; }
   #viewHome { overflow: hidden; }
-  /* #startNav { display: inline-flex; width: 100vw; overflow-x: auto; scrollbar-width: thin; scrollbar-color: gray white; color: white; background-color: lightgray; } */
-  /* #fullscreenButtonOverlay { display: block; position: absolute; height: 40px; width: 40px; right: calc(21vw + 4px); bottom: 8px; z-index: 1; background-color: blue; } */
 
 
   /*** classes ***/
   .startNavLink { background-color: transparent; min-width: 90px; display: inline-block; padding: 20px; text-align: center; user-select: none; opacity: 0.8; }
-  /* .startNavLink {background-color: lightgreen; min-width: 160px; display: inline-block; padding: 14.5px; text-align: center; user-select: none; border: 1px solid black; } */
   /* .startNavStat { font-weight: bold; padding: 20px; opacity: 0.8; } */
   
   
@@ -100,6 +97,6 @@ export default {
   {
     #startNav { display: none; } 
     #componentAbout { display: none; } 
-    #componentStart { display: none; } 
+    #componentNavbarRooms { display: none; } 
   }
 </style>

@@ -5,22 +5,22 @@ import { createStore } from 'vuex'
 //storage
 export default createStore({
   state: {
-    allRooms: null,
+    activeRooms: null,
     defaultRooms: null,
   },
 
   getters: {
-    allRooms(state) { return state.allRooms },
+    activeRooms(state) { return state.activeRooms },
     defaultRooms(state) { return state.defaultRooms }
   },
 
   mutations: {
-    mutationSetAllRooms (state, value) { state.allRooms = value },
+    mutationSetActiveRooms (state, value) { state.activeRooms = value },
     mutationSetDefaultRooms (state, value) { state.defaultRooms = value },
   },
 
   actions: {
-    actionSetAllRooms({commit}, value) { commit('mutationSetAllRooms', value) },
+    actionSetActiveRooms({commit}, value) { commit('mutationSetActiveRooms', value) },
     actionSetDefaultRooms({commit}, value) { commit('mutationSetDefaultRooms', value) },
   },
 

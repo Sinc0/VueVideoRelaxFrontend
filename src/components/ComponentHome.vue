@@ -1,451 +1,314 @@
 <template>
   <div id="componentHome">
-    <!-- settings modal -->
-    <div id="modal" style="display: none;">
-      <div id="modalSidebar">
-        <div id="modalCloseBar" v-on:click="closeModal()">Close</div>
-        <div id="modalSidebarKeybinds" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
-        <div id="modalSidebarSettings" v-on:click="showModalCategory('Settings')">Settings</div>
-        <div id="modalSidebarCreateRoom" v-on:click="showModalCategory('Create Room')">Create Room</div>
-        <div id="modalSidebarAddUsername" v-on:click="showModalCategory('Add Username')">Change Username</div>
-        <div id="modalSidebarVideoQuality" v-on:click="showModalCategory('Video Quality')">Change Video Quality</div>
-      </div>
+      <!-- URL -->
+      <div id="currentRouteBar">{{currentRoute}}</div>
 
 
-      <!-- video controls modal-->
-      <div id="modalContent">
-        <div id="modalContentKeybinds">
-          <table id="modalContentKeybindsTable">
-            <!-- <th>header</th> -->
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Play/Pause</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">Space</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Mute/Unmute</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">M</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Next Video</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">></td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Previous Video</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">Shift</td>
-              <td class="modalContentKeybindsCharacter">+</td>
-              <td class="modalContentKeybindsCharacter">></td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Fullscreen</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">F</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Show Sidebar</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">R</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Volume Up</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">Arrow Up</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Volume Down</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">Arrow Down</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Show This Menu</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">ESC</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Play/Pause</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">Left Mouseclick</td>
-            </tr>
-            <tr class="modalContentKeybindsTableRow">
-              <td class="modalContentKeybindsDescription">Hide Video Info/Controls</td>
-              <td class="modalContentKeybindsEqual"> = </td>
-              <td class="modalContentKeybindsCharacter">Right Mouseclick</td>
-            </tr>
-          </table>
+      <!-- MENU -->
+      <div id="modal" style="display: none;">
+
+        <!-- menu sidebar -->
+        <div id="modalSidebar">
+          <div id="modalCloseBar" v-on:click="closeModal()">Close</div>
+          <div id="modalSidebarKeybinds" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
+          <div id="modalSidebarSettings" v-on:click="showModalCategory('Settings')">Settings</div>
+          <div id="modalSidebarCreateRoom" v-on:click="showModalCategory('Create Room')">Create Room</div>
+          <div id="modalSidebarVideoQuality" v-on:click="showModalCategory('Video Quality')">Change Video Quality</div>
         </div>
 
+        <!-- menu categories -->
+        <div id="modalContent">
 
-        <!-- empty modal -->
-        <div id="modalContentSettings"></div>
-
-
-        <!-- add username modal -->
-        <div id="modalContentAddUsername">
-          <div id="addUsername">
-              <div id="errorMessageAddUsername" class="errorMessage"></div>
-              <input id="inputAddUser" maxlength="10"/>
-              <button id="buttonAddUser" class="buttonCreate" v-on:click="addCustomUsername({yourSocketId})">Change Username</button>
-              <div id="addUsernameCurrentUsername"></div>
+          <!--- category keybinds -->
+          <div id="modalContentKeybinds">
+            <table id="modalContentKeybindsTable">
+              <!-- <th>header</th> -->
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Play/Pause</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">Space</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Mute/Unmute</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">M</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Next Video</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">></td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Previous Video</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">Shift</td>
+                <td class="modalContentKeybindsCharacter">+</td>
+                <td class="modalContentKeybindsCharacter">></td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Fullscreen</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">F</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Show Sidebar</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">R</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Volume Up</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">Arrow Up</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Volume Down</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">Arrow Down</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Show This Menu</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">ESC</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Play/Pause</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">Left Mouseclick</td>
+              </tr>
+              <tr class="modalContentKeybindsTableRow">
+                <td class="modalContentKeybindsDescription">Hide Video Info/Controls</td>
+                <td class="modalContentKeybindsEqual"> = </td>
+                <td class="modalContentKeybindsCharacter">Right Mouseclick</td>
+              </tr>
+            </table>
           </div>
-        </div>
 
-
-        <!-- create room modal -->
-        <div id="modalContentCreateRoom">
-          <div id="createRoom">
-              <div id="errorMessageCreateRoom" class="errorMessage"></div>
-              <input id="inputCreateRoom" maxlength="20" />
-              <button id="buttonCreateRoom" class="buttonCreate" v-on:click="createRoom()">Create Room</button>
-          </div>
-        </div>
-
-
-        <!-- change video quality modal -->
-        <div id="modalContentVideoQuality">
-          <div id="changeVideoQuality">
-            <p id="changeVideoQualityLoadingText"><b>Loading...</b></p>
-            <div id="changeVideoQualitySteps">
-              <p class="changeVideoQualityStepsText">Step 1: Play Video</p>
-              <p class="changeVideoQualityStepsText">Step 2: Click on Gear Wheel</p>
-              <p  class="changeVideoQualityStepsText">Step 3: Click on Quality</p>
-              <p  class="changeVideoQualityStepsText">Step 4: Select Quality of Choice</p>
-              <p  class="changeVideoQualityStepsText">Step 5: Wait for Video to Load</p>
-              <p class="changeVideoQualityStepsText">Step 6: Press Reload Button</p>
+          <!-- category create room -->
+          <div id="modalContentCreateRoom">
+            <div id="createRoom">
+                <div id="errorMessageCreateRoom" class="errorMessage"></div>
+                <input id="inputCreateRoom" maxlength="20" />
+                <button id="buttonCreateRoom" class="buttonCreate" v-on:click="createRoom()">Create Room</button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    
-    <!-- current url path -->
-    <div id="currentRouteBar">{{currentRoute}}</div>
-    
+          <!-- category video quality -->
+          <div id="modalContentVideoQuality">
+            <div id="changeVideoQuality">
+              <p id="changeVideoQualityLoadingText"><b>Loading...</b></p>
+              <div id="changeVideoQualitySteps">
+                <p class="changeVideoQualityStepsText">Step 1: Play Video</p>
+                <p class="changeVideoQualityStepsText">Step 2: Click on Gear Wheel</p>
+                <p  class="changeVideoQualityStepsText">Step 3: Click on Quality</p>
+                <p  class="changeVideoQualityStepsText">Step 4: Select Quality of Choice</p>
+                <p  class="changeVideoQualityStepsText">Step 5: Wait for Video to Load</p>
+                <p class="changeVideoQualityStepsText">Step 6: Press Reload Button</p>
+              </div>
+            </div>
+          </div>
 
-    <!-- initialize custom room -->
-    <div id="videoArea">
-      <div id="initializeNewCustomRoom">
-        <div id="initializeNewCustomRoomSteps">
-          <p class="initializeNewCustomRoomText" id="initializeNewCustomRoomTitle">waiting for room to be initialized...</p>
-          <p class="initializeNewCustomRoomText">Step 1: paste video or playlist id of choice</p>
-          <p class="initializeNewCustomRoomText">Step 2: press on load button</p>
-          <p class="initializeNewCustomRoomText">Example playlist url: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
-          <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
-        </div>
-
-
-        <!-- initialize room url input -->
-        <div id="initializeNewCustomRoom-load-video-elems">
-            <input id="initializeNewCustomRoom-load-video-input" placeholder="video or playlist id" maxlength="100" />
-            <div id="initializeNewCustomRoom-load-video" v-on:click="initializeNewCustomRoomVideo()">Load</div>
         </div>
       </div>
 
+    
+      <!-- VIDEO -->
+      <div id="videoArea">
+        
+        <!-- custom room-->
+        <div id="initializeNewCustomRoom">
 
-      <!-- loading overlay -->
-      <div id="videoLoadingOverlay">
-        <div id="loadingScreenGif">
-          <div id="loadingScreenImage"></div>
-          <h1 id="loadingScreenText">Loading...</h1>
+          <!-- custom room initialize steps -->
+          <div id="initializeNewCustomRoomSteps">
+            <p class="initializeNewCustomRoomText" id="initializeNewCustomRoomTitle">Waiting for room to be initialized...</p>
+            <p class="initializeNewCustomRoomText">Step 1: paste video or playlist id of choice</p>
+            <p class="initializeNewCustomRoomText">Step 2: press on load button</p>
+            <p class="initializeNewCustomRoomText">Example playlist url: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
+            <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
+          </div>
+
+          <!-- custom room load url -->
+          <div id="initializeNewCustomRoom-load-video-elems">
+              <input id="initializeNewCustomRoom-load-video-input" placeholder="video or playlist id" maxlength="100" />
+              <div id="initializeNewCustomRoom-load-video" v-on:click="initializeNewCustomRoomVideo()">Load</div>
+          </div>
+        </div>
+
+        <!-- overlay Loading... -->
+        <div id="videoLoadingOverlay">
+          <div id="loadingScreenGif">
+            <div id="loadingScreenImage"></div>
+            <h1 id="loadingScreenText">Loading...</h1>
+          </div>
+        </div>
+        
+        <!-- video player obj -->
+        <div id="player">
+
+          <!-- overlay paused -->
+          <div id="videoPlayButtonOverlay" @contextmenu.prevent @mousedown.right="toggleVideoInfoAndControls()" v-on:click="videoPlayButtonOverlay()">
+            <div id="videoPlayPauseOverlay"><p id="videoPlayPauseOverlayText"></p></div>
+            <div id="videoPlayPauseOverlayMobile"></div>
+          </div>
+
+          <!-- overlay initial start -->
+          <div id="videoPlayInitialStartOverlayMobile" v-on:click="initialStartMobile()">
+            <div id="videoPlayInitialStartOverlayMobileLoadingScreenGif">
+              <h1 id="videoPlayInitialStartOverlayMobileLoadingScreenText">Press to Play</h1>
+            </div>
+          </div>
+
+          <!-- player embed obj -->
+          <div id="iframeContainer"></div> 
+        </div>
+
+
+        <!-- video metadata -->
+        <div id="videoInfo">
+          <div id="roomInfo"><div id="videoCurrentRoom"></div></div>
+          <div id="videoTitle"></div>
+          <div id="videoChannel"></div>
+          <div id="videoCurrentPlaylistIndex"></div>
+          <div id="current-time-video"></div>
+          <div id="videoQuality"></div>
+          <div id="videoVolume"></div>
+        </div>
+                    
+
+        <!-- video player controls DESKTOP -->
+        <div id="videoPlayerControlButtons">
+          
+          <!-- row 1 -->
+          <div class="videoPlayerControlRow">
+            <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
+            <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
+            <div id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
+            <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
+            <div><input id="jump-video-input" type="number" placeholder="Jump Nr" max="1000"/></div>
+          </div>
+
+          <!-- row 2 -->
+          <div id="playlistControls" class="videoPlayerControlRow">
+            <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
+            <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
+            <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
+            <div id="sync-video-elems">
+              <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
+              <input id="sync-video-input" type="number" placeholder="Sync Secs" max="1000000"/>
+            </div>
+          </div>
+
+          <!-- row 3 -->
+          <div class="videoPlayerControlRow">
+            <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
+            <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
+            <div id="load-video-elems">
+              <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
+              <input id="load-video-input" placeholder="Load Id" maxlength="100" />
+            </div>
+          </div>
+
+          <!-- row 4 -->
+          <div class="videoPlayerControlRow">
+            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
+            <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
+            <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Video Quality')">Video Quality</div> -->
+            <div id="random-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'random')">Random</div>
+            <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
+          </div>
+        </div>
+
+        <!-- video player controls MOBILE -->
+        <div id="videoPlayerControlButtonsMobile">
+          <div class="videoPlayerControlRow">
+              <!-- fullscreen-->
+              <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
+              
+              <!-- settings -->
+              <!-- <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div> -->
+              
+              <!-- video info -->
+              <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Video Info</div>
+              
+              <!-- play/pause/restart -->
+              <div id="play-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
+              <div id="pause-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
+              <div id="restart-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
+
+              <!-- mute/unmute -->
+              <div id="mute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
+              <div id="unmute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
+
+              <!-- volume up/down -->
+              <!-- <div id="volume-up-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeUp()">Volume +</div> -->
+              <!-- <div id="volume-down-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeDown()">Volume -</div> -->
+
+              <!-- previous/next -->
+              <div id="previous-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
+              <div id="next-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
+            
+              <!-- random -->
+              <div id="random-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'random')">Random</div>
+
+              <!-- resync -->
+              <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
+
+              <!-- jump-->
+              <div id="jump-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
+              <div><input id="jump-video-input-mobile" type="number" placeholder="Jump Nr" max="1000"/></div>
+
+              <!-- sync -->
+              <div id="sync-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
+              <div><input id="sync-video-input-mobile" type="number" placeholder="Sync Secs" max="1000000"/></div>
+
+              <!-- load-->
+              <div id="load-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
+              <div><input id="load-video-input-mobile" placeholder="Load Id" maxlength="100" /></div>
+          </div>
         </div>
       </div>
       
 
-      <!-- player -->
-      <div id="player">
-        <!-- player overlays -->
-        <div id="videoPlayButtonOverlay" @contextmenu.prevent @mousedown.right="toggleVideoInfoAndControls()" v-on:click="videoPlayButtonOverlay()">
-          <div id="videoPlayPauseOverlay">
-            <p id="videoPlayPauseOverlayText"></p>
-          </div>
-          <div id="videoPlayPauseOverlayMobile"></div>
-        </div>
-        <div id="videoPlayInitialStartOverlayMobile" v-on:click="initialStartMobile()">
-          <div id="videoPlayInitialStartOverlayMobileLoadingScreenGif"><h1 id="videoPlayInitialStartOverlayMobileLoadingScreenText">Press to Play</h1></div>
-        </div>
+      <!-- CHAT -->
+      <div id="flex">
 
-        <!-- iframe -->
-        <div id="iframeContainer"></div> 
-      </div>
-
-
-      <!-- video info -->
-      <div id="videoInfo">
-        <div id="roomInfo">
-            <div id="videoCurrentRoom"></div>
-            <!-- <div id="videoCurrentRoomTotalUsers"></div> -->
-        </div>
-        <div id="videoTitle"></div>
-        <div id="videoChannel"></div>
-        <div id="videoCurrentPlaylistIndex"></div>
-        <div id="current-time-video"></div>
-        <div id="videoQuality"></div>
-        <div id="videoVolume"></div>
-      </div>
-                  
-
-      <!-- video player controls -->
-      <div id="videoPlayerControlButtons">
-
-
-        <!-- video player controls row 1-->
-        <div class="videoPlayerControlRow">
-          <div id="play-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
-          <div id="pause-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
-          <div id="restart-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
-          <div id="jump-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
-          <div><input id="jump-video-input" type="number" placeholder="Jump Nr" max="1000"/></div>
-        </div>
-
-
-        <!-- video player controls row 2 -->
-        <div id="playlistControls" class="videoPlayerControlRow"><!-- playlist controls -->
-          <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
-          <div id="mute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
-          <div id="unmute-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
-          <div id="sync-video-elems">
-            <div id="sync-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
-            <input id="sync-video-input" type="number" placeholder="Sync Secs" max="1000000"/>
-          </div>
-        </div>
-
-
-        <!-- video player controls row 3 -->
-        <div class="videoPlayerControlRow">
-          <div id="previous-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
-          <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
-          <div id="load-video-elems">
-            <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-            <input id="load-video-input" placeholder="Load Id" maxlength="100" />
-          </div>
-        </div>
-
-
-        <!-- video player controls row 4 -->
-        <div class="videoPlayerControlRow">
-          <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div>
-          <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
-          <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Video Quality')">Video Quality</div> -->
-          <!-- <div id="" class="videoPlayerControlButton" v-on:click="showModalCategory('Add Username')">Username</div> -->
-          <div id="random-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'random')">Random</div>
-          <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
-        </div>
-      </div>
-
-
-      <!-- mobile player controls -->
-      <div id="videoPlayerControlButtonsMobile">
-        <div class="videoPlayerControlRow">
-            <!-- fullscreen-->
-            <div id="fullscreen-video" class="videoPlayerControlButton" v-on:click="requestFullScreen()">Fullscreen</div>
-            
-            <!-- settings -->
-            <!-- <div id="settings-video-mobile" class="videoPlayerControlButton" v-on:click="showModalCategory('Settings')">Settings</div> -->
-            
-            <!-- video info -->
-            <div id="" class="videoPlayerControlButton playlistButton" v-on:click="toggleVideoInfoAndControls()">Video Info</div>
-            
-            <!-- play/pause/restart -->
-            <div id="play-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('play')">Play</div>
-            <div id="pause-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('pause')">Pause</div>
-            <div id="restart-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('restart')">Restart</div>
-
-            <!-- mute/unmute -->
-            <div id="mute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('mute')">Mute</div>
-            <div id="unmute-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('unMute')">Unmute</div>
-
-            <!-- volume up/down -->
-            <!-- <div id="volume-up-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeUp()">Volume +</div> -->
-            <!-- <div id="volume-down-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="volumeDown()">Volume -</div> -->
-
-            <!-- previous/next -->
-            <div id="previous-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('previous')">Previous</div>
-            <div id="next-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
-          
-            <!-- random -->
-            <div id="random-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump', 'random')">Random</div>
-
-            <!-- resync -->
-            <div id="resync2-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('resync2')">Resync</div>
-
-            <!-- jump-->
-            <div id="jump-video-mobile" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('jump')">Jump</div>
-            <div><input id="jump-video-input-mobile" type="number" placeholder="Jump Nr" max="1000"/></div>
-
-            <!-- sync -->
-            <div id="sync-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('sync')">Sync</div>
-            <div><input id="sync-video-input-mobile" type="number" placeholder="Sync Secs" max="1000000"/></div>
-
-            <!-- load-->
-            <div id="load-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-            <div><input id="load-video-input-mobile" placeholder="Load Id" maxlength="100" /></div>
-        </div>
-      </div>
-    </div>
-    
-
-    <!-- chat -->
-    <div id="flex">
-        <!-- chat room title -->
+        <!-- room title -->
         <div id="currentRoomInfo"><b id="inputCurrentRoom"></b></div>
 
-        <!-- chat messages -->
-        <div id="chat" style="border: 0;">
-            <!-- <b>Current Room</b> -->
-            <ul id="messages">
-            </ul>
-        </div>
+        <!-- room messages -->
+        <div id="chat"><ul id="messages"></ul></div>
 
-        <!-- chat textbox -->
+        <!-- send message box -->
         <div id="chatBox">
             <form id="form" action="" @submit.prevent="sendChatMessage()">
               <input id="inputChatMessage" autocomplete="off" maxlength="1000" />
               <button id="buttonSend">Send</button>
             </form>
         </div>
-    </div>
-
-
+      </div>
   </div>
 </template>
 
 
 <script>
-//imports
 import { io } from "socket.io-client"
 import {onMounted, onUpdated, computed} from 'vue'
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router' //instead of this.$route
 
-
-export default {
-  setup() {
-    //vue related
+export default { setup() {
+    /****** VUE ******/
     const store = useStore()
     const router = useRouter()
-    const vuexAllRooms = computed(function() { return store.getters['allRooms']})
-    const currentRoute = computed(function() { return useRouter().currentRoute.value.fullPath})
-
-
-    //lifecycle hooks
-    onMounted(function() {
-        //debugging
-        // console.log("onMounted ComponentHome")
-        // console.log("onMounted playingVideoId: " + playingVideoId)
-        // console.log("onMounted videoPlaylistId: " + videoPlaylistId)
-        // console.log(currentRoute)
-
-        setTimeout(function() {
-          //variables
-          let roomExists = false
-          let allActiveRooms = null
-          let urlRoom = null
-          let selectedRoomFromUrl = currentRoute._value
-          // let selectedRoomFromUrl = null
-          // selectedRoomFromUrl = currentRoute._value.substr(1)
-          // console.log("selectedRoomFromUrl 1: " + selectedRoomFromUrl)
-
-          //get room name from url
-          urlRoom = selectedRoomFromUrl.split("/")[1] // urlRoom = selectedRoomFromUrl.split("/")[2]
-          
-          //log
-          console.log("urlRoom: " + urlRoom)
-          
-          //get all active rooms
-          allActiveRooms = JSON.stringify(vuexAllRooms.value)
-          allActiveRooms = JSON.parse(allActiveRooms)
-
-          //join url room
-          if(urlRoom != "" || urlRoom != null || urlRoom != "null" || urlRoom != "undefined" || urlRoom != undefined)
-          {
-            //check if room is active
-            if(roomExists == false) 
-            {
-              for(let r in allActiveRooms)
-              {
-                if(urlRoom == allActiveRooms[r].room) { roomExists = true }
-              }
-            }
-            
-            //check if room is default
-            if(roomExists == false)
-            {
-              for(let r in defaultRooms)
-              {
-                if(urlRoom == defaultRooms[r]) { roomExists = true }
-              }
-            }
-
-            //null check
-            if(urlRoom == "" || urlRoom == "temp" || urlRoom == "test" || urlRoom == "undefined" || urlRoom == "null" || urlRoom == null)
-            {
-              pushUrl("general")
-            }
-
-            //join url room
-            else if(roomExists == true)
-            {
-              joinRoom(urlRoom)
-            }
-            
-            //join default room
-            else 
-            {
-              pushUrl("general")
-            }
-          }
-
-          //join default room
-          else
-          {
-            pushUrl("general")
-          }
-
-          //set components
-          let componentStart = document.getElementById("componentStart")
-          let componentAbout = document.getElementById("componentAbout")
-
-          //undisplay components
-          if(componentStart) { componentStart.style.display = "none" }
-          if(componentAbout) { componentAbout.style.display = "none" }
-
-        }, initializeVideoTime)
-    })
-
-
-    onUpdated(function() {
-        //variables
-        let selectedRoomFromUrl = currentRoute._value
-        let urlRoom = selectedRoomFromUrl.split("/")[1] // let urlRoom = selectedRoomFromUrl.split("/")[2]
-        // let selectedRoomFromUrl = currentRoute._value.substr(1)
-        
-        //log
-        console.log("urlRoom: " + urlRoom)
-
-        //null check
-        //if(urlRoom == "null" || urlRoom == null) { urlRoom == "general" }
-
-        //join room from url
-        joinRoom(urlRoom)
-        // joinRoom(selectedRoomFromUrl)
-    })
-
-
-    //elements
-    var form = document.getElementById('form')
-    var input = document.getElementById('input')
-
-
-    //globals
+    
+    
+    /****** GLOBALS ******/
     var backend_API_URL = "http://localhost:3000";
     var socket = io(backend_API_URL)
+    var vuexActiveRooms = computed(function() { return store.getters['activeRooms']})
+    var currentRoute = computed(function() { return useRouter().currentRoute.value.fullPath})
     var syncMaster = null
     var yourSocketId = null
     var currentRoom = null
-    var yourUsername = null
     var playingVideosLastWholeSecond = null
     var playingVideoTotalDuration = null
     var playingVideoId = null
@@ -465,7 +328,6 @@ export default {
     var playlistArray = null
     var playlistLength = null
     var defaultPlaylists = null
-    var totalLoadTime = initializeVideoTime + resync1Time + resyncMargin
     var loadingScreenTime = 7000
     var addToVideoOnJoinTime = 6
     var initializeVideoTime = 2000
@@ -483,19 +345,88 @@ export default {
     var youtubeEmbedPlaylistParameters = "&enablejsapi=1&autoplay=0&controls=1&modestbranding=1&rel=1&mute=1&amp;"
     var defaultRooms = []
     var waitingForRoomToBeInitialized = null
-    var totalRoomsCount = 0
+    var totalLoadTime = initializeVideoTime + resync1Time + resyncMargin
+    var totalActiveRoomsCount = 0
     var totalUsersCount = 0
     var totalUsersCurrentRoomCount = 0
     var forbiddenCharactersString = "\nspace ! @ % < > | , . ; : [ ]"
 
 
-    //video player event listener
-    window.onmessage = function(e) {
-      //debugging
-      // console.log(e.data)
+    /****** LIFECYCLE HOOKS ******/
+    onMounted(function() { setTimeout(function() {
+          //elements
+          let componentNavbarRooms = document.getElementById("componentNavbarRooms")
+          let componentAbout = document.getElementById("componentAbout")
 
+          //variables
+          let roomExists = false
+          let allActiveRooms = null
+          let urlRoom = null
+          let selectedRoomFromUrl = currentRoute._value
+
+          //null check
+          if(selectedRoomFromUrl) { urlRoom = selectedRoomFromUrl.split("/")[1] }
+          
+          //log
+          console.log("room: " + urlRoom)
+          
+          //get all active rooms
+          allActiveRooms = JSON.stringify(vuexActiveRooms.value)
+          allActiveRooms = JSON.parse(allActiveRooms)
+
+          //join url room
+          if(urlRoom != "" || urlRoom != null || urlRoom != "null" || urlRoom != "undefined" || urlRoom != undefined)
+          {
+              //check if room is active
+              if(roomExists == false) { for(let r in allActiveRooms) { if(urlRoom == allActiveRooms[r].room) { roomExists = true } } }
+              
+              //check if room is default
+              if(roomExists == false) { for(let r in defaultRooms) { if(urlRoom == defaultRooms[r]) { roomExists = true } } }
+
+              //check if room is null
+              if(urlRoom == "" || urlRoom == "temp" || urlRoom == "test" || urlRoom == "undefined" || urlRoom == "null" || urlRoom == null) { pushUrl("general") }
+
+              //join url room
+              else if(roomExists == true) { joinRoom(urlRoom) }
+              else if(roomExists == false) { pushUrl("general"); joinRoom("general") }
+            
+            //join default room
+            else { pushUrl("general"); joinRoom("general") }
+          }
+
+          //update elements
+          if(componentNavbarRooms) { componentNavbarRooms.style.display = "none" }
+          if(componentAbout) { componentAbout.style.display = "none" }
+
+        }, initializeVideoTime)
+    })
+
+
+    onUpdated(function() {
+        //variables
+        let selectedRoomFromUrl = currentRoute._value
+        let urlRoom = null
+        
+        //null check
+        if(selectedRoomFromUrl) 
+        {
+          //set url room
+          urlRoom = selectedRoomFromUrl.split("/")[1] 
+          
+          //log
+          console.log("room: " + urlRoom)
+         
+          //join room form url 
+          pushUrl(urlRoom)
+          joinRoom(urlRoom)
+        }        
+    })
+
+
+    /*** EVENT LISTENERS */
+    window.onmessage = function(e) { //video player event listener
       //null check
-      if(typeof e.data == "object") { console.log("error: typeof e.data == object"); return } // if(typeof e.data != "object")
+      if(typeof e.data == "object") { console.log("error: typeof e.data == object"); return }
       
       //elements
       let videoVolume = document.getElementById("videoVolume")
@@ -612,7 +543,8 @@ export default {
         videoTitle.innerText = "Video: " + playingVideoTitle
         videoChannel.innerText = "Channel: " + videoChannelValue
         videoCurrentRoom.innerText = "Current Room: " + currentRoom
-        videoPlayPauseOverlayText.innerText = playingVideoTitle
+        if(playingVideoTitle == undefined) { videoPlayPauseOverlayText.innerText = "" }
+        else if(playingVideoTitle != undefined) { videoPlayPauseOverlayText.innerText = playingVideoTitle }
         if(videoQualityValue != null) { videoQuality.innerText = "Quality: " + videoQualityValue }
         if(info.playlist != null) { videoCurrentPlaylistIndex.innerText = "Playlist Part: " + (playlistCurrentVideoIndex + 1) + " of " + playlistLength }
         if(info.playlist == null) { videoCurrentPlaylistIndex.innerText = "" }
@@ -716,19 +648,17 @@ export default {
       }
     }
 
-
     //keyboard event listener 
     window.addEventListener('keyup', enableKeybinds)
 
-
-    //fullscreen event listener
+    //fullscreen event listeners
     document.addEventListener('fullscreenchange', onExitFullScreen)
     document.addEventListener('webkitfullscreenchange', onExitFullScreen)
     document.addEventListener('mozfullscreenchange', onExitFullScreen)
     document.addEventListener('MSFullscreenChange', onExitFullScreen)
     
 
-    //functions
+    /*** FUNCTIONS ***/
     function sendChatMessage() 
     {
       //null check
@@ -753,16 +683,16 @@ export default {
 
     function createRoom() 
     {
+      //elements
+      let roomLink = document.getElementsByClassName("roomLink")
+
       //variables
       let createRoomInfo = []
       let newRoom = inputCreateRoom.value
 
-      //debugging
-      // console.log(newRoom)
-
-      //push new room name and old room name to array
-      createRoomInfo.push(inputCreateRoom.value)
-      createRoomInfo.push(currentRoom)
+      //add rooms to array
+      createRoomInfo.push(inputCreateRoom.value) //new room
+      createRoomInfo.push(currentRoom) //old room
       
       //check for forbidden characters
       let characterCheck = forbiddenCharacterCheck(inputCreateRoom.value)
@@ -774,9 +704,6 @@ export default {
           errorMessageCreateRoom.innerText = "room name cannot be empty or contain " + forbiddenCharactersString
           return
       }
-      
-      //set room link
-      let roomLink = document.getElementsByClassName("roomLink")
 
       //check if room already exists
       if(newRoom == "" || newRoom == "temp" || newRoom == "test" || newRoom == "undefined" || newRoom == "null")
@@ -843,12 +770,8 @@ export default {
 
     function joinRoom(roomName)
     {
-      //debugging
-      // console.log(roomName)
-      // console.log(socket.id)
-
       //elements
-      let componentStart = document.getElementById("componentStart")
+      let componentNavbarRooms = document.getElementById("componentNavbarRooms")
       let videoArea = document.getElementById("videoArea")
       let flex = document.getElementById("flex")
 
@@ -860,11 +783,8 @@ export default {
       //update elements
       displayLoadingOverlay()
       undisplayVideoInfoAndControls()
-      componentStart.style.display = "none"
+      componentNavbarRooms.style.display = "none"
 
-      //null check
-      //if(newRoom == "null" || newRoom == null) { newRoom == "general" }
-    
       //push new and old room to array
       createRoomInfo.push(newRoom)
       createRoomInfo.push(oldRoom)
@@ -896,56 +816,6 @@ export default {
       videoArea.style.display = "block"
       flex.style.display = "inline-flex"
     }
-
-
-    function addCustomUsername()
-    {
-      //check forbidden chars
-      let characterCheck = forbiddenCharacterCheck(inputAddUser.value)
-      if(characterCheck == true) 
-      { 
-          // alert("room name cannot be empty/contain space or following characters !@<<|,%")
-          let errorMessageAddUsername = document.getElementById("errorMessageAddUsername")
-          errorMessageAddUsername.style.display = "block"
-          errorMessageAddUsername.innerText = "username cannot be empty or contain " + forbiddenCharactersString
-          return
-      }
-
-      //set username
-      let username = inputAddUser.value
-
-      //set user obj
-      let user = JSON.parse("{" + "\"socketId\"" + ":" + "\"" + yourSocketId + "\"" + "," + "\"username\"" + ":" + "\"" + username + "\"" + "}")
-
-      //send socket message
-      socket.emit('add username', user)
-      
-      //reset add username textbox
-      inputAddUser.value = ""
-      
-      //set username
-      yourUsername = user.username
-    }
-
-
-    // function leaveRoom(roomName)
-    // {
-    //     //clear messages
-    //     messages.innerHTML = ""
-
-    //     //send socket message
-    //     socket.emit('leave room', roomName)
-        
-    //     //elements
-    //     let videoArea = document.getElementById("videoArea")
-    //     let iframeContainer = document.getElementById("iframeContainer")
-    //     let flex = document.getElementById("flex")
-        
-    //     //update elements
-    //     iframeContainer.innerHTML = ""
-    //     videoArea.style.display = "none"
-    //     flex.style.display = "none"
-    // }
 
 
     function forbiddenCharacterCheck(string)
@@ -1058,9 +928,6 @@ export default {
         //variables
         let videoId = loadThisId.playingVideoId
 
-        //debugging
-        // console.log("loadVideoCustom video: " + videoId)
-
         //set local variable
         videoPlaylistId = null
         playlistCurrentVideoIndex = 0
@@ -1084,9 +951,6 @@ export default {
       //load playlist
       else if(loadThisId.videoPlaylistId != "null")
       {
-        //debugging
-        // console.log("loadVideoCustom playlist: " + playlistId)
-
         //variables
         let playlistId = loadThisId.videoPlaylistId
         
@@ -1368,10 +1232,6 @@ export default {
       //NEXT VIDEO
       else if(event == "next")
       {
-        //debugging
-        // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
-        // console.log("playlistLength: " + playlistLength)
-
         //check if next video exists
         if(playlistCurrentVideoIndex < (playlistLength - 1))
         {
@@ -1405,10 +1265,6 @@ export default {
       //PREVIOUS VIDEO
       else if(event == "previous")
       { 
-          //debugging
-          // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
-          // console.log("playlistLength: " + playlistLength)
-
           //check if previous video exists
           if(playlistCurrentVideoIndex > 0)
           {
@@ -1445,12 +1301,6 @@ export default {
         //log
         console.log("resync1 to: " + playingVideosLastWholeSecond + "s")
 
-        //debugging
-        // console.log("videoPlaylist: " + videoPlaylist)
-        // console.log("playingVideoStatus: " + playingVideoStatus)
-        // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
-        // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
-        
         //elements
         let loadingScreenText = document.getElementById("loadingScreenText")
 
@@ -1810,7 +1660,7 @@ export default {
             if(event.code === "Escape")
             {
               //elements
-              let componentStart = document.getElementById("componentStart")
+              let componentNavbarRooms = document.getElementById("componentNavbarRooms")
               let inputChatMessage = document.getElementById("inputChatMessage")
               let modal = document.getElementById("modal")
           
@@ -1819,7 +1669,7 @@ export default {
               inputChatMessage.blur()
 
               //update elements
-              if(componentStart.style.display == "block") { componentStart.style.display = "none" }
+              if(componentNavbarRooms.style.display == "block") { componentNavbarRooms.style.display = "none" }
               else if(modal.style.display == "none") { modal.style.display = "block" }
               else if(modal.style.display == "block") { modal.style.display = "none"}
             }
@@ -1904,8 +1754,8 @@ export default {
       //null check
       if(videoPlaylistId == "null" || videoPlaylistId == null)
       {
-        //debugging
-        console.log("initializeVideo video: " + playingVideoId)
+        //log
+        console.log("video: " + playingVideoId)
 
         //load video
         loadVideoStart(playingVideoId, videoPlaylistId)
@@ -1920,8 +1770,8 @@ export default {
       }
       else if(videoPlaylistId != "null" || videoPlaylistId != null)
       {
-        //debugging
-        console.log("initializeVideo playlist: " + videoPlaylistId)
+        //log
+        console.log("playlist: " + videoPlaylistId)
 
         //load playlist
         loadVideoStart(playingVideoId, videoPlaylistId)
@@ -1978,14 +1828,14 @@ export default {
       let loadingScreenText = document.getElementById("loadingScreenText")
       let videoLoadingOverlay = document.getElementById("videoLoadingOverlay")
       let videoInfo = document.getElementById("videoInfo")
-      let componentStart = document.getElementById("componentStart")
+      let componentNavbarRooms = document.getElementById("componentNavbarRooms")
       let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
         
       //update elements
       loadingScreenText.innerText = "Loading..."
       videoLoadingOverlay.style.display = "block"
       videoInfo.style.display = "none"
-      componentStart.scrollTop = 0
+      componentNavbarRooms.scrollTop = 0
       videoPlayPauseOverlayText.innerText = "Press to Play"
     }
 
@@ -2007,6 +1857,7 @@ export default {
       vp.style.border = "0px"
       videoPlayPauseOverlayText.style.display = "block"
       displayVideoInfoAndControls()
+      undisplayInitializeNewCustomRoom()
 
       //check if video player is muted
       if(videoMuted == false) { videoPlayerEvents("unMute") }
@@ -2072,12 +1923,12 @@ export default {
     {
       //elements
       let componentAbout = document.getElementById("componentAbout")
-      let componentStart = document.getElementById("componentStart")
+      let componentNavbarRooms = document.getElementById("componentNavbarRooms")
 
       //update elements
       componentAbout.style.display = "none"  
-      if(componentStart.style.display == "block") { componentStart.style.display = "none" }
-      else if(componentStart.style.display == "none") { componentStart.style.display = "block" }
+      if(componentNavbarRooms.style.display == "block") { componentNavbarRooms.style.display = "none" }
+      else if(componentNavbarRooms.style.display == "none") { componentNavbarRooms.style.display = "block" }
     }
 
 
@@ -2130,14 +1981,11 @@ export default {
       //elements
       let modal = document.getElementById("modal")
       let modalContentKeybinds = document.getElementById("modalContentKeybinds")
-      let modalContentSettings = document.getElementById("modalContentSettings")
       let modalContentVideoQuality = document.getElementById("modalContentVideoQuality")
-      let modalContentAddUsername = document.getElementById("modalContentAddUsername")
       let modalContentCreateRoom = document.getElementById("modalContentCreateRoom")
       let modalSidebarKeybinds = document.getElementById("modalSidebarKeybinds")
       let modalSidebarSettings = document.getElementById("modalSidebarSettings")
       let modalSidebarVideoQuality = document.getElementById("modalSidebarVideoQuality")
-      let modalSidebarAddUsername = document.getElementById("modalSidebarAddUsername")
       let modalSidebarCreateRoom = document.getElementById("modalSidebarCreateRoom")
       
       //update elements
@@ -2145,22 +1993,18 @@ export default {
 
       //set selected sidebar category background color
       modalSidebarCreateRoom.style.backgroundColor = "white"
-      modalSidebarAddUsername.style.backgroundColor = "white"
       modalSidebarSettings.style.backgroundColor = "white"
       modalSidebarKeybinds.style.backgroundColor = "white"
       modalSidebarVideoQuality.style.backgroundColor = "white"
 
       //set selected sidebar category text color
       modalSidebarCreateRoom.style.color = "#1c1b1b"
-      modalSidebarAddUsername.style.color = "#1c1b1b"
       modalSidebarSettings.style.color = "#1c1b1b"
       modalSidebarKeybinds.style.color = "#1c1b1b"
       modalSidebarVideoQuality.style.color = "#1c1b1b"
 
       //display selected category content 
       modalContentCreateRoom.style.display = "none"
-      modalContentAddUsername.style.display = "none"
-      modalContentSettings.style.display = "none"
       modalContentKeybinds.style.display = "none"
       modalContentVideoQuality.style.display = "none"
 
@@ -2179,7 +2023,6 @@ export default {
       {
         // modalSidebarSettings.style.backgroundColor = "#1c1b1b"
         // modalSidebarSettings.style.color = "white"
-        modalContentSettings.style.display = "block"
       }
 
 
@@ -2260,22 +2103,6 @@ export default {
       }
 
 
-      //ADD USERNAME
-      else if(category == "Add Username")
-      {
-        //elements
-        let errorMessageAddUsername = document.getElementById("errorMessageAddUsername")
-        let modalSidebarAddUsername = document.getElementById("modalSidebarAddUsername")
-        let modalContentAddUsername = document.getElementById("modalContentAddUsername")
-        
-        //update elements
-        modalSidebarAddUsername.style.backgroundColor = "#1c1b1b"
-        modalSidebarAddUsername.style.color = "white"
-        modalContentAddUsername.style.display = "block"
-        //errorMessageAddUsername.innerText = "username cannot be empty or contain " + forbiddenCharactersString
-      }
-
-
       //CREATE ROOM
       else if(category == "Create Room")
       {
@@ -2306,12 +2133,22 @@ export default {
     }
 
 
+    function undisplayInitializeNewCustomRoom()
+    {
+      //elements
+      let initializeNewCustomRoom = document.getElementById("initializeNewCustomRoom")
+      
+      //update elements
+      initializeNewCustomRoom.style.display = "none"
+    }
+
+
     function enableKeybinds(event)
     {
       //ESCAPE
       if(event.code === "Escape")
       {
-        let componentStart = document.getElementById("componentStart")
+        let componentNavbarRooms = document.getElementById("componentNavbarRooms")
         let inputChatMessage = document.getElementById("inputChatMessage")
         let modal = document.getElementById("modal")
         let componentAbout = document.getElementById("componentAbout")
@@ -2321,9 +2158,9 @@ export default {
         inputChatMessage.blur()
 
         //hide or show components
-        if(componentStart.style.display == "block" || componentAbout.style.display == "block") 
+        if(componentNavbarRooms.style.display == "block" || componentAbout.style.display == "block") 
         { 
-          componentStart.style.display = "none"
+          componentNavbarRooms.style.display = "none"
           componentAbout.style.display = "none" 
         }
         //hide or show modal
@@ -2449,33 +2286,32 @@ export default {
       let time = currentTimeStamp()
       let msgs = document.getElementById("messages").childElementCount
 
-      //set message background color
+      //set chat message background color
       if(msgs % 2 == 0)
       {
         item.style.padding = "10px"
-        // item.style.backgroundColor = "white"
         item.style.backgroundColor = "#a9a9a917"
         item.style.overflowWrap = "break-word"
         item.style.color = "white"
+        // item.style.backgroundColor = "white"
       }
       else
       {
         item.style.padding = "10px"
-        // item.style.backgroundColor = "#efefef"
         item.style.backgroundColor = "#1c1b1b"
         item.style.overflowWrap = "break-word"
         item.style.color = "white"
+        // item.style.backgroundColor = "#efefef"
       }
 
-      //handle anon name if no custom username
+      //handle anon username
       if(msg.userName == "anon")
       {
-          // msg.userName = "anon" + msg.userId.substring(0, 4).toUpperCase()
-          msg.userName = msg.userName.replace("anon", "")
           msg.userName = msg.userId.substring(0, 4).toUpperCase()
+          // msg.userName = "anon" + msg.userId.substring(0, 4).toUpperCase()
       }
 
-      //set chat format
+      //set message time format
       // item.textContent = time + " " + msg.userName + ": " + msg.content
       // item.textContent = msg.userName + ": " + msg.content
       
@@ -2521,26 +2357,9 @@ export default {
     }
 
 
-    //handle socket stream
-    socket.on('info', function(allRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying, defaultPlaylistsFromServer, defaultRoomsFromServer) {
-        //debugging
-        // console.log(socket)
-        // console.log(allClients)
-        // console.log(all_namespaces)
-        // console.log("socket id: " + socket.id)
-        // console.log("your id: " + socket.id)
-        // console.log("socket nsp: " + socket.nsp)
-        // console.log("allRooms")
-        // console.log(allRooms)
-        // console.log("videosCurrentlyPlaying")
-        // console.log(videosCurrentlyPlaying)
-        // console.log("clientInfo")
-        // console.log(clientInfo)
-        // console.log("allClients")
-        // console.log(allClients)
-        // console.log("defaultRoomsFromServer")
-        // console.log(defaultRoomsFromServer)
-        
+    /****** HANDLE SOCKET STREAM ******/
+    socket.on('info', function(activeRooms, allClients, all_namespaces, clientInfo, videosCurrentlyPlaying, defaultPlaylistsFromServer, defaultRoomsFromServer) 
+    {
         //set default playlists
         defaultPlaylists = JSON.parse(defaultPlaylistsFromServer)
         defaultRooms = defaultRoomsFromServer
@@ -2548,15 +2367,8 @@ export default {
         //set your socket id
         yourSocketId = socket.id
 
-        //elements
-        let addUsernameCurrentUsername = document.getElementById("addUsernameCurrentUsername")
-        
-        //set current username
-        if(yourUsername != null) { addUsernameCurrentUsername.innerText = "current username: " + yourUsername }
-        else if(yourUsername == null) { addUsernameCurrentUsername.innerText = "current username: " + yourSocketId.substr(0, 4) }
-
         //save to vuex storage
-        store.dispatch('actionSetAllRooms', allRooms) //all active rooms
+        store.dispatch('actionSetActiveRooms', activeRooms) //all active rooms
         store.dispatch('actionSetDefaultRooms', defaultRoomsFromServer)
 
         //set current room
@@ -2588,22 +2400,11 @@ export default {
         //active room exist
         if(videosCurrentlyPlaying.length != 0 && currentRoom != "temp") 
         {
-          //debugging
-          // console.log("active room exist")
-          // console.log("videosCurrentlyPlaying")
-          // console.log(videosCurrentlyPlaying)
-          // console.log("allRooms")
-          // console.log(allRooms)
-          // console.log(currentRoom)
-          
           //find room
           for(let x in videosCurrentlyPlaying)
           {
             if(currentRoom == videosCurrentlyPlaying[x].room)
             {
-              //debugging
-              // console.log("current room is: " + currentRoom)
-
               //set video variables
               playingVideosLastWholeSecond = videosCurrentlyPlaying[x].lastWholeSecond
               playingVideoId = videosCurrentlyPlaying[x].videoId
@@ -2621,36 +2422,14 @@ export default {
                 let randomNumber = generateRandomNumber(3)
                 
                 for(let pl in defaultPlaylists)
-                {
-                  if(defaultPlaylists[pl].category == currentRoom)
-                  {
-                    //debugging
-                    // console.log("set default playlist")
-
-                    videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
-
-                    break
-                  }
-                }
+                { if(defaultPlaylists[pl].category == currentRoom) { videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]; break } }
               }
 
               break
-    
-              //debugging
-              // console.log("videoPlaying: " + videoPlaying)
-              // console.log("videoPlaylistId: " + videoPlaylistId)
-              // console.log("videoPlaylist: " + videoPlaylist)
-              // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
-              // console.log("playingVideoId: " + playingVideoId)
-              // console.log("playingVideoRoom: " + playingVideoRoom)
-              // console.log("playingVideoStatus: " + playingVideoStatus)
-              // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
             }
+
             else if(currentRoom != videosCurrentlyPlaying[x].room)
             {
-              //debugging
-              // console.log("current room is not: " + videosCurrentlyPlaying[x].room)
-              
               //set video variables
               playingVideosLastWholeSecond = 0
               playingVideoId = null
@@ -2666,37 +2445,15 @@ export default {
               
               //set default playlist
               for(let pl in defaultPlaylists)
-              {
-                if(defaultPlaylists[pl].category == currentRoom)
-                {
-                  //debugging
-                  // console.log("set default playlist")
-
-                  videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
-
-                  break
-                }
-              }    
-              
-              //debugging
-              // console.log("videoPlaying: " + videoPlaying)
-              // console.log("videoPlaylistId: " + videoPlaylistId)
-              // console.log("videoPlaylist: " + videoPlaylist)
-              // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
-              // console.log("playingVideoId: " + playingVideoId)
-              // console.log("playingVideoRoom: " + playingVideoRoom)
-              // console.log("playingVideoStatus: " + playingVideoStatus)
-              // console.log("playlistCurrentVideoIndex: " + playlistCurrentVideoIndex)
+              { if(defaultPlaylists[pl].category == currentRoom) { videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]; break } }    
             }
+
           }
         }
 
         //no active room exist
         else if(videosCurrentlyPlaying.length == 0  && currentRoom != "temp")  
         {
-          //debugging
-          // console.log("no active room exist")
-          
           //set video variables
           playingVideosLastWholeSecond = 0
           playingVideoId = null
@@ -2712,42 +2469,21 @@ export default {
 
           //set default playlist
           for(let pl in defaultPlaylists)
-          {
-            if(defaultPlaylists[pl].category == currentRoom)
-            {
-              //debugging
-              // console.log("set default playlist")
-
-              videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]
-
-              break
-            }
-          }          
-          
-          //debugging
-          // console.log("playingVideosLastWholeSecond: " + playingVideosLastWholeSecond)
-          // console.log("playingVideoId: " + playingVideoId)
-          // console.log("playingVideoRoom: " + playingVideoRoom)
-          // console.log("playingVideoStatus: " + playingVideoStatus)
-          // console.log("videoPlaylistId: " + videoPlaylistId)
+          { if(defaultPlaylists[pl].category == currentRoom) { videoPlaylistId = defaultPlaylists[pl].urls[randomNumber]; break } }          
         }
 
         //set sync master
-        for(let r in allRooms)
+        for(let r in activeRooms)
         {
-          if(allRooms[r].room == "temp")
+          if(activeRooms[r].room == "temp")
           {
             //nothing
           }
           
-          else if(allRooms[r].room == currentRoom)
+          else if(activeRooms[r].room == currentRoom)
           {
-            //debugging
-            // console.log("syncMaster for room " + videosCurrentlyPlaying[x].room + " is " + allRooms[r].clients[0])
-            // console.log("yourSocketId: " + socket.id)
-            
             //update sync master
-            syncMaster = allRooms[r].clients[0]
+            syncMaster = activeRooms[r].clients[0]
               
             //set socket message
             let msgObjVideoCommand = JSON.parse(
@@ -2768,40 +2504,16 @@ export default {
           }
         }
         
-        //set total rooms count
-        let temp = JSON.stringify(vuexAllRooms.value)
-        temp = JSON.parse(temp)
-        if(temp.length > 0) { totalRoomsCount = temp.length }
+        //handle active rooms obj
+        let activeRoomsObj = JSON.parse(JSON.stringify(vuexActiveRooms.value))
 
-        //debugging
-        // console.log("total rooms: " + totalRoomsCount)
-        // totalRooms.innerText = "total rooms: " + totalRoomsCount
-
-        //set total users all rooms count
-        if(allClients.length > 0) { totalUsersCount = allClients.length }
-
-        //debugging
-        // console.log("total users all rooms: " + totalUsersCount)
-        // totalUsers.innerText = "Total Users: " + totalUsersCount
-
-        //set total users current room count
-        for(let r in allRooms)
-        {
-          let count = allRooms[r].clients.length
-
-          if(currentRoom == allRooms[r].room)
-          {
-            totalUsersCurrentRoomCount = count
-
-            //debugging
-            // console.log("total users current room: " + totalUsersCurrentRoomCount)
-            // totalUsersCurrentRoom.innerText = currentRoom + " Users: " + count
-          }
-        }
-
-        //debugging
-        // console.log(inputCurrentRoom)
+        //set totals
+        if(activeRoomsObj.length > 0) { totalActiveRoomsCount = activeRoomsObj.length } //active rooms
+        if(allClients.length > 0) { totalUsersCount = allClients.length } //total users
+        for(let r in activeRooms) //users in current room
+        { if(currentRoom == activeRooms[r].room) { totalUsersCurrentRoomCount = activeRooms[r].clients.length } }
     })
+
 
     socket.on('video command', function(msg) {
         //PLAY VIDEO
@@ -2984,9 +2696,6 @@ export default {
         //RESYNC VIDEO 2
         else if(msg.content == "resync2 video")
         {
-          //debugging
-          // console.log(msg)
-          
           //set playing video current seconds
           msg.playingVideosLastWholeSecond = parseInt(msg.playingVideosLastWholeSecond)
 
@@ -3047,8 +2756,6 @@ export default {
 
       //functions
       joinRoom,
-      addCustomUsername,
-      // leaveRoom,
       forbiddenCharacterCheck,
       currentTimeStamp,
       sendChatMessage,
@@ -3171,8 +2878,6 @@ export default {
   #form { width: 93%; margin: auto; margin-top: 2px; opacity: 0.6 }
   #buttonCreateRoom { width: calc(100%); border-color: lightgray; }
   #createRoom { display: block; width: 70%; margin: auto; padding: 0px; background-color: transparent; } 
-  #addUsername { display: block; width: 70%; margin: auto; padding: 0px; background-color: transparent; }
-  #addUsernameCurrentUsername { margin: 20px; }
   #modal 
   { 
       position: absolute; 
@@ -3216,16 +2921,13 @@ export default {
       border-spacing: 10px 17px; 
       user-select: none; 
   }
-  #modalContentSettings { display: none; } 
   #modalContentVideoQuality { display: none; } 
-  #modalContentAddUsername { display: none; } 
   #modalContentCreateRoom { display: none; }
   #changeVideoQuality { user-select: none; height: 100%; width: 100%; }
   #changeVideoQualitySteps { display: none; text-align: left; margin-bottom: 30px; margin-left: 34%; }
   #modalSidebarKeybinds { color: white; background-color: #1c1b1b; }
   #modalSidebarSettings { background-color: white; } 
   #modalSidebarVideoQuality { background-color: white; } 
-  #modalSidebarAddUsername { display: none; background-color: white; } 
   #modalSidebarCreateRoom { background-color: white; }
   #buttonAddUser { height: 40px; font-size: 16px; } 
   #inputAddUser { height: 40px; font-size: 16px; } 
@@ -3429,38 +3131,40 @@ export default {
   #currentRouteBar 
   { 
       display: none; 
-      color: white; 
-      background-color: red; 
       position: absolute; 
       bottom: 0px; 
       width: 73vw; 
       padding: 10px; 
-      z-index: 1 
+      color: white; 
+      z-index: 1;
+      background-color: red; 
   }
   #videoCurrentRoom { display: none; }
   #initializeNewCustomRoom 
   { 
       display: none; 
       position: absolute; 
-      color: white; 
-      border: 1px solid white; 
-      z-index: 1; 
-      padding: 20px; 
-      transform: translate(-50%, -50%); 
+      top: 46%;
       left: 41.5%; 
-      top: 46% 
+      padding: 20px;
+      font-weight: bold;
+      color: white; 
+      z-index: 1; 
+      transform: translate(-50%, -50%); 
+      border: 2px solid white; 
+      background-color: black;
   }
   #initializeNewCustomRoom-load-video-elems { height: auto; width: 100%; background-color: black; }
   #initializeNewCustomRoom-load-video-input 
   { 
       height: auto; 
-      width: calc(90% - 4px); 
+      width: -webkit-fill-available; 
       margin-top: 10px; 
       padding: 10px; 
       color: black; 
       background-color: white; 
   }
-  #initializeNewCustomRoom-load-video { height: auto; width: 90%; padding: 10px; text-align: center; color: black; background-color: lightgray; }
+  #initializeNewCustomRoom-load-video { height: auto; width: -webkit-fill-available; padding: 10px; text-align: center; color: black; background-color: lightgray; }
   #initializeNewCustomRoomSteps { margin: 0px; margin-bottom: 10px; }
   #initializeNewCustomRoomTitle { margin: 0px; margin-bottom: 10px; text-align: center; }  
 
@@ -3486,7 +3190,7 @@ export default {
       border: 1px solid rgba(255, 255, 255, 0.1); 
   }
   .videoPlayerControlRow { display: inline-flex; margin: auto; }
-  .initializeNewCustomRoomText { margin: 0px; padding: 0px; }
+  .initializeNewCustomRoomText { margin: 0px; padding: 2px; }
 
 
   /*** animations ***/
