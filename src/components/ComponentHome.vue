@@ -120,7 +120,7 @@
           <!-- custom room initialize steps -->
           <div id="initializeNewCustomRoomSteps">
             <p class="initializeNewCustomRoomText" id="initializeNewCustomRoomTitle">Waiting for room to be initialized...</p>
-            <p class="initializeNewCustomRoomText">Step 1: paste video or playlist id of choice</p>
+            <p class="initializeNewCustomRoomText">Step 1: paste video or playlist URL of choice</p>
             <p class="initializeNewCustomRoomText">Step 2: press on load button</p>
             <p class="initializeNewCustomRoomText">Example playlist url: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
             <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
@@ -128,7 +128,7 @@
 
           <!-- custom room load url -->
           <div id="initializeNewCustomRoom-load-video-elems">
-              <input id="initializeNewCustomRoom-load-video-input" placeholder="video or playlist id" maxlength="100" />
+              <input id="initializeNewCustomRoom-load-video-input" placeholder="video or playlist URL" maxlength="100" />
               <div id="initializeNewCustomRoom-load-video" v-on:click="initializeNewCustomRoomVideo()">Load</div>
           </div>
         </div>
@@ -203,7 +203,7 @@
             <div id="next-video" class="videoPlayerControlButton playlistButton" v-on:click="videoPlayerEvents('next')">Next</div>
             <div id="load-video-elems">
               <div id="load-video" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-              <input id="load-video-input" placeholder="Load Id" maxlength="100" />
+              <input id="load-video-input" placeholder="Load URL" maxlength="100" />
             </div>
           </div>
 
@@ -267,7 +267,7 @@
 
               <!-- load-->
               <div id="load-video-mobile" class="videoPlayerControlButton" v-on:click="videoPlayerEvents('load')">Load</div>
-              <div><input id="load-video-input-mobile" placeholder="Load Id" maxlength="100" /></div>
+              <div><input id="load-video-input-mobile" placeholder="Load URL" maxlength="100" /></div>
           </div>
         </div>
       </div>
@@ -335,7 +335,7 @@ export default { setup() {
     var defaultPlaylists = null
     var loadingScreenTime = 7000
     var addToVideoOnJoinTime = 6
-    var initializeVideoTime = 2000
+    var initializeVideoTime = 3000
     var loadCustomVideoLoadingScreenTime = 2000
     var initializeNewCustomRoomVideoEnableKeybindsTime = 4000
     var resync1Time = 3000
@@ -395,9 +395,10 @@ export default { setup() {
               else if(roomExists == true) { joinRoom(urlRoom) }
               else if(roomExists == false) { pushUrl("general"); joinRoom("general") }
             
-            //join default room
-            else { pushUrl("general"); joinRoom("general") }
+              //join default room
+              else { pushUrl("general"); joinRoom("general") }
           }
+          else { pushUrl("general"); joinRoom("general") }
 
           //update elements
           if(componentNavbarRooms) { componentNavbarRooms.style.display = "none" }
@@ -1179,14 +1180,24 @@ export default { setup() {
         
         else { loadThisId = param1 }
 
+        //format url
+        loadThisId = loadThisId.replace("https://www.youtube.com/watch?v=", "")
+        loadThisId = loadThisId.replace("https://www.youtube.com/", "")
+
         //reset variables
         initializeNewCustomRoomVideoInput.value = ""
         loadVideoInput.value = ""
         loadVideoInputMobile.value = ""
 
         //url is playlist
-        if(loadThisId.substring(0, 2).toUpperCase() == "PL")
+        if(loadThisId.includes("PL") || loadThisId.includes("playlist?list="))
         {
+          //format url
+          if(loadThisId.includes("PL")) { loadThisId = loadThisId.replace("playlist?list=", "") }
+          else if(loadThisId.includes("playlist?list=")) { }
+          // loadThisId = loadThisId.replace("playlist?list=", "")
+          // if(loadThisId.includes("playlist?list=UULFkWbqlDAyJh2n8DN5X6NZyg")) { loadThisId = loadThisId.replace("playlist?list=", "")}
+
           //set socket messages
           msgObjChat = JSON.parse(
             "{" + 
@@ -1205,7 +1216,7 @@ export default { setup() {
         }
 
         //url is video
-        else if(loadThisId.substring(0, 2).toUpperCase() != "PL")
+        else if(!loadThisId.includes("PL"))
         {
           //set socket messages
           msgObjChat = JSON.parse(
@@ -1696,16 +1707,19 @@ export default { setup() {
         let iframeEle = document.createElement("iframe")
         let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
         
+        if(videoPlaylistId.includes("PL")) { }
+        else if(videoPlaylistId.includes("playlist?list=")) { videoPlaylistId = videoPlaylistId.replace("playlist?list=", "")}
+        
         //set iframe variables
         iframeEle.id = "videoPlayer"
         iframeEle.height = "100%"
         iframeEle.width = "100%"
         iframeEle.title = "YouTube video player"
-        iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + playlistId + youtubeEmbedPlaylistParameters
+        iframeEle.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + videoPlaylistId + youtubeEmbedPlaylistParameters
         iframeEle.allow = "autoplay; fullscreen"
 
         //check if new custom room
-        if(playlistId == "newCustomRoom")
+        if(videoPlaylistId == "newCustomRoom")
         {
           iframeEle.src = ""
           waitingForRoomToBeInitialized = true
@@ -1756,7 +1770,7 @@ export default { setup() {
 
     function initializeVideo()
     {        
-      //null check
+      //video is standalone
       if(videoPlaylistId == "null" || videoPlaylistId == null)
       {
         //log
@@ -1768,11 +1782,9 @@ export default { setup() {
         //sync video
         setTimeout(function() {videoPlayerEvents("resync1")}, resync1Time)
         setTimeout(function() {videoPlayerEvents("resync2")}, resync2Time)
-
-        //update elements
-        let playlistControls = document.getElementById("playlistControls")
-        playlistControls.style.display = "none"
       }
+
+      //video is part of playlist
       else if(videoPlaylistId != "null" || videoPlaylistId != null)
       {
         //log
@@ -1784,10 +1796,6 @@ export default { setup() {
         //sync video
         setTimeout(function() {videoPlayerEvents("resync1")}, resync1Time)
         setTimeout(function() {videoPlayerEvents("resync2")}, resync2Time)
-        
-        //update elements
-        let playlistControls = document.getElementById("playlistControls")
-        playlistControls.style.display = "inline-flex"
       }
     }
 
@@ -3027,7 +3035,7 @@ export default { setup() {
       border: 2px solid gray; 
       background-color: #393636; 
   }
-  #playlistControls { display: none; }
+  #playlistControls { display: inline-flex; }
   #restart-video { display: block; }
   #videoArea { display: block; }
   #iframeContainer { width: 100%; height: 112%; margin-top: -3.9%; }
