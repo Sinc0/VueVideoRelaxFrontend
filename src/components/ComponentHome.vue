@@ -123,11 +123,11 @@
             <p class="initializeNewCustomRoomText" id="initializeNewCustomRoomTitle">Waiting for room to be initialized...</p>
             <p class="initializeNewCustomRoomText">Step 1: paste video or playlist URL of choice</p>
             <p class="initializeNewCustomRoomText">Step 2: press on load button</p>
-            <p class="initializeNewCustomRoomText">Example playlist url: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
-            <p class="initializeNewCustomRoomText">Example video url: KW1LHK4dVfM</p>
+            <p class="initializeNewCustomRoomText">Example playlist URL: PLy1UbTtb_A9L4gkexK3sHwYo3pfVAOSQI</p>
+            <p class="initializeNewCustomRoomText">Example video URL: KW1LHK4dVfM</p>
           </div>
 
-          <!-- custom room load url -->
+          <!-- custom room load URL -->
           <div id="initializeNewCustomRoom-load-video-elems">
               <input id="initializeNewCustomRoom-load-video-input" placeholder="video or playlist URL" maxlength="100" />
               <div id="initializeNewCustomRoom-load-video" v-on:click="initializeNewCustomRoomVideo()">Load</div>
@@ -382,7 +382,7 @@ export default { setup() {
           allActiveRooms = JSON.stringify(vuexActiveRooms.value)
           allActiveRooms = JSON.parse(allActiveRooms)
 
-          //join url room
+          //join URL room
           if(urlRoom != "" || urlRoom != null || urlRoom != "null" || urlRoom != "undefined" || urlRoom != undefined)
           {
               //check if room is active
@@ -394,7 +394,7 @@ export default { setup() {
               //check if room is null
               if(urlRoom == "" || urlRoom == "temp" || urlRoom == "test" || urlRoom == "undefined" || urlRoom == "null" || urlRoom == null) { pushUrl("general") }
 
-              //join url room
+              //join URL room
               else if(roomExists == true) { joinRoom(urlRoom) }
               else if(roomExists == false) { pushUrl("general"); joinRoom("general") }
             
@@ -426,13 +426,13 @@ export default { setup() {
         //null check
         if(route) 
         {
-          //set url room
+          //set URL room
           room = route.split("/")[1].toLowerCase()
           
           //log
           console.log("room: " + room)
          
-          //join room form url 
+          //join room form URL 
           pushUrl(room)
           joinRoom(room)
         }        
@@ -484,7 +484,8 @@ export default { setup() {
       let roomIsDefault;
       let randomVideoNumber;
 
-      //event video volume
+
+      //VOLUME CHANGED
       if(eventVideoVolume)
       {
         //set variables
@@ -495,7 +496,8 @@ export default { setup() {
         videoVolume.innerText = "Volume: " + playingVideoVolume
       }
 
-      //event video quality
+
+      //VIDEO QUALITY CHANGED
       if(eventVideoQuality)
       {
         //set variables
@@ -522,7 +524,8 @@ export default { setup() {
         }
       }
 
-      ///event video state
+
+      //VIDEO STATE CHANGED
       if(eventVideoState)
       {
         //set variables
@@ -566,7 +569,8 @@ export default { setup() {
         if(info.playlist == null) { videoCurrentPlaylistIndex.innerText = "" }
       }
 
-      //event video current time
+
+      //VIDEO TIME
       else if(eventVideoCurrentTime)
       {
         //set variables
@@ -630,8 +634,7 @@ export default { setup() {
             //check if room is default
             for(let r in defaultRooms)
             {
-              if(defaultRooms[r] == currentRoom) 
-              { roomIsDefault = true }
+              if(defaultRooms[r] == currentRoom) { roomIsDefault = true }
             }
             
             //check if random new video
@@ -679,7 +682,6 @@ export default { setup() {
     {
       //null check
       if(!inputChatMessage.value) { console.log("error: inputChatMessage.value is null"); return }
-      // if(inputChatMessage.value)
 
       //create socket message
       let msgObj = JSON.parse(
@@ -804,14 +806,7 @@ export default { setup() {
       createRoomInfo.push(oldRoom)
       
       //check if already in room
-      if(newRoom == oldRoom)
-      {
-          //reload browser url
-          window.location.reload()
-          
-          //return value
-          return
-      }
+      if(newRoom == oldRoom) { window.location.reload(); return }
 
       //reset messages
       messages.innerHTML = ""
@@ -859,6 +854,7 @@ export default { setup() {
       let currentHours = currentDate.getHours()
       let currentMinutes = currentDate.getMinutes()
       let currentSeconds = currentDate.getSeconds()
+      let time = ""
 
       //set correct time format
       if (currentHours < 10) { currentHours + "0" + currentHours.toString() }
@@ -866,7 +862,7 @@ export default { setup() {
       if (currentSeconds < 10) { currentSeconds = "0" + currentSeconds.toString() }
           
       //set time
-      let time = + currentHours + ":" + currentMinutes + ":" + currentSeconds
+      time = currentHours + ":" + currentMinutes + ":" + currentSeconds
       
       //return value
       return time
@@ -889,13 +885,14 @@ export default { setup() {
       //load playlist
       if(videoPlaylist == "true") 
       {
-        setTimeout(function() {undisplayLoadingOverlay()}, loadingScreenTime)
+        setTimeout(function() {undisplayLoadingOverlay()}, loadingScreenTime) //undisplay loading screen timeout
         loadPlaylist(playlistId)
       }
 
       //load video
       else if(videoPlaylist == "false") 
       {
+        //undisplay loading screen timeout
         setTimeout(function() {undisplayLoadingOverlay()}, loadingScreenTime)
         
         //set local variable
@@ -921,6 +918,10 @@ export default { setup() {
       let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
       let videoPlayPauseOverlayText = document.getElementById("videoPlayPauseOverlayText")
       
+      //variables
+      let videoId;
+      let playlistId;
+
       //set iframe variables
       iframeEle.id = "videoPlayer"
       iframeEle.height = "100%"
@@ -940,12 +941,10 @@ export default { setup() {
       if(loadThisId.playingVideoId != "null")
       {
         //variables
-        let videoId = loadThisId.playingVideoId
-
-        //set local variable
-        videoPlaylistId = null
-        playlistCurrentVideoIndex = 0
-        videoPlaylist = false
+        videoId = loadThisId.playingVideoId
+        videoPlaylistId = null //set global
+        playlistCurrentVideoIndex = 0 //set global
+        videoPlaylist = false //set global
         
         //set iframe src
         iframeEle.src = "https://www.youtube-nocookie.com/embed/" + videoId + youtubeEmbedVideoParameters
@@ -966,7 +965,7 @@ export default { setup() {
       else if(loadThisId.videoPlaylistId != "null")
       {
         //variables
-        let playlistId = loadThisId.videoPlaylistId
+        playlistId = loadThisId.videoPlaylistId
         
         //update elements
         setTimeout(function() {undisplayLoadingOverlay()}, loadCustomVideoLoadingScreenTime)
@@ -1120,9 +1119,7 @@ export default { setup() {
         let vpElement = document.querySelector("#videoPlayer")
 
         //unmute video player
-        if(vpElement) {
-          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'unMute' + '","args":""}', '*')
-        }
+        if(vpElement) { document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'unMute' + '","args":""}', '*') }
         
         //update elements
         btnUnmute.style.display = "none"
@@ -1178,17 +1175,14 @@ export default { setup() {
         let msgObjChat = ""
         let msgObjVideoCommand = ""
         
-        //set load url
-        if(initializeNewCustomRoomVideoInput.value != "") 
+        //set load URL
+        if(initializeNewCustomRoomVideoInput.value != "") //null check
         { loadThisId = initializeNewCustomRoomVideoInput.value; initializeNewCustomRoom.style.display = "none" }
-        
         else if(loadVideoInputMobile.value != "") { loadThisId = loadVideoInputMobile.value }
-        
         else if(loadThisId != "") { loadThisId = loadVideoInput.value }
-        
         else { loadThisId = param1 }
 
-        //format url
+        //format URL
         loadThisId = loadThisId.replace("https://www.youtube.com/watch?v=", "")
         loadThisId = loadThisId.replace("https://www.youtube.com/", "")
 
@@ -1197,14 +1191,12 @@ export default { setup() {
         loadVideoInput.value = ""
         loadVideoInputMobile.value = ""
 
-        //url is playlist
+        //URL is playlist
         if(loadThisId.includes("PL") || loadThisId.includes("playlist?list="))
         {
-          //format url
+          //format URL
           if(loadThisId.includes("PL")) { loadThisId = loadThisId.replace("playlist?list=", "") }
           else if(loadThisId.includes("playlist?list=")) { }
-          // loadThisId = loadThisId.replace("playlist?list=", "")
-          // if(loadThisId.includes("playlist?list=UULFkWbqlDAyJh2n8DN5X6NZyg")) { loadThisId = loadThisId.replace("playlist?list=", "")}
 
           //set socket messages
           msgObjChat = JSON.parse(
@@ -1223,7 +1215,7 @@ export default { setup() {
             "}")
         }
 
-        //url is video
+        //URL is video
         else if(!loadThisId.includes("PL"))
         {
           //set socket messages
@@ -1328,21 +1320,17 @@ export default { setup() {
         //elements
         let loadingScreenText = document.getElementById("loadingScreenText")
 
-        //set video current seconds
-        playingVideosLastWholeSecond = parseInt(playingVideosLastWholeSecond)
+        //variables
+        playingVideosLastWholeSecond = parseInt(playingVideosLastWholeSecond) //set global
 
         //update elements
         loadingScreenText.innerText = "Syncing..."
         
         //video is paused
-        if(playingVideosLastWholeSecond == 0 && playingVideoStatus == false)
-        {
-          displayPlayButton()
-          displayPauseOverlay()
-        }
+        if(playingVideoStatus == false) { displayPlayButton(); displayPauseOverlay() }
 
         //video is part of playlist
-        else if(videoPlaylist == true)
+        if(videoPlaylist == true)
         {
           //video is paused
           if(playingVideoStatus == "false")
@@ -1354,13 +1342,12 @@ export default { setup() {
             videoPlaying = false
             
             //jump to correct video in playlist
-            if(vpElement) {
-              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*')
-            }
+            if(vpElement) { document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*') }
             
             //sync video to correct time
             setTimeout(function() {
-              if(vpElement) {
+              if(vpElement) 
+              {
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*') //sync to lastWholeSecond
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*') //pause video
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
@@ -1388,13 +1375,12 @@ export default { setup() {
             displayPauseButton()
 
             //jump to correct video in playlist
-            if(vpElement) {
-              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*')
-            }
+            if(vpElement) { document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideoAt' + '","args":[' + playlistCurrentVideoIndex + ']}', '*') }
             
             //sync video to correct time
             setTimeout(function() {
-              if(vpElement) {
+              if(vpElement) 
+              {
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*') //sync to lastWholeSecond
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
               }
@@ -1402,7 +1388,7 @@ export default { setup() {
           }
         }
 
-        //video is standalone
+        //video is STANDALONE
         else if(videoPlaylist == false)
         {
           //video is paused
@@ -1415,9 +1401,7 @@ export default { setup() {
             videoPlaying = false
           
             //start video
-            if(vpElement) {
-              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*') //play video
-            }
+            if(vpElement) { document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*') }
 
             //sync video to correct time
             setTimeout(function() {
@@ -1446,13 +1430,12 @@ export default { setup() {
             playingVideosLastWholeSecond = parseInt(playingVideosLastWholeSecond) + addToVideoOnJoinTime
             
             //start video
-            if(vpElement) {
-              document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*') //play video
-            }
+            if(vpElement) { document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*') }
 
             //sync video to correct time
             setTimeout(function() {
-              if(vpElement) {
+              if(vpElement) 
+              {
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*') //sync to lastWholeSecond
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*') //add event listener for getCurrentTime
               }
@@ -1471,14 +1454,10 @@ export default { setup() {
       {
         //elements
         let jumpVideoInput = document.getElementById("jump-video-input")
+        let jumpVideoInputMobile = document.getElementById("jump-video-input-mobile")
         
         //null check
-        if(jumpVideoInput.value == "")
-        {
-          let jumpVideoInputMobile = document.getElementById("jump-video-input-mobile")
-          jumpVideoInput.value = jumpVideoInputMobile.value
-          jumpVideoInputMobile.value = ""
-        }
+        if(jumpVideoInput.value == "") { jumpVideoInput.value = jumpVideoInputMobile.value; jumpVideoInputMobile.value = "" }
 
         //variables
         let randomNextVideoNr = param1
@@ -1492,13 +1471,13 @@ export default { setup() {
           //set jumpIndex
           jumpIndex = randomNextVideoNr
           
-          //random button pressed
+          //check if random button pressed
           if(randomNextVideoNr == "random") { jumpIndex = generateRandomNumber(playlistLength) }
 
-          //double check random number is not current video number
+          //check if random number is current video number
           if(jumpIndex == currentVideo) { jumpIndex = generateRandomNumber(playlistLength) }
 
-          //set videoNr
+          //set video number
           videoNr = jumpIndex + 1
         }
         
@@ -1541,9 +1520,7 @@ export default { setup() {
         let vpElement = document.querySelector("#videoPlayer")
 
         //change video player volume
-        if(vpElement) {
-          document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'setVolume' + '","args":[' + param1 + ']}', '*')
-        }
+        if(vpElement) { document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'setVolume' + '","args":[' + param1 + ']}', '*') }
       }
 
 
@@ -1556,6 +1533,7 @@ export default { setup() {
                 "\"content\"" + ":" + "\"" + "random playlist " + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + 
                 "\"userId\"" + ":" + "\"" + socket.id + "\"" + "," + "\"userName\"" + ":" + "\"" + "anon" + "\"" + 
             "}")
+
           let msgObjVideoCommand = JSON.parse(
             "{" + 
                 "\"content\"" + ":" + "\"" + "random playlist" + "\"" + "," + "\"room\"" + ":" + "\"" + currentRoom + "\"" + "," + 
@@ -1598,27 +1576,22 @@ export default { setup() {
 
       //update elements
       if(modal.style.display == "block" || componentAbout.style.display == "block") 
-      { 
-        modal.style.display = "none" 
-        componentAbout.style.display = "none"  
-      }
+      { modal.style.display = "none"; componentAbout.style.display = "none" }
 
-      //play video
-      else if(videoPlaying == false) { videoPlayerEvents("play") }
-
-      //pause video
-      else if(videoPlaying == true){ videoPlayerEvents("pause") }
+      //check video status
+      if(videoPlaying == false) { videoPlayerEvents("play") } //play video
+      else if(videoPlaying == true){ videoPlayerEvents("pause") } //pause video
     }
 
 
     function requestFullScreen()
     { 
       //elements
-      var element = document.getElementById("player")
-      var videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
+      let element = document.getElementById("player")
+      let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
       
       //variables
-      var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen
+      let requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen
       
       //null check
       if(requestMethod) 
@@ -1627,7 +1600,7 @@ export default { setup() {
         requestMethod.call(element)
 
         //elements
-        var videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
+        videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
 
         //update elements
         videoPlayPauseOverlay.style.backgroundColor = "black"
@@ -1654,23 +1627,26 @@ export default { setup() {
 
     function onExitFullScreen()
     {
+      //elements        
+      let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
+      let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
+      let mediaQueryMobile = window.matchMedia( "(max-width: 1300px)" )
+              let componentNavbarRooms = document.getElementById("componentNavbarRooms")
+              let inputChatMessage = document.getElementById("inputChatMessage")
+              let modal = document.getElementById("modal")
+
       //null check
       if(!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) 
       {
-        //elements        
-        let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
-        let videoPlayPauseOverlay = document.getElementById("videoPlayPauseOverlay")
-        let mediaQueryMobile = window.matchMedia( "(max-width: 1300px)" )
-        
-        //update elements if desktop
+        //update elements if DESKTOP
         if(!mediaQueryMobile.matches)
         {
           videoPlayButtonOverlay.style = "display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 84vw; z-index: 1; border: 0; background-color: transparent;" /* background-color: #ff000030; */
           videoPlayPauseOverlay.style.backgroundColor = "transparent"
         }
 
-        //update elements if mobile
-        else if(mediaQueryMobile.matches) //mobile
+        //update elements if MOBILE
+        else if(mediaQueryMobile.matches)
         {
           videoPlayButtonOverlay.style = "display: block; position: absolute; left: 0px; top: 0px; height: calc(100vh + 100px); width: 100vw; z-index: 1; border: 0; background-color: transparent;" /* background-color: #ff000030; */
           videoPlayPauseOverlay.style.backgroundColor = "transparent"
@@ -1683,19 +1659,13 @@ export default { setup() {
         setTimeout(function() { window.addEventListener('keyup', (event) => {
             if(event.code === "Escape")
             {
-              //elements
-              let componentNavbarRooms = document.getElementById("componentNavbarRooms")
-              let inputChatMessage = document.getElementById("inputChatMessage")
-              let modal = document.getElementById("modal")
-          
               //deselect input
               inputChatMessage.focus()
               inputChatMessage.blur()
 
               //update elements
-              if(componentNavbarRooms.style.display == "block") { componentNavbarRooms.style.display = "none" }
-              else if(modal.style.display == "none") { modal.style.display = "block" }
-              else if(modal.style.display == "block") { modal.style.display = "none"}
+              componentNavbarRooms.style.display = "none"
+              modal.style.display = "none"
             }
           })
 
@@ -1706,15 +1676,16 @@ export default { setup() {
 
     function loadPlaylist(playlistId)
     {
-        //set local variables
-        videoPlaylist = true
-        videoPlaylistId = playlistId
-
         //elements
         let iframeContainer = document.getElementById("iframeContainer")
         let iframeEle = document.createElement("iframe")
         let videoPlayButtonOverlay = document.getElementById("videoPlayButtonOverlay")
-        
+
+        //set local variables
+        videoPlaylist = true
+        videoPlaylistId = playlistId
+
+        //format playlist URL
         if(videoPlaylistId.includes("PL")) { }
         else if(videoPlaylistId.includes("playlist?list=")) { videoPlaylistId = videoPlaylistId.replace("playlist?list=", "")}
         
@@ -1729,12 +1700,17 @@ export default { setup() {
         //check if new custom room
         if(videoPlaylistId == "newCustomRoom")
         {
-          iframeEle.src = ""
+          //reset iframe URL src
+          iframeEle.src = "" 
+          
+          //set room initialized status
           waitingForRoomToBeInitialized = true
+
+          //disable keybinds
           disableKeybinds()
         }
 
-        //append iframe
+        //set iframe container
         iframeContainer.innerHTML = ""
         iframeContainer.append(iframeEle)
 
@@ -1778,7 +1754,7 @@ export default { setup() {
 
     function initializeVideo()
     {        
-      //video is standalone
+      //video is STANDALONE
       if(videoPlaylistId == "null" || videoPlaylistId == null)
       {
         //log
@@ -1792,7 +1768,7 @@ export default { setup() {
         setTimeout(function() {videoPlayerEvents("resync2")}, resync2Time)
       }
 
-      //video is part of playlist
+      //video is part of PLAYLIST
       else if(videoPlaylistId != "null" || videoPlaylistId != null)
       {
         //log
@@ -1833,9 +1809,7 @@ export default { setup() {
       
       //update elements
       setTimeout(function() {
-        if(!mediaQueryMobile.matches) //desktop
-        { player.style.transform = "scale(1)" } 
-        
+        if(!mediaQueryMobile.matches) { player.style.transform = "scale(1)" } //desktop
         videoPlayPauseOverlay.style.display = "none"
         videoPlayPauseOverlayMobile.style.display = "none"
 
@@ -1897,7 +1871,7 @@ export default { setup() {
 
     function pushUrl(room)
     {
-      //set room url path
+      //set room URL path
       router.push({ path: '/' + room} )
     }
 
@@ -2008,6 +1982,7 @@ export default { setup() {
       let modalSidebarSettings = document.getElementById("modalSidebarSettings")
       let modalSidebarVideoQuality = document.getElementById("modalSidebarVideoQuality")
       let modalSidebarCreateRoom = document.getElementById("modalSidebarCreateRoom")
+      let errorMessageCreateRoom = document.getElementById("errorMessageCreateRoom")
       
       //update elements
       modal.style.display = "block" //display modal
@@ -2050,94 +2025,24 @@ export default { setup() {
       //VIDEO QUALITY
       else if(category == "Video Quality")
       {
+        //update elements
         modalSidebarVideoQuality.style.backgroundColor = "#1c1b1b"
         modalSidebarVideoQuality.style.color = "white"
         modalContentVideoQuality.style.display = "block"
-        
-        if(modalContentVideoQuality != null)
-        {
-          modalContentVideoQuality.style.height = "90%"
-          modalContentVideoQuality.style.width = "100%"
-        }
+        if(modalContentVideoQuality != null) { modalContentVideoQuality.style.height = "90%"; modalContentVideoQuality.style.width = "100%" }
 
-        function appendVideoiframe()
-        {
-          //elements
-          let iframe = document.createElement("iframe")
-          let button = document.createElement("button")
-          let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
-          
-          //set iframe variables
-          iframe.id = "videoPlayerChangeQuality"
-          iframe.height = "60%"
-          iframe.width = "90%"
-          iframe.title = "YouTube video player to change quality"
-          iframe.src ="https://www.youtube-nocookie.com/embed/" + playingVideoId + youtubeEmbedVideoParameters
-          iframe.style.display = "none"
-          iframe.backgroundColor = "red"
-  
-          //set button variables
-          button.onclick = function(){window.location.reload()}
-          button.innerText = "Reload"
-          button.style.height = "40px"
-          button.style.width = "40%"
-          button.style.marginTop = "30px"
-          button.style.marginBottom = "30px"
-          button.style.borderRadius = "0%"
-        
-          //null check
-          if(videoPlayerChangeQuality != null)
-          {
-            console.log("videoPlayerChangeQuality: " + videoPlayerChangeQuality)
-            console.log("videoPlayerChangeQuality src: " + videoPlayerChangeQuality.src + " / " + "playingVideoId: " + playingVideoId)
-          }
-  
-          //null check
-          if(videoPlayerChangeQuality == null)
-          {
-            //elements
-            let changeVideoQuality = document.getElementById("changeVideoQuality")
-            let changeVideoQualityLoadingText = document.getElementById("changeVideoQualityLoadingText")
-            let changeVideoQualitySteps = document.getElementById("changeVideoQualitySteps")
-            
-            //append iframe
-            changeVideoQuality.append(iframe)
-  
-            setTimeout(function() {
-              let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
-              
-              //update elements
-              videoPlayerChangeQuality.style.border = "0px"
-              videoPlayerChangeQuality.style.display = ""
-              
-              //append button
-              changeVideoQuality.append(button)
-              
-              //update elements
-              changeVideoQualityLoadingText.innerText = ""
-              changeVideoQualitySteps.style.display = "block"
-            }, appendVideoiframeTimer)
-          }
-        }
-
-        appendVideoiframe()
+        //load iframe video
+        appendVideoiframe(playingVideoId, youtubeEmbedVideoParameters)
       }
 
 
       //CREATE ROOM
       else if(category == "Create Room")
       {
-        //elements
-        let errorMessageCreateRoom = document.getElementById("errorMessageCreateRoom")
-        let modalSidebarCreateRoom = document.getElementById("modalSidebarCreateRoom")
-        let modalContentCreateRoom = document.getElementById("modalContentCreateRoom")
-        
         //update elements
         modalSidebarCreateRoom.style.backgroundColor = "#1c1b1b"
         modalSidebarCreateRoom.style.color = "white"
         modalContentCreateRoom.style.display = "block"
-        //errorMessageCreateRoom.style.display = "none"
-        //errorMessageCreateRoom.innerText = "room name cannot be empty or contain " + forbiddenCharactersString
       }
     }
 
@@ -2166,27 +2071,23 @@ export default { setup() {
 
     function enableKeybinds(event)
     {
+      //elements
+      let componentNavbarRooms = document.getElementById("componentNavbarRooms")
+      let inputChatMessage = document.getElementById("inputChatMessage")
+      let modal = document.getElementById("modal")
+      let componentAbout = document.getElementById("componentAbout")
+
       //ESCAPE
       if(event.code === "Escape")
       {
-        let componentNavbarRooms = document.getElementById("componentNavbarRooms")
-        let inputChatMessage = document.getElementById("inputChatMessage")
-        let modal = document.getElementById("modal")
-        let componentAbout = document.getElementById("componentAbout")
-        
         //deselect input
         inputChatMessage.focus()
         inputChatMessage.blur()
 
-        //hide or show components
-        if(componentNavbarRooms.style.display == "block" || componentAbout.style.display == "block") 
-        { 
-          componentNavbarRooms.style.display = "none"
-          componentAbout.style.display = "none" 
-        }
-        //hide or show modal
-        else if(modal.style.display == "none") { modal.style.display = "block" }
-        else if(modal.style.display == "block") { modal.style.display = "none"}
+        //update elements
+        componentNavbarRooms.style.display = "none"
+        componentAbout.style.display = "none"
+        modal.style.display = "none"
       }
 
 
@@ -2213,8 +2114,6 @@ export default { setup() {
         //F
         else if(event.code == "KeyF")
         {
-          console.log("fullScreenActive = " + fullScreenActive)
-
           if(fullScreenActive == false){requestFullScreen()}
           else if(fullScreenActive == true){requestCloseFullScreen()}
         }
@@ -2307,14 +2206,13 @@ export default { setup() {
       let time = currentTimeStamp()
       let msgs = document.getElementById("messages").childElementCount
 
-      //set chat message background color
+      //set message background color
       if(msgs % 2 == 0)
       {
         item.style.padding = "10px"
         item.style.backgroundColor = "#a9a9a917"
         item.style.overflowWrap = "break-word"
         item.style.color = "white"
-        // item.style.backgroundColor = "white"
       }
       else
       {
@@ -2322,7 +2220,6 @@ export default { setup() {
         item.style.backgroundColor = "#1c1b1b"
         item.style.overflowWrap = "break-word"
         item.style.color = "white"
-        // item.style.backgroundColor = "#efefef"
       }
 
       //handle anon username
@@ -2339,7 +2236,7 @@ export default { setup() {
       //remove anon from username
       msg.userName = msg.userName.replace("anon", "")
 
-      //set chat messages styling
+      //set message styling
       item.textContent = " · " + msg.content
       span.innerText = msg.userName
       span.style.fontWeight = "bold"
@@ -2351,12 +2248,6 @@ export default { setup() {
       
       //scroll chat to latest message
       chat.scrollTo(0, chat.scrollHeight)
-    }
-
-
-    function generateRandomNumber(maxNumber)
-    {
-      return Math.floor(Math.random() * maxNumber)
     }
 
 
@@ -2377,7 +2268,94 @@ export default { setup() {
       setTimeout(function() {videoPlayerEvents("resync2")}, initialStartMobileTimer)
     }
 
+
+    function toggleMobileControls()
+    {
+      //elements
+      let videoPlayerControlButtonsMobile = document.getElementById("videoPlayerControlButtonsMobile")
+      let videoInfo = document.getElementById("videoInfo")
+
+      //update elements
+      if(videoPlayerControlButtonsMobile.style.display == "none" || videoPlayerControlButtonsMobile.style.display == "")
+      {
+        videoPlayerControlButtonsMobile.style.display = "block"
+        videoInfo.style.display = "block"
+      }
+      else if(videoPlayerControlButtonsMobile.style.display == "block")
+      {
+        videoPlayerControlButtonsMobile.style.display = "none"
+        videoInfo.style.display = "none"
+      }
+    }
+
+
+    function appendVideoiframe(playingVideoId, youtubeEmbedVideoParameters)
+    {
+      //elements
+      let iframe = document.createElement("iframe")
+      let button = document.createElement("button")
+      let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
+      
+      //set iframe variables
+      iframe.id = "videoPlayerChangeQuality"
+      iframe.height = "60%"
+      iframe.width = "90%"
+      iframe.title = "YouTube video player to change quality"
+      iframe.src ="https://www.youtube-nocookie.com/embed/" + playingVideoId + youtubeEmbedVideoParameters
+      iframe.style.display = "none"
+      iframe.backgroundColor = "red"
+
+      //set button variables
+      button.onclick = function(){window.location.reload()}
+      button.innerText = "Reload"
+      button.style.height = "40px"
+      button.style.width = "40%"
+      button.style.marginTop = "30px"
+      button.style.marginBottom = "30px"
+      button.style.borderRadius = "0%"
     
+      //null check
+      if(videoPlayerChangeQuality != null)
+      {
+        console.log("videoPlayerChangeQuality: " + videoPlayerChangeQuality)
+        console.log("videoPlayerChangeQuality src: " + videoPlayerChangeQuality.src + " / " + "playingVideoId: " + playingVideoId)
+      }
+
+      //null check
+      if(videoPlayerChangeQuality == null)
+      {
+        //elements
+        let changeVideoQuality = document.getElementById("changeVideoQuality")
+        let changeVideoQualityLoadingText = document.getElementById("changeVideoQualityLoadingText")
+        let changeVideoQualitySteps = document.getElementById("changeVideoQualitySteps")
+        
+        //append iframe
+        changeVideoQuality.append(iframe)
+
+        setTimeout(function() {
+          let videoPlayerChangeQuality = document.getElementById("videoPlayerChangeQuality")
+          
+          //update elements
+          videoPlayerChangeQuality.style.border = "0px"
+          videoPlayerChangeQuality.style.display = ""
+          
+          //append button
+          changeVideoQuality.append(button)
+          
+          //update elements
+          changeVideoQualityLoadingText.innerText = ""
+          changeVideoQualitySteps.style.display = "block"
+        }, appendVideoiframeTimer)
+      }
+    }
+
+
+    function generateRandomNumber(maxNumber)
+    {
+      return Math.floor(Math.random() * maxNumber)
+    }
+
+
     function firstLetterToUppercase(value)
     {
       return value.substr(0, 1).toUpperCase() + value.substr(1, value.length)
@@ -2540,25 +2518,6 @@ export default { setup() {
         for(let r in activeRooms) //users in current room
         { if(currentRoom == activeRooms[r].room) { totalUsersCurrentRoomCount = activeRooms[r].clients.length } }
     })
-
-
-    function toggleMobileControls()
-    {
-      let videoPlayerControlButtonsMobile = document.getElementById("videoPlayerControlButtonsMobile")
-      let videoInfo = document.getElementById("videoInfo")
-
-      if(videoPlayerControlButtonsMobile.style.display == "none" || videoPlayerControlButtonsMobile.style.display == "")
-      {
-        videoPlayerControlButtonsMobile.style.display = "block"
-        videoInfo.style.display = "block"
-      }
-      else if(videoPlayerControlButtonsMobile.style.display == "block")
-      {
-        videoPlayerControlButtonsMobile.style.display = "none"
-        videoInfo.style.display = "none"
-      }
-    }
-
 
     socket.on('video command', function(msg) {
         //PLAY VIDEO
@@ -2839,7 +2798,6 @@ export default { setup() {
   #modalContent::-webkit-scrollbar-thumb { background: transparent; }
   #modalContent::-webkit-scrollbar-thumb:hover { background: transparent; }
   
-
 
   /*** elements ***/
   button { border-radius: 0%; outline: none; color: black; }
