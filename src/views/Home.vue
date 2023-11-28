@@ -5,6 +5,7 @@
     <ComponentHome />
     <componentNavbarRooms />
     <componentNavbarRoomsMobile />
+    <ComponentInstall />
 
     <!-- start menu -->
     <div id="startNav">
@@ -23,8 +24,9 @@
 //imports
 import ComponentHome from '@/components/ComponentHome.vue'
 import ComponentAbout from '@/components/ComponentAbout.vue'
-import componentNavbarRooms from '@/components/ComponentNavbarRooms.vue'
-import componentNavbarRoomsMobile from '@/components/ComponentNavbarRoomsMobile.vue'
+import ComponentNavbarRooms from '@/components/ComponentNavbarRooms.vue'
+import ComponentNavbarRoomsMobile from '@/components/ComponentNavbarRoomsMobile.vue'
+import ComponentInstall from '@/components/ComponentInstall.vue'
 
 
 export default {
@@ -32,9 +34,10 @@ export default {
   components: {
     ComponentHome,
     ComponentAbout,
-    componentNavbarRooms,
-    componentNavbarRoomsMobile,
-  },
+    ComponentNavbarRooms,
+    ComponentNavbarRoomsMobile,
+    ComponentInstall,
+},
 
   setup() {
     function showAboutComponent()

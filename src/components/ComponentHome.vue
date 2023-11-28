@@ -14,6 +14,7 @@
           <div id="modalSidebarSettings" v-on:click="showModalCategory('Settings')">Settings</div>
           <div id="modalSidebarCreateRoom" v-on:click="showModalCategory('Create Room')">Create Room</div>
           <div id="modalSidebarVideoQuality" v-on:click="showModalCategory('Video Quality')">Change Video Quality</div>
+          <!-- <div id="modalSidebarInstallApp"><a id="installApp" href="/install">Install App</a></div> -->
         </div>
 
         <!-- menu categories -->
@@ -362,6 +363,8 @@ export default { setup() {
           //elements
           let componentNavbarRooms = document.getElementById("componentNavbarRooms")
           let componentAbout = document.getElementById("componentAbout")
+          let ComponentInstall = document.getElementById("ComponentInstall")
+          let videoLoadingOverlay = document.getElementById("videoLoadingOverlay")
 
           //variables
           let roomExists = false
@@ -370,12 +373,12 @@ export default { setup() {
           let selectedRoomFromUrl = currentRoute._value
 
           //null check
-          if(selectedRoomFromUrl) { urlRoom = selectedRoomFromUrl.split("/")[1].toLowerCase() }
+          if(selectedRoomFromUrl) { urlRoom = selectedRoomFromUrl.split("/")[1].toLowerCase(); console.log("room: " + urlRoom) }
+
+          //install check
+          if(urlRoom == "install") { ComponentInstall.style.display = "block"; videoLoadingOverlay.style.display = "none"; return }          
           
-          //log
-          console.log("room: " + urlRoom)
-          
-          //get all active rooms
+          //set all active rooms
           allActiveRooms = JSON.stringify(vuexActiveRooms.value)
           allActiveRooms = JSON.parse(allActiveRooms)
 
@@ -409,22 +412,29 @@ export default { setup() {
 
 
     onUpdated(function() {
+        //elements
+        let ComponentInstall = document.getElementById("ComponentInstall")
+        let videoLoadingOverlay = document.getElementById("videoLoadingOverlay")
+
         //variables
-        let selectedRoomFromUrl = currentRoute._value
-        let urlRoom = null
+        let route = currentRoute._value
+        let room = null
         
+        //install check
+        if(route == "install") { ComponentInstall.style.display = "block"; videoLoadingOverlay.style.display = "none"; return }
+
         //null check
-        if(selectedRoomFromUrl) 
+        if(route) 
         {
           //set url room
-          urlRoom = selectedRoomFromUrl.split("/")[1].toLowerCase()
+          room = route.split("/")[1].toLowerCase()
           
           //log
-          console.log("room: " + urlRoom)
+          console.log("room: " + room)
          
           //join room form url 
-          pushUrl(urlRoom)
-          joinRoom(urlRoom)
+          pushUrl(room)
+          joinRoom(room)
         }        
     })
 
@@ -690,7 +700,7 @@ export default { setup() {
     function createRoom() 
     {
       //elements
-      let roomLink = document.getElementsByClassName("roomLink")
+      let existingRooms = document.getElementsByClassName("roomLink")
 
       //variables
       let createRoomInfo = []
@@ -711,12 +721,12 @@ export default { setup() {
           return
       }
 
-      //check if room already exists
-      if(newRoom == "" || newRoom == "temp" || newRoom == "test" || newRoom == "undefined" || newRoom == "null")
+      //check if room has forbidden name
+      if(newRoom == "" || newRoom == "temp" || newRoom == "test" || newRoom == "undefined" || newRoom == "null" || newRoom == "install")
       {
         //set error message
         errorMessageCreateRoom.style.display = "block"
-        errorMessageCreateRoom.innerText = "room " + "'" + newRoom + "'" + " already exists"
+        errorMessageCreateRoom.innerText = "room name " + "'" + newRoom + "'" + " is unavailable"
         
         //reset create room textbox
         inputCreateRoom.value = ""
@@ -725,12 +735,10 @@ export default { setup() {
         return
       }
 
-      //check if room already exists again
-      for(let rm in roomLink)
+      //check if room already exists
+      for(let c in existingRooms)
       {
-          let roomThatExists = roomLink[rm].innerText
-          
-          if(newRoom == roomThatExists)
+          if(newRoom == existingRooms[c].innerText)
           {
               //set error message
               errorMessageCreateRoom.style.display = "block"
@@ -3205,10 +3213,11 @@ export default { setup() {
   #initializeNewCustomRoom-load-video { height: auto; width: -webkit-fill-available; padding: 10px; text-align: center; color: black; background-color: lightgray; }
   #initializeNewCustomRoomSteps { margin: 0px; margin-bottom: 10px; }
   #initializeNewCustomRoomTitle { margin: 0px; margin-bottom: 10px; text-align: center; } 
-  #toggle-controls-mobile-fixed { display: none; } 
+  #toggle-controls-mobile-fixed { display: none; }
+  #installApp { text-decoration: none; color: black; }
 
   /*** classes ***/
-    .buttonCreate { width: calc(100%); border-color: lightgray; }
+  .buttonCreate { width: calc(100%); border-color: lightgray; }
   .errorMessage { display: block; margin: 20px; width: auto; background-color: transparent; }
   .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; background-color: white; color: black; }
   .modalContentKeybindsEqual { width: 13%; background-color: #1c1b1b }

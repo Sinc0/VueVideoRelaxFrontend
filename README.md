@@ -1,5 +1,5 @@
 ### Summary
-- Name: Relax Frontend
+- Name: Vidrela Frontend
 - Description:
 - LoC: ~
 - [Logo]()
@@ -7,11 +7,13 @@
 - \--- 
 
 ### Technologies
-- [VueJS]()
+- [Vue]()
+- [Socket.io]()
 
 ### Code
-- []()
-
+- [ComponentName]()
+- [Vuex]()
+- [Router]()
 ### Releases
 - []()
 
