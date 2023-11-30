@@ -4,10 +4,10 @@
       <div id="currentRouteBar">{{currentRoute}}</div>
 
 
-      <!-- MENU -->
+      <!-- SETTINGS -->
       <div id="modal" style="display: none;">
 
-        <!-- menu sidebar -->
+        <!-- settings sidebar -->
         <div id="modalSidebar">
           <div id="modalCloseBar" v-on:click="closeModal()">Close</div>
           <div id="modalSidebarKeybinds" v-on:click="showModalCategory('Keybinds')">Keybinds</div>
@@ -17,7 +17,7 @@
           <!-- <div id="modalSidebarInstallApp"><a id="installApp" href="/install">Install App</a></div> -->
         </div>
 
-        <!-- menu categories -->
+        <!-- settings categories -->
         <div id="modalContent">
 
           <!--- category keybinds -->
@@ -439,7 +439,7 @@ export default { setup() {
     })
 
 
-    /*** EVENT LISTENERS */
+    /****** EVENT LISTENERS ******/
     window.onmessage = function(e) { //video player event listener
       //null check
       if(typeof e.data == "object") { console.log("error: typeof e.data == object"); return }
@@ -677,7 +677,7 @@ export default { setup() {
     document.addEventListener('MSFullscreenChange', onExitFullScreen)
     
 
-    /*** FUNCTIONS ***/
+    /****** FUNCTIONS ******/
     function sendChatMessage() 
     {
       //null check
