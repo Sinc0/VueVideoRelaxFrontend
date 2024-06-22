@@ -25,12 +25,12 @@
             <table id="modalContentKeybindsTable">
               <!-- <th>header</th> -->
               <tr class="modalContentKeybindsTableRow">
-                <td class="modalContentKeybindsDescription">Play/Pause</td>
+                <td class="modalContentKeybindsDescription">Play / Pause</td>
                 <td class="modalContentKeybindsEqual"> = </td>
                 <td class="modalContentKeybindsCharacter">Space</td>
               </tr>
               <tr class="modalContentKeybindsTableRow">
-                <td class="modalContentKeybindsDescription">Mute/Unmute</td>
+                <td class="modalContentKeybindsDescription">Mute / Unmute</td>
                 <td class="modalContentKeybindsEqual"> = </td>
                 <td class="modalContentKeybindsCharacter">M</td>
               </tr>
@@ -43,7 +43,6 @@
                 <td class="modalContentKeybindsDescription">Previous Video</td>
                 <td class="modalContentKeybindsEqual"> = </td>
                 <td class="modalContentKeybindsCharacter">Shift</td>
-                <td class="modalContentKeybindsCharacter">+</td>
                 <td class="modalContentKeybindsCharacter">></td>
               </tr>
               <tr class="modalContentKeybindsTableRow">
@@ -52,7 +51,7 @@
                 <td class="modalContentKeybindsCharacter">F</td>
               </tr>
               <tr class="modalContentKeybindsTableRow">
-                <td class="modalContentKeybindsDescription">Show Sidebar</td>
+                <td class="modalContentKeybindsDescription">Show Rooms</td>
                 <td class="modalContentKeybindsEqual"> = </td>
                 <td class="modalContentKeybindsCharacter">R</td>
               </tr>
@@ -67,19 +66,19 @@
                 <td class="modalContentKeybindsCharacter">Arrow Down</td>
               </tr>
               <tr class="modalContentKeybindsTableRow">
-                <td class="modalContentKeybindsDescription">Show This Menu</td>
+                <td class="modalContentKeybindsDescription">Play / Pause</td>
                 <td class="modalContentKeybindsEqual"> = </td>
-                <td class="modalContentKeybindsCharacter">ESC</td>
+                <td class="modalContentKeybindsCharacter">Mouse Left Click</td>
               </tr>
               <tr class="modalContentKeybindsTableRow">
-                <td class="modalContentKeybindsDescription">Play/Pause</td>
+                <td class="modalContentKeybindsDescription">Video Info / Controls</td>
                 <td class="modalContentKeybindsEqual"> = </td>
-                <td class="modalContentKeybindsCharacter">Left Mouseclick</td>
+                <td class="modalContentKeybindsCharacter">Mouse Right Click</td>
               </tr>
               <tr class="modalContentKeybindsTableRow">
-                <td class="modalContentKeybindsDescription">Hide Video Info/Controls</td>
+                <td class="modalContentKeybindsDescription">Close</td>
                 <td class="modalContentKeybindsEqual"> = </td>
-                <td class="modalContentKeybindsCharacter">Right Mouseclick</td>
+                <td class="modalContentKeybindsCharacter">Esc</td>
               </tr>
             </table>
           </div>
@@ -1348,9 +1347,10 @@ export default { setup() {
             setTimeout(function() {
               if(vpElement) 
               {
+                document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*')
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*') //sync to lastWholeSecond
-                document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*') //pause video
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
+                document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*') //pause video
               }
             }, resyncMargin)
                       
@@ -1381,6 +1381,7 @@ export default { setup() {
             setTimeout(function() {
               if(vpElement) 
               {
+                document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*')
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + playingVideosLastWholeSecond + ', true]}', '*') //sync to lastWholeSecond
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"listening","func":"' + 'getCurrentTime' + '","args":""}', '*')//add event listener for getCurrentTime
               }
@@ -2261,7 +2262,7 @@ export default { setup() {
       videoPlayInitialStartOverlayMobile.style.display = "none"
       
       //play video
-      if(vpElement) 
+      if(vpElement)
       { document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*') }
 
       //resync video
@@ -2719,12 +2720,15 @@ export default { setup() {
 
               //send command(s) to video player
               if(vpElement) {
-                document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.playingVideosLastWholeSecond + ', true]}', '*')
                 document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*')
+                document.querySelector("#videoPlayer").contentWindow.postMessage('{"event":"command","func":"' + 'seekTo' + '","args":[' + msg.playingVideosLastWholeSecond + ', true]}', '*')
               }
             }
             else if(msg.videoPlaying == "false")
             {
+              //log
+              console.log("resync2 to: " + msg.playingVideosLastWholeSecond)
+
               //elements
               let vpElement = document.querySelector("#videoPlayer")
 
@@ -3081,7 +3085,19 @@ export default { setup() {
       background-color: black;
   }
   #videoPlayPauseOverlayMobile { display: none; opacity: 0.0; z-index: 1; }
-  #videoPlayInitialStartOverlayMobile { display: none; }
+  #videoPlayInitialStartOverlayMobile 
+  { 
+      display: none; 
+      position: absolute; 
+      height: 100vh; 
+      width: 100vw; 
+      left: 0px; 
+      top: 0px; 
+      z-index: 3; 
+      opacity: 1.0; 
+      border: 0; 
+      background-color: black; 
+  }
   #videoInfo 
   { 
       display: none; 
@@ -3110,6 +3126,7 @@ export default { setup() {
   #loadingScreenText { color: white; animation-name: fadeLoadingScreenText; animation-duration: 1.8s; animation-iteration-count: infinite; } 
   #videoPlayInitialStartOverlayMobileLoadingScreenText 
   { 
+    display: block;
     color: white; 
     animation-name: fadeLoadingScreenText; 
     animation-duration: 1.8s; 
@@ -3177,9 +3194,9 @@ export default { setup() {
   /*** classes ***/
   .buttonCreate { width: calc(100%); border-color: lightgray; }
   .errorMessage { display: block; margin: 20px; width: auto; background-color: transparent; }
-  .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; background-color: white; color: black; }
-  .modalContentKeybindsEqual { width: 13%; background-color: #1c1b1b }
-  .modalContentKeybindsCharacter { width: auto; padding: 10px; border: 1px solid white; background-color: #1c1b1b; }
+  .modalContentKeybindsDescription { width: auto; padding-left: 10px; padding-right: 10px; font-weight: bold; background-color: white; color: black; }
+  .modalContentKeybindsEqual { width: 13%; font-weight: bold; background-color: #1c1b1b }
+  .modalContentKeybindsCharacter { width: auto; padding: 10px; font-weight: bold; border: 1px solid white; background-color: #1c1b1b; }
   .modalContentKeybindsTableRow { border: 1px solid red; }
   .changeVideoQualityStepsText { margin: 2px 0px 0px 0px; padding: 0px; font-weight: bold; }
   .videoPlayerControlButton 
@@ -3257,7 +3274,14 @@ export default { setup() {
         padding-right: 20vw; 
         font-size: 20px; 
     }
-    #videoPlayInitialStartOverlayMobileLoadingScreenText { display: block; }
+    #videoPlayInitialStartOverlayMobileLoadingScreenText 
+    { 
+        display: block;
+        color: white; 
+        animation-name: fadeLoadingScreenText; 
+        animation-duration: 1.8s; 
+        animation-iteration-count: infinite; 
+    }
     #videoPlayInitialStartOverlayMobileLoadingScreenGif  
     { 
         display: block; 

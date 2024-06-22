@@ -1,8 +1,12 @@
 <template>
   <div id="componentAbout">
     <!-- about -->
-    <h3 id="titleAbout" class="title">About Project</h3>
-    <p id="textAbout" class="text">This is a student project made to learn about socket.io and server sync.</p>
+    <h3 id="titleAbout" class="title">Why?</h3>
+    <p id="textAbout" class="text">This is a student project made to learn about socket.io and server sync</p>
+
+    <!-- autoplay -->
+    <h3 id="titleAutoplay" class="title">Video does not autoplay?</h3>
+    <p id="textAutoplay" class="text">This is probably caused by your browsers autoplay settings</p>
 
     <!-- privacy policy -->
     <h3 id="titlePrivacyPolicy" class="title">Privacy Policy</h3>
@@ -45,7 +49,7 @@
     margin: 0;
     padding: 30px;
     position: absolute;
-    top: 40%;
+    top: 49%;
     left: 41.5%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
@@ -57,6 +61,7 @@
   #titleCredits { margin: 30px 0px 0px 0px; }
   #titlePrivacyPolicy { margin: 30px 0px 0px 0px; }
   #titleContact { margin: 30px 0px 0px 0px; }
+  #titleAutoplay { margin: 30px 0px 0px 0px; }
   #listCredits { margin: 0px; margin-left: 20px; padding: 0px; }
 
 
@@ -64,6 +69,6 @@
   .title { margin: 0px; padding: 0px; text-align: left; }
   .text { margin: 0px; padding: 0px; font-size: 17px; color: white; text-decoration: none; }
   .privacyPolicyItem { margin: 0px; font-size: 17px; }
-  .no { color: red; }
-  .yes { color: lightgreen; }
+  .no { font-weight: bold; color: red; }
+  .yes { font-weight: bold; color: lightgreen; }
 </style>

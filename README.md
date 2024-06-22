@@ -5,10 +5,10 @@
 - [Logo](https://github.com/Sinc0/VueVideoRelaxFrontend/blob/master/public/img/icons/android-chrome-192x192.png)
 - Features:
 - \--- Watch Videos Together
-- \--- Chat
 - \--- Video Player Controls (Play, Restart, Jump, Mute, Sync, Previous, Next, Load, Random, Resync) 
 - \--- Join Default Rooms
 - \--- Create Custom Room
+- \--- Chat Sidebar
 - \--- Fullscreen
 - \--- Keybinds
 
