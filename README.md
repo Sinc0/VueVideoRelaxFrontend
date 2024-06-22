@@ -6,11 +6,12 @@
 - Features:
 - \--- Watch Videos Together
 - \--- Video Player Controls (Play, Restart, Jump, Mute, Sync, Previous, Next, Load, Random, Resync) 
-- \--- Join Default Rooms
+- \--- Join Rooms (Default, Custom)
 - \--- Create Custom Room
 - \--- Chat Sidebar
 - \--- Fullscreen
 - \--- Keybinds
+- \--- Mousebinds
 
 ### Technologies
 - [Vue](https://vuejs.org)
